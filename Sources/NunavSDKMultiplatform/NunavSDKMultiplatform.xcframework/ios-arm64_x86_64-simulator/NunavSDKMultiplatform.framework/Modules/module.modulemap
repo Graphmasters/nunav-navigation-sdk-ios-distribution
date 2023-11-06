@@ -1,0 +1,6 @@
+framework module NunavSDKMultiplatform {
+    umbrella header "NunavSDKMultiplatform.h"
+
+    export *
+    module * { export * }
+}
