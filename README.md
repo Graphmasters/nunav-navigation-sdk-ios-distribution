@@ -1,8 +1,8 @@
 # NunavSDK
 
 ![Requires Xcode 15](https://img.shields.io/badge/Xcode-14-1575F9.svg?style=flat&logo=xcode&logoColor=1575F9)
-[![Requires Swift 5.9](https://img.shields.io/badge/Swift-5.9-FA7343.svg?style=flat&logo=Swift)](https://swift.org/package-manager/)
-[![SPM compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-FA7343.svg?style=flat&logo=Swift)](https://swiftpackageindex.com/maplibre/maplibre-gl-native-distribution)
+[![Requires Swift 5.9](https://img.shields.io/badge/Swift-5.9-FA7343.svg?style=flat&logo=Swift)](https://swift.org/)
+[![SPM compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-FA7343.svg?style=flat&logo=Swift)](https://swift.org/package-manager)
 
 > **Note**  
 > This repository only exists for the purpose of distribution of NunavSDK for iOS on the Swift Package Manager. It contains the code for the NUNAV SDK powering the navigation in third party apps.
