@@ -57,9 +57,19 @@ struct NavigationScreen: View {
                         NunavSDK.navigationSdk.stopNavigation()
                     }
                 }, message: {
-                    if let message = state?.navigationError?.message {
-                        Text(message)
+                    if let error = state?.navigationError {
+                        switch error.type {
+                        case .noRouteFound:
+                            Text(L10n.navigationErrorNoRouteFoundSummary)
+                        case .unauthorized:
+                            Text(L10n.navigationErrorUnauthorizedSummary)
+                        case .unknown:
+                            if let message = state?.navigationError?.exception.message {
+                                Text(message)
+                            }
+                        }
                     }
+
                 }
             )
             .onAppear(perform: {

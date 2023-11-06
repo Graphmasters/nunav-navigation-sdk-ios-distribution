@@ -18,11 +18,11 @@ public enum NunavSDK {
     }
 
     static let navigationSdk: NavigationSdk = {
-        guard let apiKey = apiKey else {
-            fatalError("To use `NunavSDK` an api key is needed. Please use `NunavSDK.configure(apiKey: String)` first.")
-        }
-        guard let serviceUrl = serviceUrl else {
-            return IosNavigationSdk(apiKey: apiKey)
+        guard let apiKey = apiKey, let serviceUrl = serviceUrl  else {
+            fatalError("""
+To use `NunavSDK` an api key and a service url are needed. Please use `NunavSDK.configure(apiKey: String, serviceUrl: String)` first.
+"""
+            )
         }
         return IosNavigationSdk(
             serviceUrl: serviceUrl,

@@ -7,6 +7,10 @@ Classes:
     PropertyKind: "Instance"
     SwiftName: "cameraTrackingActive"
     Type: "BOOL"
+  - Name: "cameraUpdate"
+    PropertyKind: "Instance"
+    SwiftName: "cameraUpdate"
+    Type: "NSDKMCameraUpdate * _Nullable"
   - Name: "navigationCameraHandler"
     PropertyKind: "Instance"
     SwiftName: "navigationCameraHandler"
@@ -161,6 +165,10 @@ Classes:
     PropertyKind: "Instance"
     SwiftName: "cameraTrackingActive"
     Type: "BOOL"
+  - Name: "cameraUpdate"
+    PropertyKind: "Instance"
+    SwiftName: "cameraUpdate"
+    Type: "NSDKMCameraUpdate * _Nullable"
   - Name: "navigationCameraHandler"
     PropertyKind: "Instance"
     SwiftName: "navigationCameraHandler"
@@ -4374,11 +4382,13 @@ Classes:
     Parameters:
     - Position: 0
       Type: "NSDKMLocation *_Nonnull "
-  - Selector: "initWithApiKey:"
+  - Selector: "initWithApiKey:serviceUrl:"
     MethodKind: "Instance"
-    SwiftName: "init(apiKey:)"
+    SwiftName: "init(apiKey:serviceUrl:)"
     Parameters:
     - Position: 0
+      Type: "NSString *_Nonnull "
+    - Position: 1
       Type: "NSString *_Nonnull "
   - Selector: "initWithSessionClient:routeProvider:"
     MethodKind: "Instance"
@@ -4952,17 +4962,21 @@ Classes:
     MethodKind: "Instance"
     SwiftName: "hash()"
     ResultType: "NSUInteger"
-  - Selector: "requestRouteRouteRequest:error:"
+  - Selector: "requestRouteRouteRequest:completionHandler:"
     MethodKind: "Instance"
-    SwiftName: "requestRoute(routeRequest:)"
-    ResultType: "NSDKMRoute * _Nullable"
+    SwiftName: "__requestRoute(routeRequest:completionHandler:)"
+    SwiftPrivate: true
+    ResultType: "void"
     Parameters:
     - Position: 0
       Type: "NSDKMRouteProviderRouteRequest *_Nonnull "
-  - Selector: "requestRouteDataOrigin:destination:vehicleConfig:error:"
+    - Position: 1
+      Type: "void (^_Nonnull )(NSDKMRoute * _Nullable, NSError * _Nullable)"
+  - Selector: "requestRouteDataOrigin:destination:vehicleConfig:completionHandler:"
     MethodKind: "Instance"
-    SwiftName: "requestRouteData(origin:destination:vehicleConfig:)"
-    ResultType: "NSDKMRouteData * _Nullable"
+    SwiftName: "__requestRouteData(origin:destination:vehicleConfig:completionHandler:)"
+    SwiftPrivate: true
+    ResultType: "void"
     Parameters:
     - Position: 0
       Type: "NSDKMLatLng *_Nonnull "
@@ -4970,6 +4984,8 @@ Classes:
       Type: "NSDKMLatLng *_Nonnull "
     - Position: 2
       Type: "id<NSDKMVehicleConfig> _Nonnull "
+    - Position: 3
+      Type: "void (^_Nonnull )(NSDKMRouteData * _Nullable, NSError * _Nullable)"
   - Selector: "description"
     MethodKind: "Instance"
     SwiftName: "description()"
@@ -5235,6 +5251,348 @@ Classes:
     MethodKind: "Instance"
     SwiftName: "description()"
     ResultType: "NSString *_Nonnull "
+- Name: "NSDKMIOException"
+  SwiftName: "IOException"
+  Properties:
+  - Name: "cause"
+    PropertyKind: "Instance"
+    SwiftName: "cause"
+    Type: "NSDKMKotlinThrowable * _Nullable"
+  - Name: "description_"
+    PropertyKind: "Instance"
+    SwiftName: "description_"
+    Type: "NSString *_Nonnull "
+  - Name: "message"
+    PropertyKind: "Instance"
+    SwiftName: "message"
+    Type: "NSString * _Nullable"
+  - Name: "statusCode"
+    PropertyKind: "Instance"
+    SwiftName: "statusCode"
+    Type: "int32_t"
+  - Name: "url"
+    PropertyKind: "Instance"
+    SwiftName: "url"
+    Type: "NSString *_Nonnull "
+  Methods:
+  - Selector: "isEqual:"
+    MethodKind: "Instance"
+    SwiftName: "isEqual(_:)"
+    ResultType: "BOOL"
+    Parameters:
+    - Position: 0
+      Type: "id _Nullable"
+  - Selector: "getStackTrace"
+    MethodKind: "Instance"
+    SwiftName: "getStackTrace()"
+    ResultType: "NSDKMKotlinArray<NSString *> *_Nonnull "
+  - Selector: "hash"
+    MethodKind: "Instance"
+    SwiftName: "hash()"
+    ResultType: "NSUInteger"
+  - Selector: "printStackTrace"
+    MethodKind: "Instance"
+    SwiftName: "printStackTrace()"
+    ResultType: "void"
+  - Selector: "description"
+    MethodKind: "Instance"
+    SwiftName: "description()"
+    ResultType: "NSString *_Nonnull "
+  - Selector: "initWithStatusCode:description:url:exception:"
+    MethodKind: "Instance"
+    SwiftName: "init(statusCode:description:url:exception:)"
+    Parameters:
+    - Position: 0
+      Type: "int32_t"
+    - Position: 1
+      Type: "NSString *_Nonnull "
+    - Position: 2
+      Type: "NSString *_Nonnull "
+    - Position: 3
+      Type: "NSDKMKotlinException * _Nullable"
+  - Selector: "init"
+    MethodKind: "Instance"
+    SwiftName: "init()"
+    Availability: "nonswift"
+  - Selector: "initWithMessage:"
+    MethodKind: "Instance"
+    SwiftName: "init(message:)"
+    Availability: "nonswift"
+    Parameters:
+    - Position: 0
+      Type: "NSString * _Nullable"
+  - Selector: "initWithMessage:cause:"
+    MethodKind: "Instance"
+    SwiftName: "init(message:cause:)"
+    Availability: "nonswift"
+    Parameters:
+    - Position: 0
+      Type: "NSString * _Nullable"
+    - Position: 1
+      Type: "NSDKMKotlinThrowable * _Nullable"
+  - Selector: "initWithCause:"
+    MethodKind: "Instance"
+    SwiftName: "init(cause:)"
+    Availability: "nonswift"
+    Parameters:
+    - Position: 0
+      Type: "NSDKMKotlinThrowable * _Nullable"
+- Name: "NSDKMKotlinException"
+  SwiftName: "KotlinException"
+  Properties:
+  - Name: "cause"
+    PropertyKind: "Instance"
+    SwiftName: "cause"
+    Type: "NSDKMKotlinThrowable * _Nullable"
+  - Name: "message"
+    PropertyKind: "Instance"
+    SwiftName: "message"
+    Type: "NSString * _Nullable"
+  Methods:
+  - Selector: "isEqual:"
+    MethodKind: "Instance"
+    SwiftName: "isEqual(_:)"
+    ResultType: "BOOL"
+    Parameters:
+    - Position: 0
+      Type: "id _Nullable"
+  - Selector: "getStackTrace"
+    MethodKind: "Instance"
+    SwiftName: "getStackTrace()"
+    ResultType: "NSDKMKotlinArray<NSString *> *_Nonnull "
+  - Selector: "hash"
+    MethodKind: "Instance"
+    SwiftName: "hash()"
+    ResultType: "NSUInteger"
+  - Selector: "printStackTrace"
+    MethodKind: "Instance"
+    SwiftName: "printStackTrace()"
+    ResultType: "void"
+  - Selector: "description"
+    MethodKind: "Instance"
+    SwiftName: "description()"
+    ResultType: "NSString *_Nonnull "
+  - Selector: "init"
+    MethodKind: "Instance"
+    SwiftName: "init()"
+  - Selector: "initWithMessage:"
+    MethodKind: "Instance"
+    SwiftName: "init(message:)"
+    Parameters:
+    - Position: 0
+      Type: "NSString * _Nullable"
+  - Selector: "initWithMessage:cause:"
+    MethodKind: "Instance"
+    SwiftName: "init(message:cause:)"
+    Parameters:
+    - Position: 0
+      Type: "NSString * _Nullable"
+    - Position: 1
+      Type: "NSDKMKotlinThrowable * _Nullable"
+  - Selector: "initWithCause:"
+    MethodKind: "Instance"
+    SwiftName: "init(cause:)"
+    Parameters:
+    - Position: 0
+      Type: "NSDKMKotlinThrowable * _Nullable"
+- Name: "NSDKMKotlinThrowable"
+  SwiftName: "KotlinThrowable"
+  Properties:
+  - Name: "cause"
+    PropertyKind: "Instance"
+    SwiftName: "cause"
+    Type: "NSDKMKotlinThrowable * _Nullable"
+  - Name: "message"
+    PropertyKind: "Instance"
+    SwiftName: "message"
+    Type: "NSString * _Nullable"
+  Methods:
+  - Selector: "isEqual:"
+    MethodKind: "Instance"
+    SwiftName: "isEqual(_:)"
+    ResultType: "BOOL"
+    Parameters:
+    - Position: 0
+      Type: "id _Nullable"
+  - Selector: "getStackTrace"
+    MethodKind: "Instance"
+    SwiftName: "getStackTrace()"
+    ResultType: "NSDKMKotlinArray<NSString *> *_Nonnull "
+  - Selector: "hash"
+    MethodKind: "Instance"
+    SwiftName: "hash()"
+    ResultType: "NSUInteger"
+  - Selector: "printStackTrace"
+    MethodKind: "Instance"
+    SwiftName: "printStackTrace()"
+    ResultType: "void"
+  - Selector: "description"
+    MethodKind: "Instance"
+    SwiftName: "description()"
+    ResultType: "NSString *_Nonnull "
+  - Selector: "initWithMessage:"
+    MethodKind: "Instance"
+    SwiftName: "init(message:)"
+    Parameters:
+    - Position: 0
+      Type: "NSString * _Nullable"
+  - Selector: "initWithCause:"
+    MethodKind: "Instance"
+    SwiftName: "init(cause:)"
+    Parameters:
+    - Position: 0
+      Type: "NSDKMKotlinThrowable * _Nullable"
+  - Selector: "init"
+    MethodKind: "Instance"
+    SwiftName: "init()"
+  - Selector: "initWithMessage:cause:"
+    MethodKind: "Instance"
+    SwiftName: "init(message:cause:)"
+    Parameters:
+    - Position: 0
+      Type: "NSString * _Nullable"
+    - Position: 1
+      Type: "NSDKMKotlinThrowable * _Nullable"
+- Name: "NSDKMTooManyRequestsException"
+  SwiftName: "TooManyRequestsException"
+  Properties:
+  - Name: "cause"
+    PropertyKind: "Instance"
+    SwiftName: "cause"
+    Type: "NSDKMKotlinThrowable * _Nullable"
+  - Name: "message"
+    PropertyKind: "Instance"
+    SwiftName: "message"
+    Type: "NSString * _Nullable"
+  Methods:
+  - Selector: "isEqual:"
+    MethodKind: "Instance"
+    SwiftName: "isEqual(_:)"
+    ResultType: "BOOL"
+    Parameters:
+    - Position: 0
+      Type: "id _Nullable"
+  - Selector: "getStackTrace"
+    MethodKind: "Instance"
+    SwiftName: "getStackTrace()"
+    ResultType: "NSDKMKotlinArray<NSString *> *_Nonnull "
+  - Selector: "hash"
+    MethodKind: "Instance"
+    SwiftName: "hash()"
+    ResultType: "NSUInteger"
+  - Selector: "printStackTrace"
+    MethodKind: "Instance"
+    SwiftName: "printStackTrace()"
+    ResultType: "void"
+  - Selector: "description"
+    MethodKind: "Instance"
+    SwiftName: "description()"
+    ResultType: "NSString *_Nonnull "
+  - Selector: "initWithMessage:exception:"
+    MethodKind: "Instance"
+    SwiftName: "init(message:exception:)"
+    Parameters:
+    - Position: 0
+      Type: "NSString *_Nonnull "
+    - Position: 1
+      Type: "NSDKMKotlinException * _Nullable"
+  - Selector: "init"
+    MethodKind: "Instance"
+    SwiftName: "init()"
+    Availability: "nonswift"
+  - Selector: "initWithMessage:"
+    MethodKind: "Instance"
+    SwiftName: "init(message:)"
+    Availability: "nonswift"
+    Parameters:
+    - Position: 0
+      Type: "NSString * _Nullable"
+  - Selector: "initWithMessage:cause:"
+    MethodKind: "Instance"
+    SwiftName: "init(message:cause:)"
+    Availability: "nonswift"
+    Parameters:
+    - Position: 0
+      Type: "NSString * _Nullable"
+    - Position: 1
+      Type: "NSDKMKotlinThrowable * _Nullable"
+  - Selector: "initWithCause:"
+    MethodKind: "Instance"
+    SwiftName: "init(cause:)"
+    Availability: "nonswift"
+    Parameters:
+    - Position: 0
+      Type: "NSDKMKotlinThrowable * _Nullable"
+- Name: "NSDKMUnauthorizedException"
+  SwiftName: "UnauthorizedException"
+  Properties:
+  - Name: "cause"
+    PropertyKind: "Instance"
+    SwiftName: "cause"
+    Type: "NSDKMKotlinThrowable * _Nullable"
+  - Name: "message"
+    PropertyKind: "Instance"
+    SwiftName: "message"
+    Type: "NSString * _Nullable"
+  Methods:
+  - Selector: "isEqual:"
+    MethodKind: "Instance"
+    SwiftName: "isEqual(_:)"
+    ResultType: "BOOL"
+    Parameters:
+    - Position: 0
+      Type: "id _Nullable"
+  - Selector: "getStackTrace"
+    MethodKind: "Instance"
+    SwiftName: "getStackTrace()"
+    ResultType: "NSDKMKotlinArray<NSString *> *_Nonnull "
+  - Selector: "hash"
+    MethodKind: "Instance"
+    SwiftName: "hash()"
+    ResultType: "NSUInteger"
+  - Selector: "printStackTrace"
+    MethodKind: "Instance"
+    SwiftName: "printStackTrace()"
+    ResultType: "void"
+  - Selector: "description"
+    MethodKind: "Instance"
+    SwiftName: "description()"
+    ResultType: "NSString *_Nonnull "
+  - Selector: "initWithMessage:exception:"
+    MethodKind: "Instance"
+    SwiftName: "init(message:exception:)"
+    Parameters:
+    - Position: 0
+      Type: "NSString *_Nonnull "
+    - Position: 1
+      Type: "NSDKMKotlinException * _Nullable"
+  - Selector: "init"
+    MethodKind: "Instance"
+    SwiftName: "init()"
+    Availability: "nonswift"
+  - Selector: "initWithMessage:"
+    MethodKind: "Instance"
+    SwiftName: "init(message:)"
+    Availability: "nonswift"
+    Parameters:
+    - Position: 0
+      Type: "NSString * _Nullable"
+  - Selector: "initWithMessage:cause:"
+    MethodKind: "Instance"
+    SwiftName: "init(message:cause:)"
+    Availability: "nonswift"
+    Parameters:
+    - Position: 0
+      Type: "NSString * _Nullable"
+    - Position: 1
+      Type: "NSDKMKotlinThrowable * _Nullable"
+  - Selector: "initWithCause:"
+    MethodKind: "Instance"
+    SwiftName: "init(cause:)"
+    Availability: "nonswift"
+    Parameters:
+    - Position: 0
+      Type: "NSDKMKotlinThrowable * _Nullable"
 - Name: "NSDKMAccelerationEffectedSpeedTracker"
   SwiftName: "AccelerationEffectedSpeedTracker"
   Properties:
@@ -8218,122 +8576,6 @@ Classes:
     Parameters:
     - Position: 0
       Type: "NSDKMKotlinThrowable * _Nullable"
-- Name: "NSDKMKotlinException"
-  SwiftName: "KotlinException"
-  Properties:
-  - Name: "cause"
-    PropertyKind: "Instance"
-    SwiftName: "cause"
-    Type: "NSDKMKotlinThrowable * _Nullable"
-  - Name: "message"
-    PropertyKind: "Instance"
-    SwiftName: "message"
-    Type: "NSString * _Nullable"
-  Methods:
-  - Selector: "isEqual:"
-    MethodKind: "Instance"
-    SwiftName: "isEqual(_:)"
-    ResultType: "BOOL"
-    Parameters:
-    - Position: 0
-      Type: "id _Nullable"
-  - Selector: "getStackTrace"
-    MethodKind: "Instance"
-    SwiftName: "getStackTrace()"
-    ResultType: "NSDKMKotlinArray<NSString *> *_Nonnull "
-  - Selector: "hash"
-    MethodKind: "Instance"
-    SwiftName: "hash()"
-    ResultType: "NSUInteger"
-  - Selector: "printStackTrace"
-    MethodKind: "Instance"
-    SwiftName: "printStackTrace()"
-    ResultType: "void"
-  - Selector: "description"
-    MethodKind: "Instance"
-    SwiftName: "description()"
-    ResultType: "NSString *_Nonnull "
-  - Selector: "init"
-    MethodKind: "Instance"
-    SwiftName: "init()"
-  - Selector: "initWithMessage:"
-    MethodKind: "Instance"
-    SwiftName: "init(message:)"
-    Parameters:
-    - Position: 0
-      Type: "NSString * _Nullable"
-  - Selector: "initWithMessage:cause:"
-    MethodKind: "Instance"
-    SwiftName: "init(message:cause:)"
-    Parameters:
-    - Position: 0
-      Type: "NSString * _Nullable"
-    - Position: 1
-      Type: "NSDKMKotlinThrowable * _Nullable"
-  - Selector: "initWithCause:"
-    MethodKind: "Instance"
-    SwiftName: "init(cause:)"
-    Parameters:
-    - Position: 0
-      Type: "NSDKMKotlinThrowable * _Nullable"
-- Name: "NSDKMKotlinThrowable"
-  SwiftName: "KotlinThrowable"
-  Properties:
-  - Name: "cause"
-    PropertyKind: "Instance"
-    SwiftName: "cause"
-    Type: "NSDKMKotlinThrowable * _Nullable"
-  - Name: "message"
-    PropertyKind: "Instance"
-    SwiftName: "message"
-    Type: "NSString * _Nullable"
-  Methods:
-  - Selector: "isEqual:"
-    MethodKind: "Instance"
-    SwiftName: "isEqual(_:)"
-    ResultType: "BOOL"
-    Parameters:
-    - Position: 0
-      Type: "id _Nullable"
-  - Selector: "getStackTrace"
-    MethodKind: "Instance"
-    SwiftName: "getStackTrace()"
-    ResultType: "NSDKMKotlinArray<NSString *> *_Nonnull "
-  - Selector: "hash"
-    MethodKind: "Instance"
-    SwiftName: "hash()"
-    ResultType: "NSUInteger"
-  - Selector: "printStackTrace"
-    MethodKind: "Instance"
-    SwiftName: "printStackTrace()"
-    ResultType: "void"
-  - Selector: "description"
-    MethodKind: "Instance"
-    SwiftName: "description()"
-    ResultType: "NSString *_Nonnull "
-  - Selector: "initWithMessage:"
-    MethodKind: "Instance"
-    SwiftName: "init(message:)"
-    Parameters:
-    - Position: 0
-      Type: "NSString * _Nullable"
-  - Selector: "initWithCause:"
-    MethodKind: "Instance"
-    SwiftName: "init(cause:)"
-    Parameters:
-    - Position: 0
-      Type: "NSDKMKotlinThrowable * _Nullable"
-  - Selector: "init"
-    MethodKind: "Instance"
-    SwiftName: "init()"
-  - Selector: "initWithMessage:cause:"
-    MethodKind: "Instance"
-    SwiftName: "init(message:cause:)"
-    Parameters:
-    - Position: 0
-      Type: "NSString * _Nullable"
-    - Position: 1
-      Type: "NSDKMKotlinThrowable * _Nullable"
 - Name: "NSDKMRouteProgressTrackerRouteProgress"
   SwiftName: "RouteProgressTrackerRouteProgress"
   Properties:
@@ -8987,6 +9229,62 @@ Classes:
     MethodKind: "Instance"
     SwiftName: "description()"
     ResultType: "NSString *_Nonnull "
+- Name: "NSDKMFallbackRouteProvider"
+  SwiftName: "FallbackRouteProvider"
+  Methods:
+  - Selector: "isEqual:"
+    MethodKind: "Instance"
+    SwiftName: "isEqual(_:)"
+    ResultType: "BOOL"
+    Parameters:
+    - Position: 0
+      Type: "id _Nullable"
+  - Selector: "hash"
+    MethodKind: "Instance"
+    SwiftName: "hash()"
+    ResultType: "NSUInteger"
+  - Selector: "requestRouteRouteRequest:completionHandler:"
+    MethodKind: "Instance"
+    SwiftName: "__requestRoute(routeRequest:completionHandler:)"
+    SwiftPrivate: true
+    ResultType: "void"
+    Parameters:
+    - Position: 0
+      Type: "NSDKMRouteProviderRouteRequest *_Nonnull "
+    - Position: 1
+      Type: "void (^_Nonnull )(NSDKMRoute * _Nullable, NSError * _Nullable)"
+  - Selector: "requestRouteDataOrigin:destination:vehicleConfig:completionHandler:"
+    MethodKind: "Instance"
+    SwiftName: "__requestRouteData(origin:destination:vehicleConfig:completionHandler:)"
+    SwiftPrivate: true
+    ResultType: "void"
+    Parameters:
+    - Position: 0
+      Type: "NSDKMLatLng *_Nonnull "
+    - Position: 1
+      Type: "NSDKMLatLng *_Nonnull "
+    - Position: 2
+      Type: "id<NSDKMVehicleConfig> _Nonnull "
+    - Position: 3
+      Type: "void (^_Nonnull )(NSDKMRouteData * _Nullable, NSError * _Nullable)"
+  - Selector: "description"
+    MethodKind: "Instance"
+    SwiftName: "description()"
+    ResultType: "NSString *_Nonnull "
+  - Selector: "initWithRouteProvider:"
+    MethodKind: "Instance"
+    SwiftName: "init(routeProvider:)"
+    Parameters:
+    - Position: 0
+      Type: "id<NSDKMRouteProvider> _Nonnull "
+  - Selector: "initWithRouteProvider:timeout:"
+    MethodKind: "Instance"
+    SwiftName: "init(routeProvider:timeout:)"
+    Parameters:
+    - Position: 0
+      Type: "id<NSDKMRouteProvider> _Nonnull "
+    - Position: 1
+      Type: "NSDKMDuration *_Nonnull "
 - Name: "NSDKMKtorRouteProvider"
   SwiftName: "KtorRouteProvider"
   Methods:
@@ -9001,17 +9299,21 @@ Classes:
     MethodKind: "Instance"
     SwiftName: "hash()"
     ResultType: "NSUInteger"
-  - Selector: "requestRouteRouteRequest:error:"
+  - Selector: "requestRouteRouteRequest:completionHandler:"
     MethodKind: "Instance"
-    SwiftName: "requestRoute(routeRequest:)"
-    ResultType: "NSDKMRoute * _Nullable"
+    SwiftName: "__requestRoute(routeRequest:completionHandler:)"
+    SwiftPrivate: true
+    ResultType: "void"
     Parameters:
     - Position: 0
       Type: "NSDKMRouteProviderRouteRequest *_Nonnull "
-  - Selector: "requestRouteDataOrigin:destination:vehicleConfig:error:"
+    - Position: 1
+      Type: "void (^_Nonnull )(NSDKMRoute * _Nullable, NSError * _Nullable)"
+  - Selector: "requestRouteDataOrigin:destination:vehicleConfig:completionHandler:"
     MethodKind: "Instance"
-    SwiftName: "requestRouteData(origin:destination:vehicleConfig:)"
-    ResultType: "NSDKMRouteData * _Nullable"
+    SwiftName: "__requestRouteData(origin:destination:vehicleConfig:completionHandler:)"
+    SwiftPrivate: true
+    ResultType: "void"
     Parameters:
     - Position: 0
       Type: "NSDKMLatLng *_Nonnull "
@@ -9019,6 +9321,8 @@ Classes:
       Type: "NSDKMLatLng *_Nonnull "
     - Position: 2
       Type: "id<NSDKMVehicleConfig> _Nonnull "
+    - Position: 3
+      Type: "void (^_Nonnull )(NSDKMRouteData * _Nullable, NSError * _Nullable)"
   - Selector: "description"
     MethodKind: "Instance"
     SwiftName: "description()"
@@ -9240,14 +9544,16 @@ Classes:
     MethodKind: "Instance"
     SwiftName: "description()"
     ResultType: "NSString *_Nonnull "
-  - Selector: "initWithMessage:routeRequest:"
+  - Selector: "initWithMessage:routeRequest:exception:"
     MethodKind: "Instance"
-    SwiftName: "init(message:routeRequest:)"
+    SwiftName: "init(message:routeRequest:exception:)"
     Parameters:
     - Position: 0
       Type: "NSString *_Nonnull "
     - Position: 1
       Type: "NSDKMRouteProviderRouteRequest *_Nonnull "
+    - Position: 2
+      Type: "NSDKMKotlinException * _Nullable"
   - Selector: "init"
     MethodKind: "Instance"
     SwiftName: "init()"
@@ -13231,6 +13537,37 @@ Classes:
       Type: "NSDKMDouble * _Nullable"
     - Position: 2
       Type: "NSDictionary<NSString *, NSString *> *_Nonnull "
+- Name: "NSDKMAppInfo"
+  SwiftName: "AppInfo"
+  Properties:
+  - Name: "bundleIdentifier"
+    PropertyKind: "Instance"
+    SwiftName: "bundleIdentifier"
+    Type: "NSString *_Nonnull "
+  - Name: "versionCode"
+    PropertyKind: "Instance"
+    SwiftName: "versionCode"
+    Type: "NSString *_Nonnull "
+  - Name: "versionName"
+    PropertyKind: "Instance"
+    SwiftName: "versionName"
+    Type: "NSString *_Nonnull "
+  Methods:
+  - Selector: "isEqual:"
+    MethodKind: "Instance"
+    SwiftName: "isEqual(_:)"
+    ResultType: "BOOL"
+    Parameters:
+    - Position: 0
+      Type: "id _Nullable"
+  - Selector: "hash"
+    MethodKind: "Instance"
+    SwiftName: "hash()"
+    ResultType: "NSUInteger"
+  - Selector: "description"
+    MethodKind: "Instance"
+    SwiftName: "description()"
+    ResultType: "NSString *_Nonnull "
 - Name: "NSDKMCoroutineExecutor"
   SwiftName: "CoroutineExecutor"
   Methods:
@@ -13284,6 +13621,49 @@ Classes:
   - Selector: "init"
     MethodKind: "Instance"
     SwiftName: "init()"
+- Name: "NSDKMDeviceInfo"
+  SwiftName: "DeviceInfo"
+  Properties:
+  - Name: "apiLevel"
+    PropertyKind: "Instance"
+    SwiftName: "apiLevel"
+    Type: "int32_t"
+  - Name: "identifier"
+    PropertyKind: "Instance"
+    SwiftName: "identifier"
+    Type: "NSString *_Nonnull "
+  - Name: "isSimulator"
+    PropertyKind: "Instance"
+    SwiftName: "isSimulator"
+    Type: "BOOL"
+  - Name: "name"
+    PropertyKind: "Instance"
+    SwiftName: "name"
+    Type: "NSString *_Nonnull "
+  - Name: "systemName"
+    PropertyKind: "Instance"
+    SwiftName: "systemName"
+    Type: "NSString *_Nonnull "
+  - Name: "systemVersionName"
+    PropertyKind: "Instance"
+    SwiftName: "systemVersionName"
+    Type: "NSString *_Nonnull "
+  Methods:
+  - Selector: "isEqual:"
+    MethodKind: "Instance"
+    SwiftName: "isEqual(_:)"
+    ResultType: "BOOL"
+    Parameters:
+    - Position: 0
+      Type: "id _Nullable"
+  - Selector: "hash"
+    MethodKind: "Instance"
+    SwiftName: "hash()"
+    ResultType: "NSUInteger"
+  - Selector: "description"
+    MethodKind: "Instance"
+    SwiftName: "description()"
+    ResultType: "NSString *_Nonnull "
 - Name: "NSDKMFoundationTimeProvider"
   SwiftName: "FoundationTimeProvider"
   Properties:
@@ -14021,6 +14401,10 @@ Classes:
     MethodKind: "Instance"
     SwiftName: "description()"
     ResultType: "NSString *_Nonnull "
+  - Selector: "abs"
+    MethodKind: "Instance"
+    SwiftName: "abs()"
+    ResultType: "NSDKMLength *_Nonnull "
   - Selector: "divDuration:"
     MethodKind: "Instance"
     SwiftName: "div(duration:)"
@@ -18212,20 +18596,20 @@ Classes:
     PropertyKind: "Instance"
     SwiftName: "exception"
     Type: "NSDKMKotlinException *_Nonnull "
-  - Name: "message"
+  - Name: "type"
     PropertyKind: "Instance"
-    SwiftName: "message"
-    Type: "NSString *_Nonnull "
+    SwiftName: "type"
+    Type: "NSDKMNavigationUIStateNavigationErrorType *_Nonnull "
   Methods:
-  - Selector: "doCopyException:message:critical:"
+  - Selector: "doCopyException:type:critical:"
     MethodKind: "Instance"
-    SwiftName: "doCopy(exception:message:critical:)"
+    SwiftName: "doCopy(exception:type:critical:)"
     ResultType: "NSDKMNavigationUIStateNavigationError *_Nonnull "
     Parameters:
     - Position: 0
       Type: "NSDKMKotlinException *_Nonnull "
     - Position: 1
-      Type: "NSString *_Nonnull "
+      Type: "NSDKMNavigationUIStateNavigationErrorType *_Nonnull "
     - Position: 2
       Type: "BOOL"
   - Selector: "isEqual:"
@@ -18243,16 +18627,61 @@ Classes:
     MethodKind: "Instance"
     SwiftName: "description()"
     ResultType: "NSString *_Nonnull "
-  - Selector: "initWithException:message:critical:"
+  - Selector: "initWithException:type:critical:"
     MethodKind: "Instance"
-    SwiftName: "init(exception:message:critical:)"
+    SwiftName: "init(exception:type:critical:)"
     Parameters:
     - Position: 0
       Type: "NSDKMKotlinException *_Nonnull "
     - Position: 1
-      Type: "NSString *_Nonnull "
+      Type: "NSDKMNavigationUIStateNavigationErrorType *_Nonnull "
     - Position: 2
       Type: "BOOL"
+- Name: "NSDKMNavigationUIStateNavigationErrorType"
+  SwiftBridge: "__NavigationUIState__NavigationErrorType"
+  SwiftName: "NavigationUIState.__NavigationErrorType"
+  SwiftPrivate: true
+  Properties:
+  - Name: "name"
+    PropertyKind: "Instance"
+    SwiftName: "name"
+    Type: "NSString *_Nonnull "
+  - Name: "ordinal"
+    PropertyKind: "Instance"
+    SwiftName: "ordinal"
+    Type: "int32_t"
+  Methods:
+  - Selector: "compareToOther:"
+    MethodKind: "Instance"
+    SwiftName: "compareTo(other:)"
+    ResultType: "int32_t"
+    Parameters:
+    - Position: 0
+      Type: "NSDKMNavigationUIStateNavigationErrorType *_Nonnull "
+  - Selector: "isEqual:"
+    MethodKind: "Instance"
+    SwiftName: "isEqual(_:)"
+    ResultType: "BOOL"
+    Parameters:
+    - Position: 0
+      Type: "id _Nullable"
+  - Selector: "hash"
+    MethodKind: "Instance"
+    SwiftName: "hash()"
+    ResultType: "NSUInteger"
+  - Selector: "description"
+    MethodKind: "Instance"
+    SwiftName: "description()"
+    ResultType: "NSString *_Nonnull "
+  - Selector: "initWithName:ordinal:"
+    MethodKind: "Instance"
+    SwiftName: "init(name:ordinal:)"
+    Availability: "nonswift"
+    Parameters:
+    - Position: 0
+      Type: "NSString *_Nonnull "
+    - Position: 1
+      Type: "int32_t"
 - Name: "NSDKMNavigationViewModel"
   SwiftName: "NavigationViewModel"
   Properties:
@@ -19427,57 +19856,18 @@ Classes:
     MethodKind: "Instance"
     SwiftName: "description()"
     ResultType: "NSString *_Nonnull "
-- Name: "NSDKMKtor_client_coreHttpClient"
-  SwiftName: "Ktor_client_coreHttpClient"
+- Name: "NSDKMKotlinCancellationException"
+  SwiftName: "KotlinCancellationException"
   Properties:
-  - Name: "attributes"
+  - Name: "cause"
     PropertyKind: "Instance"
-    SwiftName: "attributes"
-    Type: "id<NSDKMKtor_utilsAttributes> _Nonnull "
-  - Name: "coroutineContext"
+    SwiftName: "cause"
+    Type: "NSDKMKotlinThrowable * _Nullable"
+  - Name: "message"
     PropertyKind: "Instance"
-    SwiftName: "coroutineContext"
-    Type: "id<NSDKMKotlinCoroutineContext> _Nonnull "
-  - Name: "engine"
-    PropertyKind: "Instance"
-    SwiftName: "engine"
-    Type: "id<NSDKMKtor_client_coreHttpClientEngine> _Nonnull "
-  - Name: "engineConfig"
-    PropertyKind: "Instance"
-    SwiftName: "engineConfig"
-    Type: "NSDKMKtor_client_coreHttpClientEngineConfig *_Nonnull "
-  - Name: "monitor"
-    PropertyKind: "Instance"
-    SwiftName: "monitor"
-    Type: "NSDKMKtor_eventsEvents *_Nonnull "
-  - Name: "receivePipeline"
-    PropertyKind: "Instance"
-    SwiftName: "receivePipeline"
-    Type: "NSDKMKtor_client_coreHttpReceivePipeline *_Nonnull "
-  - Name: "requestPipeline"
-    PropertyKind: "Instance"
-    SwiftName: "requestPipeline"
-    Type: "NSDKMKtor_client_coreHttpRequestPipeline *_Nonnull "
-  - Name: "responsePipeline"
-    PropertyKind: "Instance"
-    SwiftName: "responsePipeline"
-    Type: "NSDKMKtor_client_coreHttpResponsePipeline *_Nonnull "
-  - Name: "sendPipeline"
-    PropertyKind: "Instance"
-    SwiftName: "sendPipeline"
-    Type: "NSDKMKtor_client_coreHttpSendPipeline *_Nonnull "
+    SwiftName: "message"
+    Type: "NSString * _Nullable"
   Methods:
-  - Selector: "close"
-    MethodKind: "Instance"
-    SwiftName: "close()"
-    ResultType: "void"
-  - Selector: "configBlock:"
-    MethodKind: "Instance"
-    SwiftName: "config(block:)"
-    ResultType: "NSDKMKtor_client_coreHttpClient *_Nonnull "
-    Parameters:
-    - Position: 0
-      Type: "void (^_Nonnull )(NSDKMKtor_client_coreHttpClientConfig<id> *_Nonnull )"
   - Selector: "isEqual:"
     MethodKind: "Instance"
     SwiftName: "isEqual(_:)"
@@ -19485,29 +19875,45 @@ Classes:
     Parameters:
     - Position: 0
       Type: "id _Nullable"
+  - Selector: "getStackTrace"
+    MethodKind: "Instance"
+    SwiftName: "getStackTrace()"
+    ResultType: "NSDKMKotlinArray<NSString *> *_Nonnull "
   - Selector: "hash"
     MethodKind: "Instance"
     SwiftName: "hash()"
     ResultType: "NSUInteger"
-  - Selector: "isSupportedCapability:"
+  - Selector: "printStackTrace"
     MethodKind: "Instance"
-    SwiftName: "isSupported(capability:)"
-    ResultType: "BOOL"
-    Parameters:
-    - Position: 0
-      Type: "id<NSDKMKtor_client_coreHttpClientEngineCapability> _Nonnull "
+    SwiftName: "printStackTrace()"
+    ResultType: "void"
   - Selector: "description"
     MethodKind: "Instance"
     SwiftName: "description()"
     ResultType: "NSString *_Nonnull "
-  - Selector: "initWithEngine:userConfig:"
+  - Selector: "init"
     MethodKind: "Instance"
-    SwiftName: "init(engine:userConfig:)"
+    SwiftName: "init()"
+  - Selector: "initWithMessage:"
+    MethodKind: "Instance"
+    SwiftName: "init(message:)"
     Parameters:
     - Position: 0
-      Type: "id<NSDKMKtor_client_coreHttpClientEngine> _Nonnull "
+      Type: "NSString * _Nullable"
+  - Selector: "initWithMessage:cause:"
+    MethodKind: "Instance"
+    SwiftName: "init(message:cause:)"
+    Parameters:
+    - Position: 0
+      Type: "NSString * _Nullable"
     - Position: 1
-      Type: "NSDKMKtor_client_coreHttpClientConfig<NSDKMKtor_client_coreHttpClientEngineConfig *> *_Nonnull "
+      Type: "NSDKMKotlinThrowable * _Nullable"
+  - Selector: "initWithCause:"
+    MethodKind: "Instance"
+    SwiftName: "init(cause:)"
+    Parameters:
+    - Position: 0
+      Type: "NSDKMKotlinThrowable * _Nullable"
 - Name: "NSDKMKotlinIllegalStateException"
   SwiftName: "KotlinIllegalStateException"
   Properties:
@@ -19624,6 +20030,87 @@ Classes:
     Parameters:
     - Position: 0
       Type: "NSDKMKotlinThrowable * _Nullable"
+- Name: "NSDKMKtor_client_coreHttpClient"
+  SwiftName: "Ktor_client_coreHttpClient"
+  Properties:
+  - Name: "attributes"
+    PropertyKind: "Instance"
+    SwiftName: "attributes"
+    Type: "id<NSDKMKtor_utilsAttributes> _Nonnull "
+  - Name: "coroutineContext"
+    PropertyKind: "Instance"
+    SwiftName: "coroutineContext"
+    Type: "id<NSDKMKotlinCoroutineContext> _Nonnull "
+  - Name: "engine"
+    PropertyKind: "Instance"
+    SwiftName: "engine"
+    Type: "id<NSDKMKtor_client_coreHttpClientEngine> _Nonnull "
+  - Name: "engineConfig"
+    PropertyKind: "Instance"
+    SwiftName: "engineConfig"
+    Type: "NSDKMKtor_client_coreHttpClientEngineConfig *_Nonnull "
+  - Name: "monitor"
+    PropertyKind: "Instance"
+    SwiftName: "monitor"
+    Type: "NSDKMKtor_eventsEvents *_Nonnull "
+  - Name: "receivePipeline"
+    PropertyKind: "Instance"
+    SwiftName: "receivePipeline"
+    Type: "NSDKMKtor_client_coreHttpReceivePipeline *_Nonnull "
+  - Name: "requestPipeline"
+    PropertyKind: "Instance"
+    SwiftName: "requestPipeline"
+    Type: "NSDKMKtor_client_coreHttpRequestPipeline *_Nonnull "
+  - Name: "responsePipeline"
+    PropertyKind: "Instance"
+    SwiftName: "responsePipeline"
+    Type: "NSDKMKtor_client_coreHttpResponsePipeline *_Nonnull "
+  - Name: "sendPipeline"
+    PropertyKind: "Instance"
+    SwiftName: "sendPipeline"
+    Type: "NSDKMKtor_client_coreHttpSendPipeline *_Nonnull "
+  Methods:
+  - Selector: "close"
+    MethodKind: "Instance"
+    SwiftName: "close()"
+    ResultType: "void"
+  - Selector: "configBlock:"
+    MethodKind: "Instance"
+    SwiftName: "config(block:)"
+    ResultType: "NSDKMKtor_client_coreHttpClient *_Nonnull "
+    Parameters:
+    - Position: 0
+      Type: "void (^_Nonnull )(NSDKMKtor_client_coreHttpClientConfig<id> *_Nonnull )"
+  - Selector: "isEqual:"
+    MethodKind: "Instance"
+    SwiftName: "isEqual(_:)"
+    ResultType: "BOOL"
+    Parameters:
+    - Position: 0
+      Type: "id _Nullable"
+  - Selector: "hash"
+    MethodKind: "Instance"
+    SwiftName: "hash()"
+    ResultType: "NSUInteger"
+  - Selector: "isSupportedCapability:"
+    MethodKind: "Instance"
+    SwiftName: "isSupported(capability:)"
+    ResultType: "BOOL"
+    Parameters:
+    - Position: 0
+      Type: "id<NSDKMKtor_client_coreHttpClientEngineCapability> _Nonnull "
+  - Selector: "description"
+    MethodKind: "Instance"
+    SwiftName: "description()"
+    ResultType: "NSString *_Nonnull "
+  - Selector: "initWithEngine:userConfig:"
+    MethodKind: "Instance"
+    SwiftName: "init(engine:userConfig:)"
+    Parameters:
+    - Position: 0
+      Type: "id<NSDKMKtor_client_coreHttpClientEngine> _Nonnull "
+    - Position: 1
+      Type: "NSDKMKtor_client_coreHttpClientConfig<NSDKMKtor_client_coreHttpClientEngineConfig *> *_Nonnull "
 - Name: "NSDKMKotlinx_coroutines_coreCoroutineDispatcher"
   SwiftName: "Kotlinx_coroutines_coreCoroutineDispatcher"
   Properties:
@@ -19856,64 +20343,6 @@ Classes:
       Type: "int32_t"
     - Position: 1
       Type: "NSDKMDouble *_Nonnull (^_Nonnull )(NSDKMInt *_Nonnull )"
-- Name: "NSDKMKotlinCancellationException"
-  SwiftName: "KotlinCancellationException"
-  Properties:
-  - Name: "cause"
-    PropertyKind: "Instance"
-    SwiftName: "cause"
-    Type: "NSDKMKotlinThrowable * _Nullable"
-  - Name: "message"
-    PropertyKind: "Instance"
-    SwiftName: "message"
-    Type: "NSString * _Nullable"
-  Methods:
-  - Selector: "isEqual:"
-    MethodKind: "Instance"
-    SwiftName: "isEqual(_:)"
-    ResultType: "BOOL"
-    Parameters:
-    - Position: 0
-      Type: "id _Nullable"
-  - Selector: "getStackTrace"
-    MethodKind: "Instance"
-    SwiftName: "getStackTrace()"
-    ResultType: "NSDKMKotlinArray<NSString *> *_Nonnull "
-  - Selector: "hash"
-    MethodKind: "Instance"
-    SwiftName: "hash()"
-    ResultType: "NSUInteger"
-  - Selector: "printStackTrace"
-    MethodKind: "Instance"
-    SwiftName: "printStackTrace()"
-    ResultType: "void"
-  - Selector: "description"
-    MethodKind: "Instance"
-    SwiftName: "description()"
-    ResultType: "NSString *_Nonnull "
-  - Selector: "init"
-    MethodKind: "Instance"
-    SwiftName: "init()"
-  - Selector: "initWithMessage:"
-    MethodKind: "Instance"
-    SwiftName: "init(message:)"
-    Parameters:
-    - Position: 0
-      Type: "NSString * _Nullable"
-  - Selector: "initWithMessage:cause:"
-    MethodKind: "Instance"
-    SwiftName: "init(message:cause:)"
-    Parameters:
-    - Position: 0
-      Type: "NSString * _Nullable"
-    - Position: 1
-      Type: "NSDKMKotlinThrowable * _Nullable"
-  - Selector: "initWithCause:"
-    MethodKind: "Instance"
-    SwiftName: "init(cause:)"
-    Parameters:
-    - Position: 0
-      Type: "NSDKMKotlinThrowable * _Nullable"
 - Name: "NSDKMKotlinUnit"
   SwiftName: "KotlinUnit"
   Methods:
@@ -25632,9 +26061,37 @@ Classes:
 - Name: "NSDKM__SkieSuspendWrappersKt"
   SwiftName: "__SkieSuspendWrappersKt"
   Methods:
-  - Selector: "Skie_Suspend__0__hasNextDispatchReceiver:suspendHandler:"
+  - Selector: "Skie_Suspend__0__requestRouteDispatchReceiver:routeRequest:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__0__hasNext(dispatchReceiver:suspendHandler:)"
+    SwiftName: "Skie_Suspend__0__requestRoute(dispatchReceiver:routeRequest:suspendHandler:)"
+    SwiftPrivate: true
+    ResultType: "void"
+    Parameters:
+    - Position: 0
+      Type: "id<NSDKMRouteProvider> _Nonnull "
+    - Position: 1
+      Type: "NSDKMRouteProviderRouteRequest *_Nonnull "
+    - Position: 2
+      Type: "NSDKMSkie_SuspendHandler *_Nonnull "
+  - Selector: "Skie_Suspend__1__requestRouteDataDispatchReceiver:origin:destination:vehicleConfig:suspendHandler:"
+    MethodKind: "Class"
+    SwiftName: "Skie_Suspend__1__requestRouteData(dispatchReceiver:origin:destination:vehicleConfig:suspendHandler:)"
+    SwiftPrivate: true
+    ResultType: "void"
+    Parameters:
+    - Position: 0
+      Type: "id<NSDKMRouteProvider> _Nonnull "
+    - Position: 1
+      Type: "NSDKMLatLng *_Nonnull "
+    - Position: 2
+      Type: "NSDKMLatLng *_Nonnull "
+    - Position: 3
+      Type: "id<NSDKMVehicleConfig> _Nonnull "
+    - Position: 4
+      Type: "NSDKMSkie_SuspendHandler *_Nonnull "
+  - Selector: "Skie_Suspend__2__hasNextDispatchReceiver:suspendHandler:"
+    MethodKind: "Class"
+    SwiftName: "Skie_Suspend__2__hasNext(dispatchReceiver:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25642,9 +26099,9 @@ Classes:
       Type: "NSDKMSkieColdFlowIterator<id> *_Nonnull "
     - Position: 1
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__1__collectDispatchReceiver:collector:suspendHandler:"
+  - Selector: "Skie_Suspend__3__collectDispatchReceiver:collector:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__1__collect(dispatchReceiver:collector:suspendHandler:)"
+    SwiftName: "Skie_Suspend__3__collect(dispatchReceiver:collector:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25654,9 +26111,9 @@ Classes:
       Type: "id<NSDKMKotlinx_coroutines_coreFlowCollector> _Nonnull "
     - Position: 2
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__2__emitDispatchReceiver:value:suspendHandler:"
+  - Selector: "Skie_Suspend__4__emitDispatchReceiver:value:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__2__emit(dispatchReceiver:value:suspendHandler:)"
+    SwiftName: "Skie_Suspend__4__emit(dispatchReceiver:value:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25666,9 +26123,9 @@ Classes:
       Type: "id _Nullable"
     - Position: 2
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__3__executeDispatchReceiver:data:suspendHandler:"
+  - Selector: "Skie_Suspend__5__executeDispatchReceiver:data:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__3__execute(dispatchReceiver:data:suspendHandler:)"
+    SwiftName: "Skie_Suspend__5__execute(dispatchReceiver:data:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25678,9 +26135,9 @@ Classes:
       Type: "NSDKMKtor_client_coreHttpRequestData *_Nonnull "
     - Position: 2
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__4__writeToDispatchReceiver:channel:suspendHandler:"
+  - Selector: "Skie_Suspend__6__writeToDispatchReceiver:channel:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__4__writeTo(dispatchReceiver:channel:suspendHandler:)"
+    SwiftName: "Skie_Suspend__6__writeTo(dispatchReceiver:channel:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25690,9 +26147,9 @@ Classes:
       Type: "id<NSDKMKtor_ioByteWriteChannel> _Nonnull "
     - Position: 2
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__5__upgradeDispatchReceiver:input:output:engineContext:userContext:suspendHandler:"
+  - Selector: "Skie_Suspend__7__upgradeDispatchReceiver:input:output:engineContext:userContext:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__5__upgrade(dispatchReceiver:input:output:engineContext:userContext:suspendHandler:)"
+    SwiftName: "Skie_Suspend__7__upgrade(dispatchReceiver:input:output:engineContext:userContext:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25708,9 +26165,9 @@ Classes:
       Type: "id<NSDKMKotlinCoroutineContext> _Nonnull "
     - Position: 5
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__6__executeDispatchReceiver:context:subject:suspendHandler:"
+  - Selector: "Skie_Suspend__8__executeDispatchReceiver:context:subject:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__6__execute(dispatchReceiver:context:subject:suspendHandler:)"
+    SwiftName: "Skie_Suspend__8__execute(dispatchReceiver:context:subject:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25722,9 +26179,9 @@ Classes:
       Type: "id _Nonnull "
     - Position: 3
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__7__awaitContentDispatchReceiver:suspendHandler:"
+  - Selector: "Skie_Suspend__9__awaitContentDispatchReceiver:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__7__awaitContent(dispatchReceiver:suspendHandler:)"
+    SwiftName: "Skie_Suspend__9__awaitContent(dispatchReceiver:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25732,9 +26189,9 @@ Classes:
       Type: "id<NSDKMKtor_ioByteReadChannel> _Nonnull "
     - Position: 1
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__8__discardDispatchReceiver:max:suspendHandler:"
+  - Selector: "Skie_Suspend__10__discardDispatchReceiver:max:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__8__discard(dispatchReceiver:max:suspendHandler:)"
+    SwiftName: "Skie_Suspend__10__discard(dispatchReceiver:max:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25744,9 +26201,9 @@ Classes:
       Type: "int64_t"
     - Position: 2
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__9__peekToDispatchReceiver:destination:destinationOffset:offset:min:max:suspendHandler:"
+  - Selector: "Skie_Suspend__11__peekToDispatchReceiver:destination:destinationOffset:offset:min:max:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__9__peekTo(dispatchReceiver:destination:destinationOffset:offset:min:max:suspendHandler:)"
+    SwiftName: "Skie_Suspend__11__peekTo(dispatchReceiver:destination:destinationOffset:offset:min:max:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25764,9 +26221,9 @@ Classes:
       Type: "int64_t"
     - Position: 6
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__10__readAvailableDispatchReceiver:dst:suspendHandler:"
+  - Selector: "Skie_Suspend__12__readAvailableDispatchReceiver:dst:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__10__readAvailable(dispatchReceiver:dst:suspendHandler:)"
+    SwiftName: "Skie_Suspend__12__readAvailable(dispatchReceiver:dst:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25775,38 +26232,6 @@ Classes:
     - Position: 1
       Type: "NSDKMKtor_ioChunkBuffer *_Nonnull "
     - Position: 2
-      Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__11__readAvailableDispatchReceiver:dst:offset:length:suspendHandler:"
-    MethodKind: "Class"
-    SwiftName: "Skie_Suspend__11__readAvailable(dispatchReceiver:dst:offset:length:suspendHandler:)"
-    SwiftPrivate: true
-    ResultType: "void"
-    Parameters:
-    - Position: 0
-      Type: "id<NSDKMKtor_ioByteReadChannel> _Nonnull "
-    - Position: 1
-      Type: "NSDKMKotlinByteArray *_Nonnull "
-    - Position: 2
-      Type: "int32_t"
-    - Position: 3
-      Type: "int32_t"
-    - Position: 4
-      Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__12__readAvailableDispatchReceiver:dst:offset:length:suspendHandler:"
-    MethodKind: "Class"
-    SwiftName: "Skie_Suspend__12__readAvailable(dispatchReceiver:dst:offset:length:suspendHandler:)"
-    SwiftPrivate: true
-    ResultType: "void"
-    Parameters:
-    - Position: 0
-      Type: "id<NSDKMKtor_ioByteReadChannel> _Nonnull "
-    - Position: 1
-      Type: "void * _Nonnull"
-    - Position: 2
-      Type: "int32_t"
-    - Position: 3
-      Type: "int32_t"
-    - Position: 4
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
   - Selector: "Skie_Suspend__13__readAvailableDispatchReceiver:dst:offset:length:suspendHandler:"
     MethodKind: "Class"
@@ -25817,6 +26242,38 @@ Classes:
     - Position: 0
       Type: "id<NSDKMKtor_ioByteReadChannel> _Nonnull "
     - Position: 1
+      Type: "NSDKMKotlinByteArray *_Nonnull "
+    - Position: 2
+      Type: "int32_t"
+    - Position: 3
+      Type: "int32_t"
+    - Position: 4
+      Type: "NSDKMSkie_SuspendHandler *_Nonnull "
+  - Selector: "Skie_Suspend__14__readAvailableDispatchReceiver:dst:offset:length:suspendHandler:"
+    MethodKind: "Class"
+    SwiftName: "Skie_Suspend__14__readAvailable(dispatchReceiver:dst:offset:length:suspendHandler:)"
+    SwiftPrivate: true
+    ResultType: "void"
+    Parameters:
+    - Position: 0
+      Type: "id<NSDKMKtor_ioByteReadChannel> _Nonnull "
+    - Position: 1
+      Type: "void * _Nonnull"
+    - Position: 2
+      Type: "int32_t"
+    - Position: 3
+      Type: "int32_t"
+    - Position: 4
+      Type: "NSDKMSkie_SuspendHandler *_Nonnull "
+  - Selector: "Skie_Suspend__15__readAvailableDispatchReceiver:dst:offset:length:suspendHandler:"
+    MethodKind: "Class"
+    SwiftName: "Skie_Suspend__15__readAvailable(dispatchReceiver:dst:offset:length:suspendHandler:)"
+    SwiftPrivate: true
+    ResultType: "void"
+    Parameters:
+    - Position: 0
+      Type: "id<NSDKMKtor_ioByteReadChannel> _Nonnull "
+    - Position: 1
       Type: "void * _Nonnull"
     - Position: 2
       Type: "int64_t"
@@ -25824,9 +26281,9 @@ Classes:
       Type: "int64_t"
     - Position: 4
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__14__readBooleanDispatchReceiver:suspendHandler:"
+  - Selector: "Skie_Suspend__16__readBooleanDispatchReceiver:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__14__readBoolean(dispatchReceiver:suspendHandler:)"
+    SwiftName: "Skie_Suspend__16__readBoolean(dispatchReceiver:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25834,9 +26291,9 @@ Classes:
       Type: "id<NSDKMKtor_ioByteReadChannel> _Nonnull "
     - Position: 1
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__15__readByteDispatchReceiver:suspendHandler:"
+  - Selector: "Skie_Suspend__17__readByteDispatchReceiver:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__15__readByte(dispatchReceiver:suspendHandler:)"
+    SwiftName: "Skie_Suspend__17__readByte(dispatchReceiver:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25844,9 +26301,9 @@ Classes:
       Type: "id<NSDKMKtor_ioByteReadChannel> _Nonnull "
     - Position: 1
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__16__readDoubleDispatchReceiver:suspendHandler:"
+  - Selector: "Skie_Suspend__18__readDoubleDispatchReceiver:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__16__readDouble(dispatchReceiver:suspendHandler:)"
+    SwiftName: "Skie_Suspend__18__readDouble(dispatchReceiver:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25854,9 +26311,9 @@ Classes:
       Type: "id<NSDKMKtor_ioByteReadChannel> _Nonnull "
     - Position: 1
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__17__readFloatDispatchReceiver:suspendHandler:"
+  - Selector: "Skie_Suspend__19__readFloatDispatchReceiver:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__17__readFloat(dispatchReceiver:suspendHandler:)"
+    SwiftName: "Skie_Suspend__19__readFloat(dispatchReceiver:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25864,9 +26321,9 @@ Classes:
       Type: "id<NSDKMKtor_ioByteReadChannel> _Nonnull "
     - Position: 1
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__18__readFullyDispatchReceiver:dst:n:suspendHandler:"
+  - Selector: "Skie_Suspend__20__readFullyDispatchReceiver:dst:n:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__18__readFully(dispatchReceiver:dst:n:suspendHandler:)"
+    SwiftName: "Skie_Suspend__20__readFully(dispatchReceiver:dst:n:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25878,9 +26335,9 @@ Classes:
       Type: "int32_t"
     - Position: 3
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__19__readFullyDispatchReceiver:dst:offset:length:suspendHandler:"
+  - Selector: "Skie_Suspend__21__readFullyDispatchReceiver:dst:offset:length:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__19__readFully(dispatchReceiver:dst:offset:length:suspendHandler:)"
+    SwiftName: "Skie_Suspend__21__readFully(dispatchReceiver:dst:offset:length:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25894,9 +26351,9 @@ Classes:
       Type: "int32_t"
     - Position: 4
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__20__readFullyDispatchReceiver:dst:offset:length:suspendHandler:"
+  - Selector: "Skie_Suspend__22__readFullyDispatchReceiver:dst:offset:length:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__20__readFully(dispatchReceiver:dst:offset:length:suspendHandler:)"
+    SwiftName: "Skie_Suspend__22__readFully(dispatchReceiver:dst:offset:length:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25910,9 +26367,9 @@ Classes:
       Type: "int32_t"
     - Position: 4
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__21__readFullyDispatchReceiver:dst:offset:length:suspendHandler:"
+  - Selector: "Skie_Suspend__23__readFullyDispatchReceiver:dst:offset:length:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__21__readFully(dispatchReceiver:dst:offset:length:suspendHandler:)"
+    SwiftName: "Skie_Suspend__23__readFully(dispatchReceiver:dst:offset:length:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25926,9 +26383,9 @@ Classes:
       Type: "int64_t"
     - Position: 4
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__22__readIntDispatchReceiver:suspendHandler:"
+  - Selector: "Skie_Suspend__24__readIntDispatchReceiver:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__22__readInt(dispatchReceiver:suspendHandler:)"
+    SwiftName: "Skie_Suspend__24__readInt(dispatchReceiver:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25936,9 +26393,9 @@ Classes:
       Type: "id<NSDKMKtor_ioByteReadChannel> _Nonnull "
     - Position: 1
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__23__readLongDispatchReceiver:suspendHandler:"
+  - Selector: "Skie_Suspend__25__readLongDispatchReceiver:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__23__readLong(dispatchReceiver:suspendHandler:)"
+    SwiftName: "Skie_Suspend__25__readLong(dispatchReceiver:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25946,9 +26403,9 @@ Classes:
       Type: "id<NSDKMKtor_ioByteReadChannel> _Nonnull "
     - Position: 1
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__24__readPacketDispatchReceiver:size:suspendHandler:"
+  - Selector: "Skie_Suspend__26__readPacketDispatchReceiver:size:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__24__readPacket(dispatchReceiver:size:suspendHandler:)"
+    SwiftName: "Skie_Suspend__26__readPacket(dispatchReceiver:size:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25958,9 +26415,9 @@ Classes:
       Type: "int32_t"
     - Position: 2
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__25__readRemainingDispatchReceiver:limit:suspendHandler:"
+  - Selector: "Skie_Suspend__27__readRemainingDispatchReceiver:limit:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__25__readRemaining(dispatchReceiver:limit:suspendHandler:)"
+    SwiftName: "Skie_Suspend__27__readRemaining(dispatchReceiver:limit:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25970,9 +26427,9 @@ Classes:
       Type: "int64_t"
     - Position: 2
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__26__readShortDispatchReceiver:suspendHandler:"
+  - Selector: "Skie_Suspend__28__readShortDispatchReceiver:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__26__readShort(dispatchReceiver:suspendHandler:)"
+    SwiftName: "Skie_Suspend__28__readShort(dispatchReceiver:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25980,9 +26437,9 @@ Classes:
       Type: "id<NSDKMKtor_ioByteReadChannel> _Nonnull "
     - Position: 1
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__27__readSuspendableSessionDispatchReceiver:consumer:suspendHandler:"
+  - Selector: "Skie_Suspend__29__readSuspendableSessionDispatchReceiver:consumer:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__27__readSuspendableSession(dispatchReceiver:consumer:suspendHandler:)"
+    SwiftName: "Skie_Suspend__29__readSuspendableSession(dispatchReceiver:consumer:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -25992,9 +26449,9 @@ Classes:
       Type: "id<NSDKMKotlinSuspendFunction1> _Nonnull "
     - Position: 2
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__28__readUTF8LineDispatchReceiver:limit:suspendHandler:"
+  - Selector: "Skie_Suspend__30__readUTF8LineDispatchReceiver:limit:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__28__readUTF8Line(dispatchReceiver:limit:suspendHandler:)"
+    SwiftName: "Skie_Suspend__30__readUTF8Line(dispatchReceiver:limit:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26004,9 +26461,9 @@ Classes:
       Type: "int32_t"
     - Position: 2
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__29__readUTF8LineToDispatchReceiver:out:limit:suspendHandler:"
+  - Selector: "Skie_Suspend__31__readUTF8LineToDispatchReceiver:out:limit:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__29__readUTF8LineTo(dispatchReceiver:out:limit:suspendHandler:)"
+    SwiftName: "Skie_Suspend__31__readUTF8LineTo(dispatchReceiver:out:limit:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26018,9 +26475,9 @@ Classes:
       Type: "int32_t"
     - Position: 3
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__30__awaitFreeSpaceDispatchReceiver:suspendHandler:"
+  - Selector: "Skie_Suspend__32__awaitFreeSpaceDispatchReceiver:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__30__awaitFreeSpace(dispatchReceiver:suspendHandler:)"
+    SwiftName: "Skie_Suspend__32__awaitFreeSpace(dispatchReceiver:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26028,9 +26485,9 @@ Classes:
       Type: "id<NSDKMKtor_ioByteWriteChannel> _Nonnull "
     - Position: 1
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__31__writeAvailableDispatchReceiver:src:suspendHandler:"
+  - Selector: "Skie_Suspend__33__writeAvailableDispatchReceiver:src:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__31__writeAvailable(dispatchReceiver:src:suspendHandler:)"
+    SwiftName: "Skie_Suspend__33__writeAvailable(dispatchReceiver:src:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26040,9 +26497,9 @@ Classes:
       Type: "NSDKMKtor_ioChunkBuffer *_Nonnull "
     - Position: 2
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__32__writeAvailableDispatchReceiver:src:offset:length:suspendHandler:"
+  - Selector: "Skie_Suspend__34__writeAvailableDispatchReceiver:src:offset:length:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__32__writeAvailable(dispatchReceiver:src:offset:length:suspendHandler:)"
+    SwiftName: "Skie_Suspend__34__writeAvailable(dispatchReceiver:src:offset:length:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26056,9 +26513,9 @@ Classes:
       Type: "int32_t"
     - Position: 4
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__33__writeAvailableDispatchReceiver:src:offset:length:suspendHandler:"
+  - Selector: "Skie_Suspend__35__writeAvailableDispatchReceiver:src:offset:length:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__33__writeAvailable(dispatchReceiver:src:offset:length:suspendHandler:)"
+    SwiftName: "Skie_Suspend__35__writeAvailable(dispatchReceiver:src:offset:length:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26072,9 +26529,9 @@ Classes:
       Type: "int32_t"
     - Position: 4
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__34__writeAvailableDispatchReceiver:src:offset:length:suspendHandler:"
+  - Selector: "Skie_Suspend__36__writeAvailableDispatchReceiver:src:offset:length:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__34__writeAvailable(dispatchReceiver:src:offset:length:suspendHandler:)"
+    SwiftName: "Skie_Suspend__36__writeAvailable(dispatchReceiver:src:offset:length:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26088,9 +26545,9 @@ Classes:
       Type: "int64_t"
     - Position: 4
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__35__writeByteDispatchReceiver:b:suspendHandler:"
+  - Selector: "Skie_Suspend__37__writeByteDispatchReceiver:b:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__35__writeByte(dispatchReceiver:b:suspendHandler:)"
+    SwiftName: "Skie_Suspend__37__writeByte(dispatchReceiver:b:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26100,9 +26557,9 @@ Classes:
       Type: "int8_t"
     - Position: 2
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__36__writeDoubleDispatchReceiver:d:suspendHandler:"
+  - Selector: "Skie_Suspend__38__writeDoubleDispatchReceiver:d:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__36__writeDouble(dispatchReceiver:d:suspendHandler:)"
+    SwiftName: "Skie_Suspend__38__writeDouble(dispatchReceiver:d:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26112,9 +26569,9 @@ Classes:
       Type: "double"
     - Position: 2
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__37__writeFloatDispatchReceiver:f:suspendHandler:"
+  - Selector: "Skie_Suspend__39__writeFloatDispatchReceiver:f:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__37__writeFloat(dispatchReceiver:f:suspendHandler:)"
+    SwiftName: "Skie_Suspend__39__writeFloat(dispatchReceiver:f:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26124,9 +26581,9 @@ Classes:
       Type: "float"
     - Position: 2
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__38__writeFullyDispatchReceiver:memory:startIndex:endIndex:suspendHandler:"
+  - Selector: "Skie_Suspend__40__writeFullyDispatchReceiver:memory:startIndex:endIndex:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__38__writeFully(dispatchReceiver:memory:startIndex:endIndex:suspendHandler:)"
+    SwiftName: "Skie_Suspend__40__writeFully(dispatchReceiver:memory:startIndex:endIndex:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26140,9 +26597,9 @@ Classes:
       Type: "int32_t"
     - Position: 4
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__39__writeFullyDispatchReceiver:src:suspendHandler:"
+  - Selector: "Skie_Suspend__41__writeFullyDispatchReceiver:src:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__39__writeFully(dispatchReceiver:src:suspendHandler:)"
+    SwiftName: "Skie_Suspend__41__writeFully(dispatchReceiver:src:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26152,9 +26609,9 @@ Classes:
       Type: "NSDKMKtor_ioBuffer *_Nonnull "
     - Position: 2
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__40__writeFullyDispatchReceiver:src:offset:length:suspendHandler:"
+  - Selector: "Skie_Suspend__42__writeFullyDispatchReceiver:src:offset:length:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__40__writeFully(dispatchReceiver:src:offset:length:suspendHandler:)"
+    SwiftName: "Skie_Suspend__42__writeFully(dispatchReceiver:src:offset:length:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26168,9 +26625,9 @@ Classes:
       Type: "int32_t"
     - Position: 4
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__41__writeFullyDispatchReceiver:src:offset:length:suspendHandler:"
+  - Selector: "Skie_Suspend__43__writeFullyDispatchReceiver:src:offset:length:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__41__writeFully(dispatchReceiver:src:offset:length:suspendHandler:)"
+    SwiftName: "Skie_Suspend__43__writeFully(dispatchReceiver:src:offset:length:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26184,9 +26641,9 @@ Classes:
       Type: "int32_t"
     - Position: 4
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__42__writeFullyDispatchReceiver:src:offset:length:suspendHandler:"
+  - Selector: "Skie_Suspend__44__writeFullyDispatchReceiver:src:offset:length:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__42__writeFully(dispatchReceiver:src:offset:length:suspendHandler:)"
+    SwiftName: "Skie_Suspend__44__writeFully(dispatchReceiver:src:offset:length:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26200,9 +26657,9 @@ Classes:
       Type: "int64_t"
     - Position: 4
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__43__writeIntDispatchReceiver:i:suspendHandler:"
+  - Selector: "Skie_Suspend__45__writeIntDispatchReceiver:i:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__43__writeInt(dispatchReceiver:i:suspendHandler:)"
+    SwiftName: "Skie_Suspend__45__writeInt(dispatchReceiver:i:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26212,9 +26669,9 @@ Classes:
       Type: "int32_t"
     - Position: 2
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__44__writeLongDispatchReceiver:l:suspendHandler:"
+  - Selector: "Skie_Suspend__46__writeLongDispatchReceiver:l:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__44__writeLong(dispatchReceiver:l:suspendHandler:)"
+    SwiftName: "Skie_Suspend__46__writeLong(dispatchReceiver:l:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26224,9 +26681,9 @@ Classes:
       Type: "int64_t"
     - Position: 2
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__45__writePacketDispatchReceiver:packet:suspendHandler:"
+  - Selector: "Skie_Suspend__47__writePacketDispatchReceiver:packet:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__45__writePacket(dispatchReceiver:packet:suspendHandler:)"
+    SwiftName: "Skie_Suspend__47__writePacket(dispatchReceiver:packet:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26236,9 +26693,9 @@ Classes:
       Type: "NSDKMKtor_ioByteReadPacket *_Nonnull "
     - Position: 2
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__46__writeShortDispatchReceiver:s:suspendHandler:"
+  - Selector: "Skie_Suspend__48__writeShortDispatchReceiver:s:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__46__writeShort(dispatchReceiver:s:suspendHandler:)"
+    SwiftName: "Skie_Suspend__48__writeShort(dispatchReceiver:s:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26248,9 +26705,9 @@ Classes:
       Type: "int16_t"
     - Position: 2
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__47__writeSuspendSessionDispatchReceiver:visitor:suspendHandler:"
+  - Selector: "Skie_Suspend__49__writeSuspendSessionDispatchReceiver:visitor:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__47__writeSuspendSession(dispatchReceiver:visitor:suspendHandler:)"
+    SwiftName: "Skie_Suspend__49__writeSuspendSession(dispatchReceiver:visitor:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26260,9 +26717,9 @@ Classes:
       Type: "id<NSDKMKotlinSuspendFunction1> _Nonnull "
     - Position: 2
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__48__joinDispatchReceiver:suspendHandler:"
+  - Selector: "Skie_Suspend__50__joinDispatchReceiver:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__48__join(dispatchReceiver:suspendHandler:)"
+    SwiftName: "Skie_Suspend__50__join(dispatchReceiver:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26270,9 +26727,9 @@ Classes:
       Type: "id<NSDKMKotlinx_coroutines_coreJob> _Nonnull "
     - Position: 1
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__49__invokeDispatchReceiver:p1:p2:suspendHandler:"
+  - Selector: "Skie_Suspend__51__invokeDispatchReceiver:p1:p2:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__49__invoke(dispatchReceiver:p1:p2:suspendHandler:)"
+    SwiftName: "Skie_Suspend__51__invoke(dispatchReceiver:p1:p2:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26284,9 +26741,9 @@ Classes:
       Type: "id _Nullable"
     - Position: 3
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__50__bodyDispatchReceiver:info:suspendHandler:"
+  - Selector: "Skie_Suspend__52__bodyDispatchReceiver:info:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__50__body(dispatchReceiver:info:suspendHandler:)"
+    SwiftName: "Skie_Suspend__52__body(dispatchReceiver:info:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26296,9 +26753,9 @@ Classes:
       Type: "NSDKMKtor_utilsTypeInfo *_Nonnull "
     - Position: 2
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__51__bodyNullableDispatchReceiver:info:suspendHandler:"
+  - Selector: "Skie_Suspend__53__bodyNullableDispatchReceiver:info:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__51__bodyNullable(dispatchReceiver:info:suspendHandler:)"
+    SwiftName: "Skie_Suspend__53__bodyNullable(dispatchReceiver:info:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26308,9 +26765,9 @@ Classes:
       Type: "NSDKMKtor_utilsTypeInfo *_Nonnull "
     - Position: 2
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__52__getResponseContentDispatchReceiver:suspendHandler:"
+  - Selector: "Skie_Suspend__54__getResponseContentDispatchReceiver:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__52__getResponseContent(dispatchReceiver:suspendHandler:)"
+    SwiftName: "Skie_Suspend__54__getResponseContent(dispatchReceiver:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -26318,9 +26775,9 @@ Classes:
       Type: "NSDKMKtor_client_coreHttpClientCall *_Nonnull "
     - Position: 1
       Type: "NSDKMSkie_SuspendHandler *_Nonnull "
-  - Selector: "Skie_Suspend__53__invokeDispatchReceiver:p1:suspendHandler:"
+  - Selector: "Skie_Suspend__55__invokeDispatchReceiver:p1:suspendHandler:"
     MethodKind: "Class"
-    SwiftName: "Skie_Suspend__53__invoke(dispatchReceiver:p1:suspendHandler:)"
+    SwiftName: "Skie_Suspend__55__invoke(dispatchReceiver:p1:suspendHandler:)"
     SwiftPrivate: true
     ResultType: "void"
     Parameters:
@@ -27759,17 +28216,21 @@ Protocols:
     MethodKind: "Instance"
     SwiftName: "hash()"
     ResultType: "NSUInteger"
-  - Selector: "requestRouteRouteRequest:error:"
+  - Selector: "requestRouteRouteRequest:completionHandler:"
     MethodKind: "Instance"
-    SwiftName: "requestRoute(routeRequest:)"
-    ResultType: "NSDKMRoute * _Nullable"
+    SwiftName: "__requestRoute(routeRequest:completionHandler:)"
+    SwiftPrivate: true
+    ResultType: "void"
     Parameters:
     - Position: 0
       Type: "NSDKMRouteProviderRouteRequest *_Nonnull "
-  - Selector: "requestRouteDataOrigin:destination:vehicleConfig:error:"
+    - Position: 1
+      Type: "void (^_Nonnull )(NSDKMRoute * _Nullable, NSError * _Nullable)"
+  - Selector: "requestRouteDataOrigin:destination:vehicleConfig:completionHandler:"
     MethodKind: "Instance"
-    SwiftName: "requestRouteData(origin:destination:vehicleConfig:)"
-    ResultType: "NSDKMRouteData * _Nullable"
+    SwiftName: "__requestRouteData(origin:destination:vehicleConfig:completionHandler:)"
+    SwiftPrivate: true
+    ResultType: "void"
     Parameters:
     - Position: 0
       Type: "NSDKMLatLng *_Nonnull "
@@ -27777,6 +28238,8 @@ Protocols:
       Type: "NSDKMLatLng *_Nonnull "
     - Position: 2
       Type: "id<NSDKMVehicleConfig> _Nonnull "
+    - Position: 3
+      Type: "void (^_Nonnull )(NSDKMRouteData * _Nullable, NSError * _Nullable)"
   - Selector: "description"
     MethodKind: "Instance"
     SwiftName: "description()"

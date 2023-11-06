@@ -13902,6 +13902,611 @@
         ]
       },
       {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "NunavSDKMultiplatform"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "__NavigationUIState__NavigationErrorType",
+        "printedName": "__NavigationUIState__NavigationErrorType",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "noRouteFound",
+            "printedName": "noRouteFound",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType.Type) -> NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "__NavigationUIState__NavigationErrorType",
+                    "printedName": "NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType",
+                    "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "__NavigationUIState__NavigationErrorType",
+                        "printedName": "NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType",
+                        "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO12noRouteFoundyA2CmF",
+            "mangledName": "$s21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO12noRouteFoundyA2CmF",
+            "moduleName": "NunavSDKMultiplatform",
+            "fixedbinaryorder": 0
+          },
+          {
+            "kind": "Var",
+            "name": "unauthorized",
+            "printedName": "unauthorized",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType.Type) -> NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "__NavigationUIState__NavigationErrorType",
+                    "printedName": "NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType",
+                    "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "__NavigationUIState__NavigationErrorType",
+                        "printedName": "NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType",
+                        "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO12unauthorizedyA2CmF",
+            "mangledName": "$s21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO12unauthorizedyA2CmF",
+            "moduleName": "NunavSDKMultiplatform",
+            "fixedbinaryorder": 1
+          },
+          {
+            "kind": "Var",
+            "name": "unknown",
+            "printedName": "unknown",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType.Type) -> NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "__NavigationUIState__NavigationErrorType",
+                    "printedName": "NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType",
+                    "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "__NavigationUIState__NavigationErrorType",
+                        "printedName": "NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType",
+                        "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO7unknownyA2CmF",
+            "mangledName": "$s21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO7unknownyA2CmF",
+            "moduleName": "NunavSDKMultiplatform",
+            "fixedbinaryorder": 2
+          },
+          {
+            "kind": "Var",
+            "name": "name",
+            "printedName": "name",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO4nameSSvp",
+            "mangledName": "$s21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO4nameSSvp",
+            "moduleName": "NunavSDKMultiplatform",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO4nameSSvg",
+                "mangledName": "$s21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO4nameSSvg",
+                "moduleName": "NunavSDKMultiplatform",
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "ordinal",
+            "printedName": "ordinal",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Int32",
+                "printedName": "Swift.Int32",
+                "usr": "s:s5Int32V"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO7ordinals5Int32Vvp",
+            "mangledName": "$s21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO7ordinals5Int32Vvp",
+            "moduleName": "NunavSDKMultiplatform",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int32",
+                    "printedName": "Swift.Int32",
+                    "usr": "s:s5Int32V"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO7ordinals5Int32Vvg",
+                "mangledName": "$s21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO7ordinals5Int32Vvg",
+                "moduleName": "NunavSDKMultiplatform",
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "_forceBridgeFromObjectiveC",
+            "printedName": "_forceBridgeFromObjectiveC(_:result:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "__NavigationErrorType",
+                "printedName": "NunavSDKMultiplatform.NavigationUIState.__NavigationErrorType",
+                "usr": "c:objc(cs)NSDKMNavigationUIStateNavigationErrorType"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "__NavigationUIState__NavigationErrorType",
+                    "printedName": "NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType",
+                    "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO"
+                  }
+                ],
+                "paramValueOwnership": "InOut",
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO26_forceBridgeFromObjectiveC_6resultySo015NSDKMNavigationdceF0C_ACSgztFZ",
+            "mangledName": "$s21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO26_forceBridgeFromObjectiveC_6resultySo015NSDKMNavigationdceF0C_ACSgztFZ",
+            "moduleName": "NunavSDKMultiplatform",
+            "static": true,
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "_conditionallyBridgeFromObjectiveC",
+            "printedName": "_conditionallyBridgeFromObjectiveC(_:result:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "__NavigationErrorType",
+                "printedName": "NunavSDKMultiplatform.NavigationUIState.__NavigationErrorType",
+                "usr": "c:objc(cs)NSDKMNavigationUIStateNavigationErrorType"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "__NavigationUIState__NavigationErrorType",
+                    "printedName": "NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType",
+                    "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO"
+                  }
+                ],
+                "paramValueOwnership": "InOut",
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO34_conditionallyBridgeFromObjectiveC_6resultSbSo015NSDKMNavigationdceF0C_ACSgztFZ",
+            "mangledName": "$s21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO34_conditionallyBridgeFromObjectiveC_6resultSbSo015NSDKMNavigationdceF0C_ACSgztFZ",
+            "moduleName": "NunavSDKMultiplatform",
+            "static": true,
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "_unconditionallyBridgeFromObjectiveC",
+            "printedName": "_unconditionallyBridgeFromObjectiveC(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "__NavigationUIState__NavigationErrorType",
+                "printedName": "NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType",
+                "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "NunavSDKMultiplatform.NavigationUIState.__NavigationErrorType?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "__NavigationErrorType",
+                    "printedName": "NunavSDKMultiplatform.NavigationUIState.__NavigationErrorType",
+                    "usr": "c:objc(cs)NSDKMNavigationUIStateNavigationErrorType"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO36_unconditionallyBridgeFromObjectiveCyACSo015NSDKMNavigationdceF0CSgFZ",
+            "mangledName": "$s21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO36_unconditionallyBridgeFromObjectiveCyACSo015NSDKMNavigationdceF0CSgFZ",
+            "moduleName": "NunavSDKMultiplatform",
+            "static": true,
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "_bridgeToObjectiveC",
+            "printedName": "_bridgeToObjectiveC()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "__NavigationErrorType",
+                "printedName": "NunavSDKMultiplatform.NavigationUIState.__NavigationErrorType",
+                "usr": "c:objc(cs)NSDKMNavigationUIStateNavigationErrorType"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO19_bridgeToObjectiveCSo015NSDKMNavigationdceF0CyF",
+            "mangledName": "$s21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO19_bridgeToObjectiveCSo015NSDKMNavigationdceF0CyF",
+            "moduleName": "NunavSDKMultiplatform",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(rawValue:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "__NavigationUIState__NavigationErrorType",
+                    "printedName": "NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType",
+                    "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO8rawValueACSgSS_tcfc",
+            "mangledName": "$s21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO8rawValueACSgSS_tcfc",
+            "moduleName": "NunavSDKMultiplatform",
+            "implicit": true,
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Var",
+            "name": "rawValue",
+            "printedName": "rawValue",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO8rawValueSSvp",
+            "mangledName": "$s21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO8rawValueSSvp",
+            "moduleName": "NunavSDKMultiplatform",
+            "implicit": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO8rawValueSSvg",
+                "mangledName": "$s21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO8rawValueSSvg",
+                "moduleName": "NunavSDKMultiplatform",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "allCases",
+            "printedName": "allCases",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Array",
+                "printedName": "[NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "__NavigationUIState__NavigationErrorType",
+                    "printedName": "NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType",
+                    "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO"
+                  }
+                ],
+                "usr": "s:Sa"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO8allCasesSayACGvpZ",
+            "mangledName": "$s21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO8allCasesSayACGvpZ",
+            "moduleName": "NunavSDKMultiplatform",
+            "static": true,
+            "implicit": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Array",
+                    "printedName": "[NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType]",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "__NavigationUIState__NavigationErrorType",
+                        "printedName": "NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType",
+                        "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO"
+                      }
+                    ],
+                    "usr": "s:Sa"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO8allCasesSayACGvgZ",
+                "mangledName": "$s21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO8allCasesSayACGvgZ",
+                "moduleName": "NunavSDKMultiplatform",
+                "static": true,
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "toKotlinEnum",
+            "printedName": "toKotlinEnum()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "__NavigationErrorType",
+                "printedName": "NunavSDKMultiplatform.NavigationUIState.__NavigationErrorType",
+                "usr": "c:objc(cs)NSDKMNavigationUIStateNavigationErrorType"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO12toKotlinEnumSo015NSDKMNavigationdceF0CyF",
+            "mangledName": "$s21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO12toKotlinEnumSo015NSDKMNavigationdceF0CyF",
+            "moduleName": "NunavSDKMultiplatform",
+            "isFromExtension": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Enum",
+        "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO",
+        "mangledName": "$s21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO",
+        "moduleName": "NunavSDKMultiplatform",
+        "declAttributes": [
+          "AccessControl",
+          "Frozen"
+        ],
+        "enumRawTypeName": "String",
+        "isEnumExhaustive": true,
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "RawRepresentable",
+            "printedName": "RawRepresentable",
+            "children": [
+              {
+                "kind": "TypeWitness",
+                "name": "RawValue",
+                "printedName": "RawValue",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ]
+              }
+            ],
+            "usr": "s:SY",
+            "mangledName": "$sSY"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CaseIterable",
+            "printedName": "CaseIterable",
+            "children": [
+              {
+                "kind": "TypeWitness",
+                "name": "AllCases",
+                "printedName": "AllCases",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Array",
+                    "printedName": "[NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType]",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "__NavigationUIState__NavigationErrorType",
+                        "printedName": "NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType",
+                        "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO"
+                      }
+                    ],
+                    "usr": "s:Sa"
+                  }
+                ]
+              }
+            ],
+            "usr": "s:s12CaseIterableP",
+            "mangledName": "$ss12CaseIterableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_ObjectiveCBridgeable",
+            "printedName": "_ObjectiveCBridgeable",
+            "children": [
+              {
+                "kind": "TypeWitness",
+                "name": "_ObjectiveCType",
+                "printedName": "_ObjectiveCType",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "__NavigationErrorType",
+                    "printedName": "NunavSDKMultiplatform.NavigationUIState.__NavigationErrorType",
+                    "usr": "c:objc(cs)NSDKMNavigationUIStateNavigationErrorType"
+                  }
+                ]
+              }
+            ],
+            "usr": "s:s21_ObjectiveCBridgeableP",
+            "mangledName": "$ss21_ObjectiveCBridgeableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          }
+        ]
+      },
+      {
         "kind": "Function",
         "name": "onEnum",
         "printedName": "onEnum(of:)",
@@ -39042,6 +39647,112 @@
       },
       {
         "kind": "TypeDecl",
+        "name": "RouteProvider",
+        "printedName": "RouteProvider",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "requestRoute",
+            "printedName": "requestRoute(routeRequest:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Route",
+                "printedName": "NunavSDKMultiplatform.Route",
+                "usr": "c:objc(cs)NSDKMRoute"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "RouteProviderRouteRequest",
+                "printedName": "NunavSDKMultiplatform.RouteProviderRouteRequest",
+                "usr": "c:objc(cs)NSDKMRouteProviderRouteRequest"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:So18NSDKMRouteProviderP21NunavSDKMultiplatformE12requestRoute12routeRequestSo0A0CSo0abfH0C_tYaKF",
+            "mangledName": "$sSo18NSDKMRouteProviderP21NunavSDKMultiplatformE12requestRoute12routeRequestSo0A0CSo0abfH0C_tYaKF",
+            "moduleName": "NunavSDKMultiplatform",
+            "genericSig": "<τ_0_0 where τ_0_0 : NunavSDKMultiplatform.RouteProvider>",
+            "sugared_genericSig": "<Self where Self : NunavSDKMultiplatform.RouteProvider>",
+            "intro_Macosx": "10.15",
+            "intro_iOS": "13",
+            "intro_tvOS": "13",
+            "intro_watchOS": "6",
+            "declAttributes": [
+              "Available",
+              "Available",
+              "Available",
+              "Available"
+            ],
+            "isFromExtension": true,
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "requestRouteData",
+            "printedName": "requestRouteData(origin:destination:vehicleConfig:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "RouteData",
+                "printedName": "NunavSDKMultiplatform.RouteData",
+                "usr": "c:objc(cs)NSDKMRouteData"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "LatLng",
+                "printedName": "NunavSDKMultiplatform.LatLng",
+                "usr": "c:objc(cs)NSDKMLatLng"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "LatLng",
+                "printedName": "NunavSDKMultiplatform.LatLng",
+                "usr": "c:objc(cs)NSDKMLatLng"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "VehicleConfig",
+                "printedName": "NunavSDKMultiplatform.VehicleConfig",
+                "usr": "c:objc(pl)NSDKMVehicleConfig"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:So18NSDKMRouteProviderP21NunavSDKMultiplatformE16requestRouteData6origin11destination13vehicleConfigSo0aG0CSo11NSDKMLatLngC_AKSo012NSDKMVehicleK0_ptYaKF",
+            "mangledName": "$sSo18NSDKMRouteProviderP21NunavSDKMultiplatformE16requestRouteData6origin11destination13vehicleConfigSo0aG0CSo11NSDKMLatLngC_AKSo012NSDKMVehicleK0_ptYaKF",
+            "moduleName": "NunavSDKMultiplatform",
+            "genericSig": "<τ_0_0 where τ_0_0 : NunavSDKMultiplatform.RouteProvider>",
+            "sugared_genericSig": "<Self where Self : NunavSDKMultiplatform.RouteProvider>",
+            "intro_Macosx": "10.15",
+            "intro_iOS": "13",
+            "intro_tvOS": "13",
+            "intro_watchOS": "6",
+            "declAttributes": [
+              "Available",
+              "Available",
+              "Available",
+              "Available"
+            ],
+            "isFromExtension": true,
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Protocol",
+        "usr": "c:objc(pl)NSDKMRouteProvider",
+        "moduleName": "NunavSDKMultiplatform",
+        "genericSig": "<τ_0_0 : AnyObject>",
+        "sugared_genericSig": "<Self : AnyObject>",
+        "objc_name": "NSDKMRouteProvider",
+        "declAttributes": [
+          "ObjC",
+          "Dynamic"
+        ],
+        "isExternal": true
+      },
+      {
+        "kind": "TypeDecl",
         "name": "__TurnCommand",
         "printedName": "__TurnCommand",
         "children": [
@@ -40194,6 +40905,100 @@
         "inheritsConvenienceInitializers": true,
         "superclassNames": [
           "NunavSDKMultiplatform.KotlinEnum<NunavSDKMultiplatform.RelativeSpeedRouteFeatureCreator.__Category>",
+          "NunavSDKMultiplatform.KotlinBase",
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "__NavigationErrorType",
+        "printedName": "__NavigationErrorType",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "toSwiftEnum",
+            "printedName": "toSwiftEnum()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "__NavigationUIState__NavigationErrorType",
+                "printedName": "NunavSDKMultiplatform.__NavigationUIState__NavigationErrorType",
+                "usr": "s:21NunavSDKMultiplatform021__NavigationUIState__C9ErrorTypeO"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:So41NSDKMNavigationUIStateNavigationErrorTypeC21NunavSDKMultiplatformE11toSwiftEnumAC02__cb2__cdE0OyF",
+            "mangledName": "$sSo41NSDKMNavigationUIStateNavigationErrorTypeC21NunavSDKMultiplatformE11toSwiftEnumAC02__cb2__cdE0OyF",
+            "moduleName": "NunavSDKMultiplatform",
+            "isFromExtension": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:objc(cs)NSDKMNavigationUIStateNavigationErrorType",
+        "moduleName": "NunavSDKMultiplatform",
+        "objc_name": "NSDKMNavigationUIStateNavigationErrorType",
+        "declAttributes": [
+          "ObjC",
+          "Dynamic"
+        ],
+        "isFromExtension": true,
+        "superclassUsr": "c:objc(cs)NSDKMKotlinEnum",
+        "isExternal": true,
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "NunavSDKMultiplatform.KotlinEnum<NunavSDKMultiplatform.NavigationUIState.__NavigationErrorType>",
           "NunavSDKMultiplatform.KotlinBase",
           "ObjectiveC.NSObject"
         ],

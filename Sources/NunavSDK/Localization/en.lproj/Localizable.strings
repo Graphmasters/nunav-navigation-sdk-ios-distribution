@@ -15,3 +15,5 @@
 "contribution_dialog_openstreetmap_action_title" = "© OpenStreetmap Contributers";
 "contribution_dialog_nunav_action_title" = "© NUNAV SDK";
 "navigation_screen_dialog_action_close" = "Close";
+"navigation_error_no_route_found_summary" = "No route found.";
+"navigation_error_unauthorized_summary" = "Unauthorized request.";
