@@ -5,7 +5,10 @@
 [![Requires Swift 5.9](https://img.shields.io/badge/Swift-5.9-FA7343.svg?style=flat&logo=Swift)](https://swift.org/)
 [![SPM compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-FA7343.svg?style=flat&logo=Swift)](https://swift.org/package-manager/)
 
-> **Note**  
+> [!TIP]
+> Please visit [NUNAV Navigation SDK Example](https://github.com/Graphmasters/nunav-navigation-sdk-example) for for an integration example and more Information on usage and features.
+
+> [!CAUTION]
 > This repository only exists for the purpose of distribution of NunavSDK for iOS on the Swift Package Manager. It contains the code for the NUNAV SDK powering the navigation in third party apps.
 > Please contact Grapmasters GmbH directly if you have any issues.
 
@@ -21,7 +24,7 @@ NunavSDK for iOS is distributed using the [Swift Package Manager](https://www.sw
 
 ```
 dependencies: [
-    .package(url: "https://github.com/graphmasters/nunav-sdk-ios-distribution", from: "<VERSION>")
+    .package(url: "https://github.com/graphmasters/nunav-navigation-sdk-ios-distribution", from: "<VERSION>")
 ]
 ```
 
@@ -31,7 +34,7 @@ dependencies: [
 .target(
     name: "Mytarget",
     dependencies: [
-        .product(name: "NunavSDK", package: "nunav-sdk-ios-distribution")
+        .product(name: "NunavSDK", package: "nunav-navigation-sdk-ios-distribution")
     ]
 )
 ```
@@ -40,6 +43,6 @@ dependencies: [
 
 1. To add a package dependency to your Xcode project, select File > Swift Packages > Add Package Dependency and enter its repository URL. You can also navigate to your target’s General pane, and in the “Frameworks, Libraries, and Embedded Content” section, click the + button, select Add Other, and choose Add Package Dependency.
 
-2. Either add NunavSDK GitHub distribution URL `https://github.com/graphmasters/nunav-sdk-ios-distribution` or search for `nunav-sdk-ios-distribution` package.
+2. Either add NunavSDK GitHub distribution URL `https://github.com/graphmasters/nunav-navigation-sdk-ios-distribution` or search for `nunav-navigation-sdk-ios-distribution` package.
 
 3. Choose "Next". Xcode should clone the distribution repository and download the binaries.
