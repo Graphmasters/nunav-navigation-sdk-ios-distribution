@@ -15,4 +15,4 @@
 
 ## Getting Started
 
-The full iOS integration guide for the *NUNAV Navigation SDK* can be found in the [example app repository](https://github.com/Graphmasters/nunav-navigation-sdk-example/tree/main/iOS)
+The full iOS integration guide for the *NUNAV Navigation SDK* can be found in the [example app repository](https://github.com/Graphmasters/nunav-navigation-sdk-example/tree/main/iOS).
