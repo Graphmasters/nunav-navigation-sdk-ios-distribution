@@ -5,22 +5,30 @@ import NunavSDKMultiplatform
 import SwiftUI
 
 struct ManeuverProgressView: View {
+    // MARK: Static Properties
+
     static let topViewImageHeight: CGFloat = 48
     static let bottomViewHeight: CGFloat = 36
+
+    // MARK: Properties
 
     private var viewModel: ManeuverViewModel
 
     @State private var state: ManeuverUIState
 
+    // MARK: Lifecycle
+
     init(viewModel: ManeuverViewModel) {
         self.viewModel = viewModel
-        state = viewModel.state.value
+        self.state = viewModel.state.value
     }
+
+    // MARK: Content
 
     var body: some View {
         HStack {
             HStack {
-                switch onEnum(of: state) {
+                switch onEnum(of: self.state) {
                 case let .followingRoute(followingRoute):
                     ZStack(alignment: .top) {
                         VStack(spacing: .zero) {
@@ -29,7 +37,7 @@ struct ManeuverProgressView: View {
                             if let secondaryInfo = followingRoute.secondaryManeuverInfo {
                                 BottomView(secondaryInfo: secondaryInfo)
                                     .frame(minWidth: .zero, maxWidth: .infinity)
-                                    .padding(Size.Padding.tiny)
+                                    .padding(.tiny)
                                     .background(Color.DesignSystem.surfacePrimary)
                                     .transition(.move(edge: .top))
                             }
@@ -49,15 +57,15 @@ struct ManeuverProgressView: View {
                         )
                     )
                 }
-            }.cornerRadius(Size.SurfaceCard.cornerRadius)
+            }.cornerRadius(CornerRadius.default)
                 .overlay(
-                    RoundedRectangle(cornerRadius: Size.OnMapSurface.cornerRadius)
+                    RoundedRectangle(cornerRadius: CornerRadius.default.rawValue)
                         .stroke(Color.DesignSystem.onMapSurfaceOutline, lineWidth: Size.OnMapSurface.outlineWidth)
                 )
         }.onAppear(perform: {
-            self.state = state
+            self.state = self.state
             Task {
-                for await state in viewModel.state {
+                for await state in self.viewModel.state {
                     withAnimation {
                         self.state = state
                     }
@@ -68,21 +76,26 @@ struct ManeuverProgressView: View {
 }
 
 struct BottomView: View {
+    // MARK: Properties
+
     let secondaryInfo: ManeuverUIStateSecondaryManeuverInfo
+
     private let defaultLaneIconProvider: DefaultLaneImageProvider = .init()
     private let defaultManeuverIconProvider: DefaultManeuverImageProvider = .init()
 
+    // MARK: Content
+
     var body: some View {
         Group {
-            switch onEnum(of: secondaryInfo) {
+            switch onEnum(of: self.secondaryInfo) {
             case let .laneInfo(laneInfo):
                 let icons = laneInfo.laneIcons.map { icon in
-                    defaultLaneIconProvider.getImage(icon: icon)
+                    self.defaultLaneIconProvider.getImage(icon: icon)
                 }
                 LaneAssistView(laneIcons: icons)
             case let .followingManeuver(followingManeuver):
                 FollowingManeuverView(
-                    turnIcon: defaultManeuverIconProvider.getImage(icon: followingManeuver.maneuverIcon),
+                    turnIcon: self.defaultManeuverIconProvider.getImage(icon: followingManeuver.maneuverIcon),
                     text: L10n.maneuverProgressViewFollowingManeuverText(followingManeuver.formattedDistance.formattedString())
                 )
             }
@@ -93,48 +106,62 @@ struct BottomView: View {
 }
 
 struct FollowingManeuverView: View {
+    // MARK: Properties
+
     let turnIcon: UIImage
     let text: String
 
+    // MARK: Content
+
     var body: some View {
-        HStack(spacing: Size.Padding.default) {
-            Text(text)
+        HStack(spacing: .default) {
+            Text(self.text)
                 .font(.DesignSystem.Body.large)
                 .foregroundColor(.DesignSystem.onSurfacePrimary)
-            Image(uiImage: turnIcon.withRenderingMode(.alwaysTemplate))
+            Image(uiImage: self.turnIcon.withRenderingMode(.alwaysTemplate))
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .foregroundColor(.DesignSystem.onSurfacePrimary)
-        }.padding(Size.Padding.tiny)
+        }.padding(.tiny)
             .frame(height: ManeuverProgressView.bottomViewHeight)
     }
 }
 
 struct LaneAssistView: View {
+    // MARK: Properties
+
     let laneIcons: [UIImage]
+
+    // MARK: Content
 
     var body: some View {
         HStack(spacing: .zero) {
-            ForEach(0 ..< laneIcons.count, id: \.self) { index in
-                Image(uiImage: laneIcons[index].withRenderingMode(.alwaysTemplate))
+            ForEach(0 ..< self.laneIcons.count, id: \.self) { index in
+                Image(uiImage: self.laneIcons[index].withRenderingMode(.alwaysTemplate))
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .foregroundColor(.DesignSystem.onSurfacePrimary)
             }
-        }.padding(Size.Padding.tiny)
+        }.padding(.tiny)
             .frame(height: ManeuverProgressView.bottomViewHeight)
     }
 }
 
 struct TopLoadingView: View {
+    // MARK: Properties
+
     private let title: String
+
+    // MARK: Lifecycle
 
     init(title: String) {
         self.title = title
     }
 
+    // MARK: Content
+
     var body: some View {
-        HStack(alignment: .center, spacing: Size.Padding.default) {
+        HStack(alignment: .center, spacing: .default) {
             ZStack(alignment: .center) {
                 Color.DesignSystem.surfaceCard.frame(
                     width: ManeuverProgressView.topViewImageHeight,
@@ -142,7 +169,7 @@ struct TopLoadingView: View {
                 ).opacity(.zero)
                 ProgressView()
             }
-            Text(title)
+            Text(self.title)
                 .font(.DesignSystem.Headline.default)
                 .foregroundColor(.DesignSystem.onSurfacePrimary)
             Spacer()
@@ -151,17 +178,23 @@ struct TopLoadingView: View {
 }
 
 struct TopContentHolderView: View {
+    // MARK: Properties
+
     private let innerView: (any View)?
 
+    // MARK: Lifecycle
+
     init(view: (any View)? = nil) {
-        innerView = view
+        self.innerView = view
     }
+
+    // MARK: Content
 
     var body: some View {
         ZStack {
             TopPlaceholderView()
-            innerView.map { AnyView($0) }
-        }.padding(Size.Padding.large)
+            self.innerView.map { AnyView($0) }
+        }.padding(.large)
             .background(Color.DesignSystem.surfaceCard)
     }
 }
@@ -174,8 +207,13 @@ struct TopPlaceholderView: View {
 }
 
 struct UpcomingManeuverView: View {
+    // MARK: Properties
+
     let state: ManeuverUIStateFollowingRoute
+
     private let defaultManeuverIconProvider: DefaultManeuverImageProvider = .init()
+
+    // MARK: Content
 
     var body: some View {
         TopContentView(
@@ -188,11 +226,15 @@ struct UpcomingManeuverView: View {
 }
 
 struct TopContentView: View {
+    // MARK: Properties
+
     private let loading: Bool
     private let image: UIImage?
     private let title: String
     private let titleAddition: String?
     private let subtitle: String?
+
+    // MARK: Lifecycle
 
     init(loading: Bool = false, image: UIImage? = nil, title: String, titleAddition: String? = nil, subtitle: String? = nil) {
         self.loading = loading
@@ -202,14 +244,16 @@ struct TopContentView: View {
         self.subtitle = subtitle
     }
 
+    // MARK: Content
+
     var body: some View {
-        HStack(alignment: .center, spacing: Size.Padding.default) {
+        HStack(alignment: .center, spacing: .default) {
             ZStack {
                 Color.DesignSystem.surfaceCard.frame(
                     width: ManeuverProgressView.topViewImageHeight,
                     height: ManeuverProgressView.topViewImageHeight
                 ).opacity(.zero)
-                image.map {
+                self.image.map {
                     Image(
                         uiImage: $0.withRenderingMode(.alwaysTemplate)
                     ).resizable()
@@ -217,23 +261,23 @@ struct TopContentView: View {
                         .foregroundColor(.DesignSystem.onSurfacePrimary)
                         .frame(height: ManeuverProgressView.topViewImageHeight)
                 }
-                if loading {
+                if self.loading {
                     ProgressView()
                         .frame(height: ManeuverProgressView.topViewImageHeight)
                 }
             }
-            VStack(alignment: .leading, spacing: Size.Padding.tiny) {
-                HStack(alignment: .firstTextBaseline, spacing: Size.Padding.tiny) {
-                    Text(title)
+            VStack(alignment: .leading, spacing: .tiny) {
+                HStack(alignment: .firstTextBaseline, spacing: .tiny) {
+                    Text(self.title)
                         .font(.DesignSystem.Headline.large)
                         .foregroundColor(.DesignSystem.onSurfacePrimary)
-                    titleAddition.map {
+                    self.titleAddition.map {
                         Text($0)
                             .font(.DesignSystem.Headline.small)
                             .foregroundColor(.DesignSystem.onSurfaceSecondary)
                     }
                 }
-                subtitle.map {
+                self.subtitle.map {
                     Text($0)
                         .lineLimit(1)
                         .font(.DesignSystem.Body.large)

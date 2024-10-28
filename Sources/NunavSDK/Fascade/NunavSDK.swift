@@ -5,27 +5,19 @@ import NunavSDKMultiplatform
 import UIKit
 
 public enum NunavSDK {
-    private static var apiKey: String?
-    private static var serviceUrl: String?
-    private static var instanceId: String = Device.info.deviceId
-
-    public static func configure(apiKey: String, serviceUrl: String) {
-        guard Self.apiKey == nil else {
-            fatalError("`NunavSDK` was already configured.")
-        }
-        Self.apiKey = apiKey
-        Self.serviceUrl = serviceUrl
-    }
+    // MARK: Static Properties
 
     static let navigationSdk: NavigationSdk = {
-        guard let apiKey = apiKey, let serviceUrl = serviceUrl  else {
-            fatalError("""
-To use `NunavSDK` an api key and a service url are needed. Please use `NunavSDK.configure(apiKey: String, serviceUrl: String)` first.
-"""
+        guard let apiKey = apiKey, let serviceUrl = serviceUrl else {
+            fatalError(
+                """
+                To use `NunavSDK` an api key and a service url are needed. Please use
+                `NunavSDK.configure(apiKey: String, serviceUrl: String)` first.
+                """
             )
         }
         return IosNavigationSdk(
-            serviceUrl: serviceUrl,
+            serviceUrl: serviceUrl + "/v2/routing/",
             apiKey: apiKey,
             sessionParamProviders: [],
             routingParamProviders: [],
@@ -45,4 +37,18 @@ To use `NunavSDK` an api key and a service url are needed. Please use `NunavSDK.
         manager.distanceFilter = kCLDistanceFilterNone
         return manager
     }()
+
+    private static var apiKey: String?
+    private static var serviceUrl: String?
+    private static var instanceId: String = Device.info.deviceId
+
+    // MARK: Static Functions
+
+    public static func configure(apiKey: String, serviceUrl: String = "https://nunav-sdk-bff.nunav.net") {
+        guard Self.apiKey == nil else {
+            fatalError("`NunavSDK` was already configured.")
+        }
+        Self.apiKey = apiKey
+        Self.serviceUrl = serviceUrl
+    }
 }

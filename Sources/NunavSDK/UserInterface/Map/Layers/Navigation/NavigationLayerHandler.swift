@@ -5,17 +5,61 @@ import Mapbox
 import NunavSDKMultiplatform
 
 public class NavigationLayerHandler: AggregatingMGLStyleLayersHandler {
+    // MARK: Nested Types
+
     private enum Constants {
         static let layerIdentifierPrefix = "NAVIGATION_"
     }
 
+    // MARK: Properties
+
     private let navigationSdk: NavigationSdk
-    private let mapTheme: MapTheme
     private let routeFeatureCreator: RouteFeatureCreator
     private let mapLocationProvider: LocationProvider
     private let routeDetachStateProvider: RouteDetachStateProvider
 
     private var observation: NSKeyValueObservation?
+
+    private lazy var locationTrailMapLayerHandler = LocationTrailMapLayerHandler(
+        mapLayerManager: mapLayerManager,
+        mapTheme: mapTheme,
+        mapLocationProvider: mapLocationProvider,
+        navigationSdk: navigationSdk,
+        routeDetachStateProvider: routeDetachStateProvider
+    )
+
+    private lazy var walkingPathLayerController = WalkingPathLayerController(
+        mapLayerManager: mapLayerManager,
+        mapTheme: mapTheme,
+        identifierPrefix: Constants.layerIdentifierPrefix
+    )
+
+    private lazy var routeLayerController = RouteLineLayerHandler(
+        mapLayerManager: mapLayerManager,
+        mapTheme: mapTheme,
+        featureCreator: routeFeatureCreator,
+        identifierPrefix: Constants.layerIdentifierPrefix
+    )
+
+    private lazy var directionArrowLayerHandler = DirectionArrowLayerHandler(
+        mapLayerManager: mapLayerManager,
+        mapTheme: mapTheme,
+        routeLayer: routeLayerController.firstPartRouteLayer
+    )
+
+    private lazy var tripSymbolsLayerController = NavigationTripSymbolsLayerHandler(
+        mapLayerManager: mapLayerManager,
+        mapTheme: mapTheme,
+        navigationSdk: navigationSdk
+    )
+
+    private lazy var maneuverLayerHandler: ManeuverLayerHandler = .init(
+        mapLayerManager: mapLayerManager,
+        mapTheme: mapTheme,
+        maneuverMapIconCreator: SwiftChipManeuverMapIconCreator(maneuverImageProvider: DefaultManeuverImageProvider())
+    )
+
+    // MARK: Lifecycle
 
     public init(
         mapLayerManager: MapboxMapLayerManager?,
@@ -26,13 +70,13 @@ public class NavigationLayerHandler: AggregatingMGLStyleLayersHandler {
         routeDetachStateProvider: RouteDetachStateProvider
     ) {
         self.navigationSdk = navigationSdk
-        self.mapTheme = mapTheme
         self.routeFeatureCreator = routeFeatureCreator
         self.mapLocationProvider = mapLocationProvider
         self.routeDetachStateProvider = routeDetachStateProvider
 
         super.init(
             mapLayerManager: mapLayerManager,
+            mapTheme: mapTheme,
             layerHandlers: []
         )
 
@@ -65,40 +109,6 @@ public class NavigationLayerHandler: AggregatingMGLStyleLayersHandler {
         observation?.invalidate()
         observation = nil
     }
-
-    private lazy var locationTrailMapLayerHandler = LocationTrailMapLayerHandler(
-        mapLayerManager: mapLayerManager,
-        mapLocationProvider: mapLocationProvider,
-        navigationSdk: navigationSdk,
-        routeDetachStateProvider: routeDetachStateProvider
-    )
-
-    private lazy var walkingPathLayerController = WalkingPathLayerController(
-        mapLayerManager: mapLayerManager,
-        identifierPrefix: Constants.layerIdentifierPrefix
-    )
-
-    private lazy var routeLayerController = RouteLineLayerHandler(
-        mapLayerManager: mapLayerManager,
-        featureCreator: routeFeatureCreator,
-        identifierPrefix: Constants.layerIdentifierPrefix
-    )
-
-    private lazy var directionArrowLayerHandler = DirectionArrowLayerHandler(
-        mapLayerManager: mapLayerManager,
-        routeLayer: routeLayerController.firstPartRouteLayer
-    )
-
-    private lazy var tripSymbolsLayerController = NavigationTripSymbolsLayerHandler(
-        mapLayerManager: mapLayerManager,
-        mapTheme: mapTheme,
-        navigationSdk: navigationSdk
-    )
-
-    private lazy var maneuverLayerHandler: ManeuverLayerHandler = .init(
-        mapLayerManager: mapLayerManager,
-        maneuverMapIconCreator: SwiftChipManeuverMapIconCreator(maneuverImageProvider: DefaultManeuverImageProvider())
-    )
 }
 
 extension NavigationLayerHandler: NavigationEventHandlerOnRouteUpdateListener {

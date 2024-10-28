@@ -4,9 +4,13 @@ import Mapbox
 import NunavSDKMultiplatform
 
 final class NunavSDKMapLayersControllerBuilder: MapLayerHandlerBuilder {
+    // MARK: Properties
+
     private let mapLocationProvider: LocationProvider
     private let navigationSdk: NavigationSdk
     private let routeDetachStateProvider: RouteDetachStateProvider
+
+    // MARK: Lifecycle
 
     init(mapLocationProvider: LocationProvider, navigationSdk: NavigationSdk, routeDetachStateProvider: RouteDetachStateProvider) {
         self.mapLocationProvider = mapLocationProvider
@@ -14,10 +18,13 @@ final class NunavSDKMapLayersControllerBuilder: MapLayerHandlerBuilder {
         self.routeDetachStateProvider = routeDetachStateProvider
     }
 
+    // MARK: Functions
+
     func mapLayerHandler(for mapView: MGLMapView, withMapTheme mapTheme: MapTheme) -> MGLStyleLayersHandler {
         let mapLayerManager = MapboxMapLayerManager(mapView: mapView)
         return AggregatingMGLStyleLayersHandler(
             mapLayerManager: mapLayerManager,
+            mapTheme: mapTheme,
             layerHandlers: [
                 NavigationLayerHandler(
                     mapLayerManager: mapLayerManager,
@@ -37,6 +44,7 @@ final class NunavSDKMapLayersControllerBuilder: MapLayerHandlerBuilder {
                 ),
                 UserLocationLayerHandler(
                     mapLayerManager: mapLayerManager,
+                    mapTheme: mapTheme,
                     locationProvider: mapLocationProvider,
                     navigationSdk: navigationSdk,
                     routeDetachStateProvider: routeDetachStateProvider

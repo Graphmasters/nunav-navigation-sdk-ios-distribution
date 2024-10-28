@@ -3,9 +3,13 @@ import Mapbox
 import NunavSDKMultiplatform
 
 final class RouteOutlineLayer: MGLLineStyleLayer {
+    // MARK: Nested Types
+
     enum Constants {
         static let outlineColorKey = RouteFeatureCreatorCompanion.shared.OUTLINE_COLOR
     }
+
+    // MARK: Lifecycle
 
     override init(identifier: String, source: MGLSource) {
         super.init(identifier: identifier, source: source)

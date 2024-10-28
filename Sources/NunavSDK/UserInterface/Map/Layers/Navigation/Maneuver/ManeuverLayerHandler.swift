@@ -4,6 +4,8 @@ import Mapbox
 import NunavSDKMultiplatform
 
 public final class ManeuverLayerHandler: MGLStyleLayersHandler {
+    // MARK: Nested Types
+
     private enum Constants {
         static let layerIdentifier: String = "MANEUVER_LAYER_IDENTIFIER"
         static let sourceIdentifier: String = "MANEUVER_SOURCE_IDENTIFIER"
@@ -13,38 +15,6 @@ public final class ManeuverLayerHandler: MGLStyleLayersHandler {
         static let imageKeyLabeled = "IMAGE_KEY_LABELED"
     }
 
-    private let maneuverMapIconCreator: ManeuverMapIconCreator
-
-    public var maneuvers: [Maneuver] = [] {
-        didSet {
-            guard oldValue != maneuvers else { return }
-            turns = maneuvers.compactMap { maneuver in
-                guard let maneuverMapIconLabeled = maneuverMapIconCreator.create(
-                    turnInfo: maneuver.turnInfo, showDirectionLabel: true
-                ),
-                    let maneuverMapIcon = maneuverMapIconCreator.create(
-                        turnInfo: maneuver.turnInfo, showDirectionLabel: false
-                    ) else {
-                    return nil
-                }
-                return Turn(
-                    latLng: maneuver.latLng,
-                    turnInfo: maneuver.turnInfo,
-                    icon: maneuverMapIcon,
-                    iconLabeled: maneuverMapIconLabeled
-                )
-            }
-        }
-    }
-
-    override public func updateVisibility(_ visible: Bool) {
-        if visible {
-            mapLayerManager?.showLayer(with: layer.identifier)
-        } else {
-            mapLayerManager?.hideLayer(with: layer.identifier)
-        }
-    }
-
     private struct Turn {
         let latLng: LatLng
         let turnInfo: TurnInfo
@@ -52,69 +22,14 @@ public final class ManeuverLayerHandler: MGLStyleLayersHandler {
         let iconLabeled: ManeuverMapIconCreator.ManeuverMapIcon
     }
 
-    private var turns: [Turn] = [] {
-        didSet {
-            removeImages(of: oldValue)
-            addImages(for: turns)
-            refreshSource(with: turns)
-        }
-    }
+    // MARK: Properties
 
-    private func removeImages(of turns: [Turn]) {
-        turns.map(\.turnInfo).forEach {
-            mapLayerManager?.remove(imageWithKey: imageKey(for: $0) + Constants.labelPostFix)
-        }
-    }
-
-    private func addImages(for turns: [Turn]) {
-        turns.forEach {
-            mapLayerManager?.add(image: $0.iconLabeled.image, for: imageKey(for: $0.turnInfo) + Constants.labelPostFix)
-        }
-    }
-
-    private func refreshSource(with turns: [Turn]) {
-        try? mapLayerManager?.set(
-            shape: MGLShapeCollectionFeature(shapes: turns.map(point)),
-            on: source
-        )
-    }
-
-    // MARK: - Life Cycle
-
-    public init(mapLayerManager: MapboxMapLayerManager?, maneuverMapIconCreator: ManeuverMapIconCreator) {
-        self.maneuverMapIconCreator = maneuverMapIconCreator
-        super.init(mapLayerManager: mapLayerManager)
-    }
-
-    override public func setup() {
-        mapLayerManager?.add(shapeSource: source, useFeatureCache: true)
-        try? mapLayerManager?.addRouteSymbolLayer(layer: layer)
-    }
-
-    // MARK: - Layer updates
-
-    private func imageKey(for turnInfo: TurnInfo) -> String {
-        turnInfo.turnCommand.name +
-            turnInfo.directionNames.joined(separator: "_") +
-            turnInfo.directionReferenceNames.joined(separator: "_") +
-            (turnInfo.leadsToStreetName ?? "")
-    }
-
-    private func point(for turn: Turn) -> MGLPointFeature {
-        let point = MGLPointFeature()
-        point.identifier = UUID().uuidString
-        point.coordinate = turn.latLng.clLocationCoordinate2D
-        point.attributes[Constants.anchorKey] = turn.icon.anchor
-        point.attributes[Constants.imageKeyLabeled] = imageKey(for: turn.turnInfo) + Constants.labelPostFix
-        return point
-    }
-
-    // MARK: - Source and Layer
+    private let maneuverMapIconCreator: ManeuverMapIconCreator
 
     private lazy var source: MGLShapeSource = .init(identifier: Constants.sourceIdentifier, shapes: [], options: nil)
 
     private lazy var layer: MGLStyleLayer = {
-        let labeledLayer = MGLSymbolStyleLayer(identifier: Constants.layerIdentifier, source: source)
+        let labeledLayer = MGLSymbolStyleLayer(identifier: Constants.layerIdentifier, source: self.source)
         labeledLayer.minimumZoomLevel = 5
         labeledLayer.iconImageName = NSExpression(forKeyPath: Constants.imageKeyLabeled)
         labeledLayer.iconAnchor = NSExpression(forKeyPath: Constants.anchorKey)
@@ -139,4 +54,101 @@ public final class ManeuverLayerHandler: MGLStyleLayersHandler {
         )
         return labeledLayer
     }()
+
+    // MARK: Computed Properties
+
+    public var maneuvers: [Maneuver] = [] {
+        didSet {
+            guard oldValue != maneuvers else {
+                return
+            }
+            turns = maneuvers.compactMap { maneuver in
+                guard let maneuverMapIconLabeled = maneuverMapIconCreator.create(
+                    turnInfo: maneuver.turnInfo, showDirectionLabel: true
+                ),
+                    let maneuverMapIcon = maneuverMapIconCreator.create(
+                        turnInfo: maneuver.turnInfo, showDirectionLabel: false
+                    ) else {
+                    return nil
+                }
+                return Turn(
+                    latLng: maneuver.latLng,
+                    turnInfo: maneuver.turnInfo,
+                    icon: maneuverMapIcon,
+                    iconLabeled: maneuverMapIconLabeled
+                )
+            }
+        }
+    }
+
+    private var turns: [Turn] = [] {
+        didSet {
+            removeImages(of: oldValue)
+            addImages(for: turns)
+            refreshSource(with: turns)
+        }
+    }
+
+    // MARK: Lifecycle
+
+    public init(
+        mapLayerManager: MapboxMapLayerManager?,
+        mapTheme: MapTheme,
+        maneuverMapIconCreator: ManeuverMapIconCreator
+    ) {
+        self.maneuverMapIconCreator = maneuverMapIconCreator
+        super.init(mapLayerManager: mapLayerManager, mapTheme: mapTheme)
+    }
+
+    override public func setup() {
+        mapLayerManager?.add(shapeSource: source, useFeatureCache: true)
+        try? mapLayerManager?.addRouteSymbolLayer(layer: layer)
+    }
+
+    // MARK: Overridden Functions
+
+    override public func updateVisibility(_ visible: Bool) {
+        if visible {
+            mapLayerManager?.showLayer(with: layer.identifier)
+        } else {
+            mapLayerManager?.hideLayer(with: layer.identifier)
+        }
+    }
+
+    // MARK: Functions
+
+    private func removeImages(of turns: [Turn]) {
+        for turn in turns.map(\.turnInfo) {
+            mapLayerManager?.remove(imageWithKey: imageKey(for: turn) + Constants.labelPostFix)
+        }
+    }
+
+    private func addImages(for turns: [Turn]) {
+        for turn in turns {
+            mapLayerManager?.add(image: turn.iconLabeled.image, for: imageKey(for: turn.turnInfo) + Constants.labelPostFix)
+        }
+    }
+
+    private func refreshSource(with turns: [Turn]) {
+        try? mapLayerManager?.set(
+            shape: MGLShapeCollectionFeature(shapes: turns.map(point)),
+            on: source
+        )
+    }
+
+    private func imageKey(for turnInfo: TurnInfo) -> String {
+        turnInfo.turnCommand.name +
+            turnInfo.directionNames.joined(separator: "_") +
+            turnInfo.directionReferenceNames.joined(separator: "_") +
+            (turnInfo.leadsToStreetName ?? "")
+    }
+
+    private func point(for turn: Turn) -> MGLPointFeature {
+        let point = MGLPointFeature()
+        point.identifier = UUID().uuidString
+        point.coordinate = turn.latLng.clLocationCoordinate2D
+        point.attributes[Constants.anchorKey] = turn.icon.anchor
+        point.attributes[Constants.imageKeyLabeled] = imageKey(for: turn.turnInfo) + Constants.labelPostFix
+        return point
+    }
 }

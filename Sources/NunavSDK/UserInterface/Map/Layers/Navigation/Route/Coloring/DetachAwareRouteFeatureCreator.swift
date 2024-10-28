@@ -2,14 +2,20 @@ import Foundation
 import NunavSDKMultiplatform
 
 public final class DetachAwareRouteFeatureCreator: RouteFeatureCreator {
+    // MARK: Nested Types
+
     private enum Error: Swift.Error {
         case polyLineTooShort
     }
+
+    // MARK: Properties
 
     private let routeDetachStateProvider: RouteDetachStateProvider
     private let navigationSdk: NavigationSdk
     private let detachedRouteFeatureCreator: RouteFeatureCreator
     private let defaultSpeedFeatureCreator: RouteFeatureCreator
+
+    // MARK: Lifecycle
 
     public init(
         navigationSdk: NavigationSdk,
@@ -22,6 +28,8 @@ public final class DetachAwareRouteFeatureCreator: RouteFeatureCreator {
         self.detachedRouteFeatureCreator = detachedRouteFeatureCreator
         self.defaultSpeedFeatureCreator = defaultSpeedFeatureCreator
     }
+
+    // MARK: Functions
 
     public func createFeatures(waypoints: [Route.Waypoint]) throws -> [RouteFeatureCreatorRouteFeature] {
         guard waypoints.count > 1 else {

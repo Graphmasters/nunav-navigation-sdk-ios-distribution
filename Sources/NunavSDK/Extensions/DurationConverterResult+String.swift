@@ -1,14 +1,14 @@
 import Foundation
 import NunavSDKMultiplatform
 
-public extension DurationConverterResult {
-    func formattedString() -> String {
+extension DurationConverterResult {
+    public func formattedString() -> String {
         [value, unit].joined(separator: " ")
     }
 }
 
-public extension Array where Element == DurationConverterResult {
-    func formattedString() -> String {
+extension Array where Element == DurationConverterResult {
+    public func formattedString() -> String {
         map { $0.formattedString() }.joined(separator: " ")
     }
 }

@@ -3,6 +3,8 @@ import GMMapUtility
 import Mapbox
 
 public final class NunavStyleLocalizer {
+    // MARK: Nested Types
+
     private enum Constants {
         static let supportedLayerIds: [String] = [
             "place_neighbourhood",
@@ -19,13 +21,15 @@ public final class NunavStyleLocalizer {
         ]
     }
 
+    // MARK: Lifecycle
+
     public init() {}
 }
 
 extension NunavStyleLocalizer: MGLMapStyleLocalizer {
     public func localize(_ style: MGLStyle, locale: Locale) {
-        supportedLayers(in: style).forEach {
-            $0.text = NSExpression(forKeyPath: keyPath(for: locale))
+        for supportedLayer in supportedLayers(in: style) {
+            supportedLayer.text = NSExpression(forKeyPath: keyPath(for: locale))
         }
     }
 }

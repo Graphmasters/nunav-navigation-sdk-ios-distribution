@@ -4,14 +4,20 @@ import Mapbox
 import NunavSDKMultiplatform
 
 public class MapCameraUpdateHandler {
+    // MARK: Nested Types
+
     private enum Constants {
         static let maxTilt: CGFloat = 55
         static let zoomFactorLandscape: Double = -1
         static let tiltFactorLandscape: CGFloat = 0.7
     }
 
+    // MARK: Properties
+
     private let cameraController: MapViewCameraController
     private let cameraConfigurationProvider: CameraConfigurationProvider
+
+    // MARK: Lifecycle
 
     public init(
         cameraController: MapViewCameraController,
@@ -85,7 +91,7 @@ extension MapCameraUpdateHandler: NavigationCameraHandlerCameraUpdateListener {
                 min(CGFloat(truncating: $0.doubleValue as NSNumber), Constants.maxTilt)
                     * cameraConfiguration.tiltFactor
             }
-        case .twoDimensionalNorth, .twoDimensional:
+        case .twoDimensional, .twoDimensionalNorth:
             return .zero
         }
     }

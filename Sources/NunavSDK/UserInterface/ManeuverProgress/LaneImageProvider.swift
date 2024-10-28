@@ -7,7 +7,11 @@ public protocol LaneImageProvider {
 }
 
 public class DefaultLaneImageProvider: LaneImageProvider {
+    // MARK: Lifecycle
+
     public init() {}
+
+    // MARK: Functions
 
     public func getImage(icon: LaneIconProvider.LaneIcon) -> UIImage {
         switch icon {

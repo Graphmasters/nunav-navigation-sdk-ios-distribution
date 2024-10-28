@@ -8,7 +8,7 @@ struct MapOverlayInfoView: View {
         ZStack {
             Color.DesignSystem.errorContainer
                 .edgesIgnoringSafeArea([.top, .leading, .trailing])
-            HStack(spacing: Size.Padding.default) {
+            HStack(spacing: .default) {
                 Image(
                     uiImage: Asset.noInternet.image.withRenderingMode(.alwaysTemplate)
                         .withRenderingMode(.alwaysTemplate)
@@ -16,7 +16,7 @@ struct MapOverlayInfoView: View {
                 Text(L10n.maneuverProgressViewInternetMissingError)
                     .foregroundColor(Color.DesignSystem.onErrorContainer)
                     .font(.DesignSystem.Body.small)
-            }.padding(Size.Padding.default).frame(
+            }.padding(.default).frame(
                 maxWidth: .infinity,
                 minHeight: 0
             ).layoutPriority(1)

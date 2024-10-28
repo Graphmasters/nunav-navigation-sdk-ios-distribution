@@ -4,9 +4,11 @@ import NunavSDKMultiplatform
 import UIKit
 
 public final class NavigationTripSymbolsLayerHandler: TripSymbolsLayerHandler {
+    // MARK: Properties
+
     private let navigationSdk: NavigationSdk
 
-    // MARK: - Life Cycle
+    // MARK: Lifecycle
 
     public init(
         mapLayerManager: MapboxMapLayerManager?,
@@ -44,6 +46,8 @@ public final class NavigationTripSymbolsLayerHandler: TripSymbolsLayerHandler {
             onNavigationStateInitializedListener: self)
         navigationSdk.removeOnDestinationsChangedListener(onDestinationsChangedListener: self)
     }
+
+    // MARK: Functions
 
     private func refreshLayer() {
         MainThread.shared.execute {

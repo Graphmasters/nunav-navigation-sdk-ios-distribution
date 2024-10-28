@@ -3,19 +3,36 @@ import Mapbox
 import NunavSDKMultiplatform
 
 open class TripSymbolsLayerHandler: MGLStyleLayersHandler {
+    // MARK: Nested Types
+
     private enum Constants {
         static let layerIdentifier: String = "TRIP_SYMBOLS_LAYER_IDENTIFIER"
         static let sourceIdentifier: String = "TRIP_SYMBOLS_SOURCE_IDENTIFIER"
     }
 
+    // MARK: Properties
+
     private let identifierPrefix: String
-    private let mapTheme: MapTheme
     private let showDestinationMetaData: Bool
 
     private let measurementSystemProvider: MeasurementSystemProvider = LocaleMeasurementSystemProvider(
         locale: .autoupdatingCurrent)
     private let distanceConverter: DistanceConverter = RoundedDistanceConverter()
     private let durationConverter: DurationConverter = CompactDurationConverter()
+
+    private lazy var source = MGLShapeSource(
+        identifier: identifierPrefix + Constants.sourceIdentifier,
+        shapes: [],
+        options: nil
+    )
+
+    private lazy var layer: MGLStyleLayer = TripMapLayer(
+        identifier: identifierPrefix + Constants.layerIdentifier,
+        source: source,
+        mapTheme: mapTheme
+    )
+
+    // MARK: Lifecycle
 
     public init(
         identifierPrefix: String,
@@ -24,10 +41,9 @@ open class TripSymbolsLayerHandler: MGLStyleLayersHandler {
         showDestinationMetaData: Bool = false
     ) {
         self.identifierPrefix = identifierPrefix
-        self.mapTheme = mapTheme
         self.showDestinationMetaData = showDestinationMetaData
 
-        super.init(mapLayerManager: mapLayerManager)
+        super.init(mapLayerManager: mapLayerManager, mapTheme: mapTheme)
     }
 
     override public func setup() {
@@ -36,13 +52,25 @@ open class TripSymbolsLayerHandler: MGLStyleLayersHandler {
 
         try? mapLayerManager?.addRouteSymbolLayer(layer: layer)
 
-        Symbol.allCases.forEach {
+        for item in Symbol.allCases {
             mapLayerManager?.add(
-                image: mapTheme == .light ? $0.icon : $0.darkIcon,
-                for: $0.imageName
+                image: mapTheme == .light ? item.icon : item.darkIcon,
+                for: item.imageName
             )
         }
     }
+
+    // MARK: Overridden Functions
+
+    override public func updateVisibility(_ visible: Bool) {
+        if visible {
+            mapLayerManager?.showLayer(with: layer.identifier)
+        } else {
+            mapLayerManager?.hideLayer(with: layer.identifier)
+        }
+    }
+
+    // MARK: Functions
 
     public func refresh(origin _: LatLng? = nil, destinations: [LatLng]?, route: Route? = nil) {
         guard let firstStop = firstStop(route: route, destinations: destinations) else {
@@ -67,50 +95,22 @@ open class TripSymbolsLayerHandler: MGLStyleLayersHandler {
         )
     }
 
-    override public func updateVisibility(_ visible: Bool) {
-        if visible {
-            mapLayerManager?.showLayer(with: layer.identifier)
-        } else {
-            mapLayerManager?.hideLayer(with: layer.identifier)
-        }
-    }
-
-    // MARK: - Refresh Source
-
     private func firstStopDuration(route: Route?) -> MGLPointFeature? {
         guard showDestinationMetaData, let route = route else {
             return nil
         }
 
-        let latLng = route.destinationInfo.destination?.location
-            ?? route.destinationInfo.parking?.location
-            ?? route.destination.latLng
-
         let feature = MGLPointFeature()
-        feature.coordinate = latLng.clLocationCoordinate2D
+        feature.coordinate = route.destinationInformation.latLng.clLocationCoordinate2D
         feature.attributes[DefaultIconLayer.textKey] = [
             LabelParser.shared.parseTitle(label: route.destination.label.split(separator: "\n").joined(separator: ", ")),
-            durationConverter.convert(duration: route.remainingTravelTime).formattedString()
+            durationConverter.convert(duration: route.totalTravelTime).formattedString()
         ].joined(separator: "\n")
         return feature
     }
 
-    private func getDestinationMetaData(route: Route) -> String {
-        [
-            durationConverter.convert(
-                duration: route.remainingTravelTime
-            ).formattedString(),
-            distanceConverter.convert(
-                length: route.distance,
-                measurementSystem: measurementSystemProvider.getMeasurementSystem()
-            ).formattedString()
-        ].joined(separator: " • ")
-    }
-
-    private func firstStop(route: Route?, destinations: [LatLng]?) -> LatLng? {
-        return route?.destinationInfo.destination?.location
-            ?? route?.destination.latLng
-            ?? destinations?.first
+    private func firstStop(route: Route?, destinations _: [LatLng]?) -> LatLng? {
+        return route?.destinationInformation.latLng
     }
 
     private func remainingStops(firstStop: LatLng, destinations: [LatLng]?) -> [LatLng] {
@@ -120,14 +120,14 @@ open class TripSymbolsLayerHandler: MGLStyleLayersHandler {
     }
 
     private func firstStopPin(latLng: LatLng, destinations: [LatLng]) -> MGLPointFeature {
-        guard destinations.count > 0 else {
+        guard !destinations.isEmpty else {
             return destinationPin(latLng: latLng)
         }
         return checkpointPin(latLng: latLng)
     }
 
     private func parkingPin(route: Route?) -> MGLPointFeature? {
-        guard let parkingStop = route?.destinationInfo.parking?.location else {
+        guard let parkingStop = route?.destinationInformation.parkingInformation?.latLng else {
             return nil
         }
         return featurePin(
@@ -137,10 +137,10 @@ open class TripSymbolsLayerHandler: MGLStyleLayersHandler {
     }
 
     private func remainingStopPins(destinations: [LatLng]) -> [MGLPointFeature] {
-        guard destinations.count > 0 else {
+        guard !destinations.isEmpty else {
             return []
         }
-        var features = destinations.prefix(destinations.count - 1).map { checkpointPin(latLng: $0) }
+        var features = destinations.prefix(destinations.count - 1).map { self.checkpointPin(latLng: $0) }
         if let lastCheckPoint = destinations.last {
             features.append(destinationPin(latLng: lastCheckPoint))
         }
@@ -163,29 +163,5 @@ open class TripSymbolsLayerHandler: MGLStyleLayersHandler {
         )
         feature.attributes[DefaultIconLayer.iconNameKey] = imageName
         return feature
-    }
-
-    // MARK: - Source and Layer
-
-    private lazy var source = MGLShapeSource(
-        identifier: identifierPrefix + Constants.sourceIdentifier,
-        shapes: [],
-        options: nil
-    )
-
-    private lazy var layer: MGLStyleLayer = TripMapLayer(
-        identifier: identifierPrefix + Constants.layerIdentifier,
-        source: source,
-        mapTheme: mapTheme
-    )
-}
-
-extension Array where Element == Route.DestinationInfo {
-    var destination: Route.DestinationInfo? {
-        return first(where: { $0.type.lowercased() == "destination" })
-    }
-
-    var parking: Route.DestinationInfo? {
-        return first(where: { $0.type.lowercased() == "parking" })
     }
 }

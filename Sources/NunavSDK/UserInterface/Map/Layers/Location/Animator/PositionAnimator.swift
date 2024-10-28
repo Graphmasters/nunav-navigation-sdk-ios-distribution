@@ -14,8 +14,8 @@ public protocol PositionAnimator: AnyObject {
     func cancelAnimation()
 }
 
-public extension PositionAnimator {
-    func startAnimation() {
+extension PositionAnimator {
+    public func startAnimation() {
         startAnimation(with: 0.55)
     }
 }

@@ -4,27 +4,35 @@ import NunavSDKMultiplatform
 import UIKit
 
 public final class NunavRelativSpeedRouteColorProvider: RelativeSpeedRouteFeatureCreatorColorProvider {
-    private let userInterfaceStyle: UIUserInterfaceStyle
-
-    public init(userInterfaceStyle: UIUserInterfaceStyle) {
-        self.userInterfaceStyle = userInterfaceStyle
-    }
+    // MARK: Properties
 
     public lazy var `default`: String = hexStringFromColor(color: .blue)
 
     public lazy var outline: String = hexStringFromColor(color: .blue)
 
-    public var red: String {
-        return UIColor.red.hexString
-    }
+    private let userInterfaceStyle: UIUserInterfaceStyle
 
     private lazy var lightYellow = UIColor.yellow
 
     private lazy var darkYellow = UIColor.yellow
 
+    // MARK: Computed Properties
+
+    public var red: String {
+        return UIColor.red.hexString
+    }
+
     public var yellow: String {
         return UIColor.yellow.hexString
     }
+
+    // MARK: Lifecycle
+
+    public init(userInterfaceStyle: UIUserInterfaceStyle) {
+        self.userInterfaceStyle = userInterfaceStyle
+    }
+
+    // MARK: Functions
 
     private func hexStringFromColor(color: UIColor) -> String {
         let components = color.cgColor.components

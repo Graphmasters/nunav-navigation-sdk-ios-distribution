@@ -3,8 +3,12 @@ import GMCoreUtility
 import NunavSDKMultiplatform
 
 public final class AudioPlayerVoiceInstructionDispatcher: VoiceInstructionDispatcher {
+    // MARK: Properties
+
     private let audioJobPlayer: AudioJobPlayer
     private let voiceAudioJobProvider: VoiceAudioJobProvider
+
+    // MARK: Lifecycle
 
     public init(
         audioJobPlayer: AudioJobPlayer,
@@ -13,6 +17,8 @@ public final class AudioPlayerVoiceInstructionDispatcher: VoiceInstructionDispat
         self.audioJobPlayer = audioJobPlayer
         self.voiceAudioJobProvider = voiceAudioJobProvider
     }
+
+    // MARK: Functions
 
     public func dispatch(
         voiceInstructionContext _: VoiceInstructionContext,

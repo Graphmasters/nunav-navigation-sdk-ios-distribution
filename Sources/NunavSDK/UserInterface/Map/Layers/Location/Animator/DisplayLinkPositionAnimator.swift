@@ -4,7 +4,11 @@ import NunavSDKMultiplatform
 import UIKit
 
 public final class DisplayLinkPositionAnimatorFactory: PositionAnimatorFactory {
+    // MARK: Lifecycle
+
     public init() {}
+
+    // MARK: Functions
 
     public func getPositionAnimator(start: Location, end: Location) -> PositionAnimator {
         DisplayLinkPositionAnimator(start: start, end: end)
@@ -12,6 +16,10 @@ public final class DisplayLinkPositionAnimatorFactory: PositionAnimatorFactory {
 }
 
 public class DisplayLinkPositionAnimator: PositionAnimator {
+    // MARK: Properties
+
+    public weak var delegate: PositionAnimatorDelegate?
+
     private let start: Location
     private let end: Location
     private var duration: TimeInterval = 0.5
@@ -19,12 +27,14 @@ public class DisplayLinkPositionAnimator: PositionAnimator {
     private var animationStartDate = Date()
     private var displayLink: CADisplayLink?
 
-    public weak var delegate: PositionAnimatorDelegate?
+    // MARK: Lifecycle
 
     public required init(start: Location, end: Location) {
         self.start = start
         self.end = end
     }
+
+    // MARK: Functions
 
     public func startAnimation(with duration: TimeInterval) {
         self.duration = duration
@@ -33,15 +43,15 @@ public class DisplayLinkPositionAnimator: PositionAnimator {
         displayLink?.add(to: .current, forMode: .default)
     }
 
-    private func finishAnimation() {
-        cancelAnimation()
-        delegate?.onUpdate(value: end)
-    }
-
     public func cancelAnimation() {
         displayLink?.remove(from: .current, forMode: .default)
         displayLink?.invalidate()
         displayLink = nil
+    }
+
+    private func finishAnimation() {
+        cancelAnimation()
+        delegate?.onUpdate(value: end)
     }
 
     private func isAnimating() -> Bool {
@@ -71,13 +81,16 @@ public class DisplayLinkPositionAnimator: PositionAnimator {
             ? startHeading + delta * fraction
             : (delta > 180 ? startHeading + (delta - 360) * fraction : startHeading + (delta + 360) * fraction)
 
-        let currentValue = Location(provider: end.provider,
-                                    timestamp: Date().millisecondsSince1970,
-                                    latLng: LatLng(latitude: latitude, longitude: longitude),
-                                    altitude: end.altitude,
-                                    heading: KotlinDouble(double: heading),
-                                    speed: end.speed,
-                                    accuracy: end.accuracy, level: nil)
+        let currentValue = Location(
+            provider: end.provider,
+            timestamp: Int64(Date().timeIntervalSince1970 * 1000.0),
+            latLng: LatLng(latitude: latitude, longitude: longitude),
+            altitude: end.altitude,
+            heading: KotlinDouble(double: heading),
+            speed: end.speed,
+            accuracy: end.accuracy,
+            level: nil
+        )
 
         delegate?.onUpdate(value: currentValue)
     }

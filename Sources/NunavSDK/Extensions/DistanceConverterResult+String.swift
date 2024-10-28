@@ -1,14 +1,14 @@
 import Foundation
 import NunavSDKMultiplatform
 
-public extension DistanceConverterResult {
-    func formattedString() -> String {
+extension DistanceConverterResult {
+    public func formattedString() -> String {
         return "\(value) \(unit)"
     }
 }
 
-public extension DistanceConverter {
-    func convert(length: Length) -> DistanceConverterResult {
+extension DistanceConverter {
+    public func convert(length: Length) -> DistanceConverterResult {
         let result = convert(
             length: length,
             measurementSystem: LocaleMeasurementSystemProvider(

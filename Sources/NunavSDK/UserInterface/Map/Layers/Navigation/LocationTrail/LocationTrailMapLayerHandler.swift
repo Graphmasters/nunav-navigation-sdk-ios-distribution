@@ -3,12 +3,16 @@ import Mapbox
 import NunavSDKMultiplatform
 
 public final class LocationTrailMapLayerHandler: MGLStyleLayersHandler {
+    // MARK: Nested Types
+
     private enum Constants {
         static let maxProbeDistance = Length.companion.fromMeters(meters: 8)
         static let maxTrailLength = 24
         static let sourceIdentifier = "probe_trail_source"
         static let layerIdentifier = "probe_trail_layer"
     }
+
+    // MARK: Properties
 
     @objc private let circleColorKey: String = #keyPath(circleColorKey)
     @objc private let circleStrokeColorKey: String = #keyPath(circleStrokeColorKey)
@@ -18,18 +22,41 @@ public final class LocationTrailMapLayerHandler: MGLStyleLayersHandler {
     private let navigationSdk: NavigationSdk
     private let routeDetachStateProvider: RouteDetachStateProvider
 
-    // MARK: - Attributes
+    private lazy var shapeSource = MGLShapeSource(identifier: Constants.sourceIdentifier, features: [], options: nil)
 
-    private var trail = [Location]() {
+    private lazy var layer: MGLStyleLayer = {
+        let circleLayer = MGLCircleStyleLayer(identifier: Constants.layerIdentifier, source: self.shapeSource)
+        circleLayer.minimumZoomLevel = 11
+        circleLayer.circleColor = NSExpression(forKeyPath: self.circleColorKey)
+        circleLayer.circleStrokeColor = NSExpression(forKeyPath: self.circleStrokeColorKey)
+        circleLayer.circleOpacity = NSExpression(forKeyPath: self.opacityKey)
+        circleLayer.circleStrokeOpacity = NSExpression(forKeyPath: self.opacityKey)
+        circleLayer.circleRadius = NSExpression(
+            forMGLInterpolating: .zoomLevelVariable,
+            curveType: .linear, parameters: nil,
+            stops: NSExpression(forConstantValue: [
+                13: 1,
+                18: 5
+            ])
+        )
+        circleLayer.circlePitchAlignment = NSExpression(forConstantValue: "map")
+        circleLayer.circleStrokeWidth = NSExpression(forConstantValue: 1)
+        return circleLayer
+    }()
+
+    // MARK: Computed Properties
+
+    private var trail = [NunavSDKMultiplatform.Location]() {
         didSet {
             updateSource(from: trail)
         }
     }
 
-    // MARK: - Life Cycle
+    // MARK: Lifecycle
 
     public init(
         mapLayerManager: MapboxMapLayerManager?,
+        mapTheme: MapTheme,
         mapLocationProvider: LocationProvider,
         navigationSdk: NavigationSdk,
         routeDetachStateProvider: RouteDetachStateProvider
@@ -38,7 +65,7 @@ public final class LocationTrailMapLayerHandler: MGLStyleLayersHandler {
         self.navigationSdk = navigationSdk
         self.routeDetachStateProvider = routeDetachStateProvider
 
-        super.init(mapLayerManager: mapLayerManager)
+        super.init(mapLayerManager: mapLayerManager, mapTheme: mapTheme)
     }
 
     override public func setup() {
@@ -56,6 +83,8 @@ public final class LocationTrailMapLayerHandler: MGLStyleLayersHandler {
         navigationSdk.removeOnNavigationStoppedListener(onNavigationStoppedListener: self)
     }
 
+    // MARK: Overridden Functions
+
     override public func updateVisibility(_ visible: Bool) {
         if visible {
             mapLayerManager?.showLayer(with: layer.identifier)
@@ -64,27 +93,7 @@ public final class LocationTrailMapLayerHandler: MGLStyleLayersHandler {
         }
     }
 
-    private lazy var shapeSource = MGLShapeSource(identifier: Constants.sourceIdentifier, features: [], options: nil)
-
-    private lazy var layer: MGLStyleLayer = {
-        let circleLayer = MGLCircleStyleLayer(identifier: Constants.layerIdentifier, source: shapeSource)
-        circleLayer.minimumZoomLevel = 11
-        circleLayer.circleColor = NSExpression(forKeyPath: circleColorKey)
-        circleLayer.circleStrokeColor = NSExpression(forKeyPath: circleStrokeColorKey)
-        circleLayer.circleOpacity = NSExpression(forKeyPath: opacityKey)
-        circleLayer.circleStrokeOpacity = NSExpression(forKeyPath: opacityKey)
-        circleLayer.circleRadius = NSExpression(
-            forMGLInterpolating: .zoomLevelVariable,
-            curveType: .linear, parameters: nil,
-            stops: NSExpression(forConstantValue: [
-                13: 1,
-                18: 5
-            ])
-        )
-        circleLayer.circlePitchAlignment = NSExpression(forConstantValue: "map")
-        circleLayer.circleStrokeWidth = NSExpression(forConstantValue: 1)
-        return circleLayer
-    }()
+    // MARK: Functions
 
     private func getCircleStrokeColor(for _: Speed) -> UIColor {
         if routeDetachStateProvider.detached {
@@ -127,7 +136,9 @@ public final class LocationTrailMapLayerHandler: MGLStyleLayersHandler {
 
 extension LocationTrailMapLayerHandler: LocationProviderLocationUpdateListener {
     public func onLocationUpdated(location: Location) {
-        guard canAdd(location) else { return }
+        guard canAdd(location) else {
+            return
+        }
         guard navigationSdk.navigationState?.initialized == true else {
             return trail.removeAll()
         }
@@ -139,12 +150,14 @@ extension LocationTrailMapLayerHandler: LocationProviderLocationUpdateListener {
     }
 
     private func canAdd(_ location: Location) -> Bool {
-        guard let first = trail.first else { return true }
+        guard let first = trail.first else {
+            return true
+        }
         let distance = Geodesy.shared.pointToPointDistance(
             start: location.latLng,
             end: first.latLng
         )
-        return distance > Constants.maxProbeDistance
+        return distance.inMeters() > Constants.maxProbeDistance.inMeters()
     }
 }
 

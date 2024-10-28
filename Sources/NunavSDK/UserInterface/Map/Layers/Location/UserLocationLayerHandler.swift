@@ -3,11 +3,15 @@ import Mapbox
 import NunavSDKMultiplatform
 
 public final class UserLocationLayerHandler: MGLStyleLayersHandler {
+    // MARK: Nested Types
+
     private enum Constants {
         static let layerIdentifier: String = "current_location_map_layer"
         static let sourceIdentifier: String = "current_location_map_source"
         static let imageKey: String = "LOCATION_ICON_IMAGE_KEY"
     }
+
+    // MARK: Properties
 
     @objc public var rotationKey: String = #keyPath(rotationKey)
 
@@ -16,84 +20,11 @@ public final class UserLocationLayerHandler: MGLStyleLayersHandler {
     private let positionAnimatorFactory: PositionAnimatorFactory
     private let routeDetachStateProvider: RouteDetachStateProvider
 
-    // MARK: - Life Cycle
-
-    public init(
-        mapLayerManager: MapboxMapLayerManager?,
-        locationProvider: LocationProvider,
-        navigationSdk: NavigationSdk,
-        positionAnimatorFactory: PositionAnimatorFactory = TimerPositionAnimatorFactory(),
-        routeDetachStateProvider: RouteDetachStateProvider
-    ) {
-        self.locationProvider = locationProvider
-        self.navigationSdk = navigationSdk
-        self.positionAnimatorFactory = positionAnimatorFactory
-        self.routeDetachStateProvider = routeDetachStateProvider
-
-        super.init(mapLayerManager: mapLayerManager)
-    }
-
-    override public func setup() {
-        super.setup()
-        mapLayerManager?.add(source: shapeSource)
-        try? mapLayerManager?.addSymbolLayer(layer: layer)
-        mapLayerManager?.add(image: currentLocationIcon, for: Constants.imageKey)
-    }
-
-    override public func startLayerUpdates() {
-        super.startLayerUpdates()
-        locationProvider.addLocationUpdateListener(locationUpdateListener: self)
-    }
-
-    override public func stopLayerUpdates() {
-        locationProvider.removeLocationUpdateListener(locationUpdateListener: self)
-    }
-
-    private var currentLocationIcon: UIImage = Asset.Map.locationIconGray.image {
-        didSet {
-            guard oldValue != currentLocationIcon else {
-                return
-            }
-            mapLayerManager?.remove(imageWithKey: Constants.imageKey)
-            mapLayerManager?.add(image: currentLocationIcon, for: Constants.imageKey)
-        }
-    }
-
-    private func refreshLocationIcon() {
-        if routeDetachStateProvider.detached {
-            currentLocationIcon = Asset.Map.locationIconGray.image
-        } else {
-            currentLocationIcon = Asset.Map.locationIcon.image
-        }
-    }
-
-    override public func updateVisibility(_ visible: Bool) {
-        if visible {
-            mapLayerManager?.showLayer(with: layer.identifier)
-        } else {
-            mapLayerManager?.hideLayer(with: layer.identifier)
-        }
-    }
-
-    // MARK: - Source and Layer
-
     private lazy var shapeSource = MGLShapeSource(identifier: Constants.sourceIdentifier,
                                                   shapes: [], options: nil)
 
-    private func point(for location: Location) -> MGLPointFeature {
-        return point(for: location.latLng, heading: Double(truncating: location.heading ?? 0))
-    }
-
-    private func point(for position: LatLng, heading: Double) -> MGLPointFeature {
-        let point = MGLPointFeature()
-        point.identifier = UUID().uuidString
-        point.coordinate = position.clLocationCoordinate2D
-        point.attributes[rotationKey] = heading
-        return point
-    }
-
     private lazy var layer: MGLStyleLayer = {
-        let layer = DefaultIconLayer(identifier: Constants.layerIdentifier, source: shapeSource, minimumZoomLevel: 0)
+        let layer = DefaultIconLayer(identifier: Constants.layerIdentifier, source: self.shapeSource, minimumZoomLevel: 0)
         layer.iconImageName = NSExpression(forConstantValue: Constants.imageKey)
         layer.iconAnchor = NSExpression(forConstantValue: MGLIconAnchor.center.rawValue)
         layer.iconScale = NSExpression(
@@ -105,7 +36,7 @@ public final class UserLocationLayerHandler: MGLStyleLayersHandler {
                 13.5: 0.5
             ])
         )
-        layer.iconRotation = NSExpression(forKeyPath: rotationKey)
+        layer.iconRotation = NSExpression(forKeyPath: self.rotationKey)
         layer.iconRotationAlignment = NSExpression(forConstantValue: MGLIconRotationAlignment.map.rawValue)
         layer.iconAllowsOverlap = NSExpression(forConstantValue: true)
         layer.textAllowsOverlap = NSExpression(forConstantValue: true)
@@ -115,6 +46,20 @@ public final class UserLocationLayerHandler: MGLStyleLayersHandler {
     }()
 
     private var timer: Timer?
+
+    private weak var positionAnimator: PositionAnimator?
+
+    // MARK: Computed Properties
+
+    private var currentLocationIcon: UIImage = Asset.Map.locationIconGray.image {
+        didSet {
+            guard oldValue != currentLocationIcon else {
+                return
+            }
+            mapLayerManager?.remove(imageWithKey: Constants.imageKey)
+            mapLayerManager?.add(image: currentLocationIcon, for: Constants.imageKey)
+        }
+    }
 
     private var shownPosition: Location? {
         didSet {
@@ -134,7 +79,71 @@ public final class UserLocationLayerHandler: MGLStyleLayersHandler {
         }
     }
 
-    private weak var positionAnimator: PositionAnimator?
+    // MARK: Lifecycle
+
+    public init(
+        mapLayerManager: MapboxMapLayerManager?,
+        mapTheme: MapTheme,
+        locationProvider: LocationProvider,
+        navigationSdk: NavigationSdk,
+        positionAnimatorFactory: PositionAnimatorFactory = TimerPositionAnimatorFactory(),
+        routeDetachStateProvider: RouteDetachStateProvider
+    ) {
+        self.locationProvider = locationProvider
+        self.navigationSdk = navigationSdk
+        self.positionAnimatorFactory = positionAnimatorFactory
+        self.routeDetachStateProvider = routeDetachStateProvider
+
+        super.init(mapLayerManager: mapLayerManager, mapTheme: mapTheme)
+    }
+
+    override public func setup() {
+        super.setup()
+        mapLayerManager?.add(source: shapeSource)
+        try? mapLayerManager?.addSymbolLayer(layer: layer)
+        mapLayerManager?.add(image: currentLocationIcon, for: Constants.imageKey)
+    }
+
+    override public func startLayerUpdates() {
+        super.startLayerUpdates()
+        locationProvider.addLocationUpdateListener(locationUpdateListener: self)
+    }
+
+    override public func stopLayerUpdates() {
+        locationProvider.removeLocationUpdateListener(locationUpdateListener: self)
+    }
+
+    // MARK: Overridden Functions
+
+    override public func updateVisibility(_ visible: Bool) {
+        if visible {
+            mapLayerManager?.showLayer(with: layer.identifier)
+        } else {
+            mapLayerManager?.hideLayer(with: layer.identifier)
+        }
+    }
+
+    // MARK: Functions
+
+    private func refreshLocationIcon() {
+        if routeDetachStateProvider.detached {
+            currentLocationIcon = Asset.Map.locationIconGray.image
+        } else {
+            currentLocationIcon = Asset.Map.locationIcon.image
+        }
+    }
+
+    private func point(for location: Location) -> MGLPointFeature {
+        return point(for: location.latLng, heading: Double(truncating: location.heading ?? 0))
+    }
+
+    private func point(for position: LatLng, heading: Double) -> MGLPointFeature {
+        let point = MGLPointFeature()
+        point.identifier = UUID().uuidString
+        point.coordinate = position.clLocationCoordinate2D
+        point.attributes[rotationKey] = heading
+        return point
+    }
 }
 
 extension UserLocationLayerHandler: LocationProviderLocationUpdateListener {

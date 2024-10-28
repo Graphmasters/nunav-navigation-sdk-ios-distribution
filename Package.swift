@@ -35,6 +35,9 @@ extension Target {
             .gmMapUtility,
             .nunavDesignSystem
         ],
+        resources: [
+            .process("Resources/PrivacyInfo.xcprivacy"),
+        ],
         plugins: [
             .swiftGenAssets,
             .swiftGenLocalization
@@ -43,7 +46,8 @@ extension Target {
 
     static let nunavSDKMultiplatform: Target = .binaryTarget(
         name: .nunavSDKMultiplatform,
-        path: "Sources/NunavSDKMultiplatform/NunavSDKMultiplatform.xcframework"
+        url: "https://github.com/Graphmasters/nunav-navigation-sdk-ios-distribution/releases/download/1.0.2/NunavSDKMultiplatform.xcframework.zip",
+        checksum: "a7cdaeab80bc70da475aa374f5cc549f9f256d5c174a9609e5c0f06e91053fc4"
     )
 
     // MARK: - Plugins
@@ -78,9 +82,9 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/Graphmasters/ios-core-utility-distribution", "1.0.0"..<"1.1.0"),
-        .package(url: "https://github.com/Graphmasters/ios-map-utility-distribution", "1.0.0"..<"1.1.0"),
-        .package(url: "https://github.com/Graphmasters/nunav-ios-design-system-distribution", "1.0.0"..<"1.1.0")
+        .package(url: "https://github.com/Graphmasters/ios-core-utility-distribution", from: "1.2.2"),
+        .package(url: "https://github.com/Graphmasters/ios-map-utility-distribution", from: "1.1.4"),
+        .package(url: "https://github.com/Graphmasters/nunav-ios-design-system-distribution", from: "1.0.30")
     ],
     targets: [
         .nunavSDK,

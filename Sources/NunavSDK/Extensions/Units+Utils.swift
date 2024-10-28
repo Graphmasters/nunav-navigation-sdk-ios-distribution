@@ -1,24 +1,28 @@
 import CoreLocation
 import NunavSDKMultiplatform
 
-public extension LatLng {
-    convenience init(clCoordinate: CLLocationCoordinate2D) {
-        self.init(latitude: clCoordinate.latitude, longitude: clCoordinate.longitude)
+extension LatLng {
+    // MARK: Computed Properties
+
+    public var clLocationCoordinate2D: CLLocationCoordinate2D {
+        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
 
-    var clLocationCoordinate2D: CLLocationCoordinate2D {
-        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    // MARK: Lifecycle
+
+    public convenience init(clCoordinate: CLLocationCoordinate2D) {
+        self.init(latitude: clCoordinate.latitude, longitude: clCoordinate.longitude)
     }
 }
 
-public extension LatLng {
-    var formattedDescription: String {
+extension LatLng {
+    public var formattedDescription: String {
         String(format: "%.02f, %.02f", latitude, longitude)
     }
 }
 
-public extension Location {
-    convenience init(
+extension Location {
+    public convenience init(
         provider: String = "UNKNWON",
         latLng: LatLng,
         altitude: Length? = nil,
@@ -40,38 +44,8 @@ public extension Location {
     }
 }
 
-extension NunavSDKMultiplatform.Duration: Comparable {
-    public static func < (lhs: Duration, rhs: Duration) -> Bool {
-        lhs.inWholeMilliseconds() < rhs.inWholeMilliseconds()
-    }
-
-    public static func + (lhs: Duration, rhs: Duration) -> Duration {
-        lhs.plus(other: rhs)
-    }
-
-    public static func - (lhs: Duration, rhs: Duration) -> Duration {
-        lhs.minus(other: rhs)
-    }
-}
-
-extension Length: Comparable {
-    public static func < (lhs: Length, rhs: Length) -> Bool { lhs.inMeters() < rhs.inMeters() }
-
-    public static func + (lhs: Length, rhs: Length) -> Length { lhs.plus(other: rhs) }
-
-    public static func - (lhs: Length, rhs: Length) -> Length { lhs.minus(other: rhs) }
-
-    public static func * (lhs: Length, rhs: Double) -> Length {
-        Length.companion.fromMeters(meters: lhs.inMeters() * rhs)
-    }
-}
-
-extension Speed: Comparable {
-    public static func < (lhs: Speed, rhs: Speed) -> Bool { lhs.inMs() < rhs.inMs() }
-}
-
-public extension Timestamp {
-    static func now() -> Timestamp {
+extension Timestamp {
+    public static func now() -> Timestamp {
         Timestamp.companion.fromMilliseconds(
             milliseconds: Time.shared.currentTimeMs
         )

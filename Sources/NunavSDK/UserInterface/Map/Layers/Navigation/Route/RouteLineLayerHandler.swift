@@ -4,7 +4,7 @@ import Mapbox
 import NunavSDKMultiplatform
 
 open class RouteLineLayerHandler: MGLStyleLayersHandler {
-    // MARK: - Constants
+    // MARK: Nested Types
 
     private enum Constants {
         static let firstPartRouteLayerIdentifier = "FIRST_PART_ROUTE_LAYER_IDENTIFIER"
@@ -16,11 +16,64 @@ open class RouteLineLayerHandler: MGLStyleLayersHandler {
         static let secondPartRouteSourceIdentifier = "SECOND_PART_ROUTE_SOURCE_IDENTIFIER"
     }
 
-    // MARK: - Attributes
+    // MARK: Properties
+
+    public private(set) lazy var firstPartRouteLayer: MGLLineStyleLayer = RouteLineLayer(
+        identifier: identifierPrefix + Constants.firstPartRouteLayerIdentifier, source: firstPartRouteSource
+    )
+
+    public private(set) lazy var firstPartRouteOutlineLayer: MGLLineStyleLayer = RouteOutlineLayer(
+        identifier: identifierPrefix + Constants.firstPartRouteOutlineLayerIdentifier, source: firstPartRouteSource
+    )
+
+    public private(set) lazy var secondPartRouteLayer: MGLLineStyleLayer = RouteLineLayer(
+        identifier: identifierPrefix + Constants.secondPartRouteLayerIdentifier,
+        source: secondPartRouteSource
+    )
+
+    public private(set) lazy var secondPartRouteOutlineLayer: MGLLineStyleLayer = RouteOutlineLayer(
+        identifier: identifierPrefix + Constants.secondPartRouteOutlineLayerIdentifier,
+        source: secondPartRouteSource
+    )
 
     private let identifierPrefix: String
 
     private let featureCreator: RouteFeatureCreator
+
+    private var featureCreationQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.qualityOfService = .utility
+        queue.maxConcurrentOperationCount = 1
+        queue.name = "Route feature creation"
+        return queue
+    }()
+
+    private var drawQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.qualityOfService = .userInitiated
+        queue.underlyingQueue = .main
+        queue.maxConcurrentOperationCount = 2
+        queue.name = "Route drawing"
+        return queue
+    }()
+
+    private lazy var firstPartRouteSource: MGLShapeSource = .init(
+        identifier: identifierPrefix + Constants.firstPartRouteSourceIdentifier,
+        shapes: [],
+        options: [
+            MGLShapeSourceOption.simplificationTolerance: MGLShapeSourceOption.routeSimplificationToleranceValue
+        ]
+    )
+
+    private lazy var secondPartRouteSource = MGLShapeSource(
+        identifier: identifierPrefix + Constants.secondPartRouteSourceIdentifier,
+        shapes: [],
+        options: [
+            MGLShapeSourceOption.simplificationTolerance: MGLShapeSourceOption.routeSimplificationToleranceValue
+        ]
+    )
+
+    // MARK: Computed Properties
 
     public var waypoints: [Route.Waypoint] = [] {
         didSet {
@@ -29,6 +82,73 @@ open class RouteLineLayerHandler: MGLStyleLayersHandler {
             }
             refreshLayer(with: waypoints)
         }
+    }
+
+    // MARK: Lifecycle
+
+    public init(
+        mapLayerManager: MapboxMapLayerManager?,
+        mapTheme: MapTheme,
+        featureCreator: RouteFeatureCreator,
+        identifierPrefix: String
+    ) {
+        self.featureCreator = featureCreator
+        self.identifierPrefix = identifierPrefix
+
+        super.init(mapLayerManager: mapLayerManager, mapTheme: mapTheme)
+    }
+
+    override public func setup() {
+        mapLayerManager?.add(shapeSource: firstPartRouteSource, useFeatureCache: true)
+        mapLayerManager?.add(shapeSource: secondPartRouteSource, useFeatureCache: true)
+
+        try? mapLayerManager?.addRouteLineLayer(layer: secondPartRouteOutlineLayer)
+        try? mapLayerManager?.addRouteLineLayer(layer: firstPartRouteOutlineLayer)
+        try? mapLayerManager?.addRouteLineLayer(layer: secondPartRouteLayer)
+        try? mapLayerManager?.addRouteLineLayer(layer: firstPartRouteLayer)
+    }
+
+    // MARK: Overridden Functions
+
+    override public func updateVisibility(_ visible: Bool) {
+        if visible {
+            mapLayerManager?.showLayer(with: firstPartRouteLayer.identifier)
+            mapLayerManager?.showLayer(with: firstPartRouteOutlineLayer.identifier)
+            mapLayerManager?.showLayer(with: secondPartRouteLayer.identifier)
+            mapLayerManager?.showLayer(with: secondPartRouteOutlineLayer.identifier)
+        } else {
+            mapLayerManager?.hideLayer(with: firstPartRouteLayer.identifier)
+            mapLayerManager?.hideLayer(with: firstPartRouteOutlineLayer.identifier)
+            mapLayerManager?.hideLayer(with: secondPartRouteLayer.identifier)
+            mapLayerManager?.hideLayer(with: secondPartRouteOutlineLayer.identifier)
+        }
+    }
+
+    // MARK: Functions
+
+    public func refreshLayer(with fullRoute: [Route.Waypoint], forced: Bool = false) {
+        if forced {
+            cancelRemainingWork()
+        }
+
+        let operation = BlockOperation(block: { [weak self] in
+            guard let self = self else {
+                return
+            }
+            let firstTurnCommandIndex = fullRoute.firstIndex(where: { $0.isTurnCommand() }) ?? fullRoute.endIndex
+            let position = fullRoute.distance(from: fullRoute.startIndex, to: firstTurnCommandIndex)
+            let parts = RouteUtils().splitAtIndex(waypoints: fullRoute, indexInclusive: Int32(position))
+                .filter { $0.count > 1 }
+
+            guard let firstPart = parts.first, let secondPart = parts.last else {
+                return
+            }
+
+            self.set(waypoints: firstPart, source: self.firstPartRouteSource, forced: forced)
+
+            self.set(waypoints: secondPart, source: self.secondPartRouteSource, forced: forced)
+        })
+        featureCreationQueue.addOperation(operation)
     }
 
     private func clearLayer() {
@@ -48,83 +168,6 @@ open class RouteLineLayerHandler: MGLStyleLayersHandler {
         }
     }
 
-    private var featureCreationQueue: OperationQueue = {
-        let queue = OperationQueue()
-        queue.qualityOfService = .utility
-        queue.maxConcurrentOperationCount = 1
-        queue.name = "Route feature creation"
-        return queue
-    }()
-
-    private var drawQueue: OperationQueue = {
-        let queue = OperationQueue()
-        queue.qualityOfService = .userInitiated
-        queue.underlyingQueue = .main
-        queue.maxConcurrentOperationCount = 2
-        queue.name = "Route drawing"
-        return queue
-    }()
-
-    // MARK: - Life Cycle
-
-    public init(
-        mapLayerManager: MapboxMapLayerManager?,
-        featureCreator: RouteFeatureCreator,
-        identifierPrefix: String
-    ) {
-        self.featureCreator = featureCreator
-        self.identifierPrefix = identifierPrefix
-
-        super.init(mapLayerManager: mapLayerManager)
-    }
-
-    override public func setup() {
-        mapLayerManager?.add(shapeSource: firstPartRouteSource, useFeatureCache: true)
-        mapLayerManager?.add(shapeSource: secondPartRouteSource, useFeatureCache: true)
-
-        try? mapLayerManager?.addRouteLineLayer(layer: secondPartRouteOutlineLayer)
-        try? mapLayerManager?.addRouteLineLayer(layer: firstPartRouteOutlineLayer)
-        try? mapLayerManager?.addRouteLineLayer(layer: secondPartRouteLayer)
-        try? mapLayerManager?.addRouteLineLayer(layer: firstPartRouteLayer)
-    }
-
-    override public func updateVisibility(_ visible: Bool) {
-        if visible {
-            mapLayerManager?.showLayer(with: firstPartRouteLayer.identifier)
-            mapLayerManager?.showLayer(with: firstPartRouteOutlineLayer.identifier)
-            mapLayerManager?.showLayer(with: secondPartRouteLayer.identifier)
-            mapLayerManager?.showLayer(with: secondPartRouteOutlineLayer.identifier)
-        } else {
-            mapLayerManager?.hideLayer(with: firstPartRouteLayer.identifier)
-            mapLayerManager?.hideLayer(with: firstPartRouteOutlineLayer.identifier)
-            mapLayerManager?.hideLayer(with: secondPartRouteLayer.identifier)
-            mapLayerManager?.hideLayer(with: secondPartRouteOutlineLayer.identifier)
-        }
-    }
-
-    // MARK: - Update Layer
-
-    public func refreshLayer(with fullRoute: [Route.Waypoint], forced: Bool = false) {
-        if forced {
-            cancelRemainingWork()
-        }
-
-        let operation = BlockOperation(block: { [weak self] in
-            guard let self = self else { return }
-            let firstTurnCommandIndex = fullRoute.firstIndex(where: { $0.isTurnCommand() }) ?? fullRoute.endIndex
-            let position = fullRoute.distance(from: fullRoute.startIndex, to: firstTurnCommandIndex)
-            let parts = RouteUtils().splitAtIndex(waypoints: fullRoute, indexInclusive: Int32(position))
-                .filter { $0.count > 1 }
-
-            guard let firstPart = parts.first, let secondPart = parts.last else { return }
-
-            self.set(waypoints: firstPart, source: self.firstPartRouteSource, forced: forced)
-
-            self.set(waypoints: secondPart, source: self.secondPartRouteSource, forced: forced)
-        })
-        featureCreationQueue.addOperation(operation)
-    }
-
     private func set(waypoints: [Route.Waypoint], source: MGLShapeSource, forced: Bool) {
         let shapes: MGLShapeCollectionFeature = shape(from: waypoints)
 
@@ -133,7 +176,9 @@ open class RouteLineLayerHandler: MGLStyleLayersHandler {
         }
 
         drawQueue.addOperation { [weak self] in
-            guard let self = self else { return }
+            guard let self = self else {
+                return
+            }
             try? self.mapLayerManager?.set(shape: shapes, on: source)
         }
     }
@@ -169,42 +214,4 @@ open class RouteLineLayerHandler: MGLStyleLayersHandler {
             return []
         }
     }
-
-    // MARK: - Sources
-
-    private lazy var firstPartRouteSource: MGLShapeSource = .init(
-        identifier: identifierPrefix + Constants.firstPartRouteSourceIdentifier,
-        shapes: [],
-        options: [
-            MGLShapeSourceOption.simplificationTolerance: MGLShapeSourceOption.routeSimplificationToleranceValue
-        ]
-    )
-
-    private lazy var secondPartRouteSource = MGLShapeSource(
-        identifier: identifierPrefix + Constants.secondPartRouteSourceIdentifier,
-        shapes: [],
-        options: [
-            MGLShapeSourceOption.simplificationTolerance: MGLShapeSourceOption.routeSimplificationToleranceValue
-        ]
-    )
-
-    // MARK: - Layers
-
-    public private(set) lazy var firstPartRouteLayer: MGLLineStyleLayer = RouteLineLayer(
-        identifier: identifierPrefix + Constants.firstPartRouteLayerIdentifier, source: firstPartRouteSource
-    )
-
-    public private(set) lazy var firstPartRouteOutlineLayer: MGLLineStyleLayer = RouteOutlineLayer(
-        identifier: identifierPrefix + Constants.firstPartRouteOutlineLayerIdentifier, source: firstPartRouteSource
-    )
-
-    public private(set) lazy var secondPartRouteLayer: MGLLineStyleLayer = RouteLineLayer(
-        identifier: identifierPrefix + Constants.secondPartRouteLayerIdentifier,
-        source: secondPartRouteSource
-    )
-
-    public private(set) lazy var secondPartRouteOutlineLayer: MGLLineStyleLayer = RouteOutlineLayer(
-        identifier: identifierPrefix + Constants.secondPartRouteOutlineLayerIdentifier,
-        source: secondPartRouteSource
-    )
 }

@@ -5,14 +5,27 @@ import NunavSDKMultiplatform
 import SwiftUI
 
 struct NavigationScreen: View {
+    // MARK: Static Properties
+
+    static let internetViewHeight: CGFloat = 74
+
+    // MARK: Properties
+
+    let monitor = NWPathMonitor()
+
+    @State var state: NavigationUIState?
+    @State var errorDialogShown: Bool = false
+
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+
     private let navigationViewModel: NavigationViewModel
     private let routeProgressViewModel: RouteProgressViewModel
     private let maneuverViewModel: ManeuverViewModel
 
-    static let internetViewHeight: CGFloat = 74
-
     @State private var isNetworkMissing = false
-    let monitor = NWPathMonitor()
+
+    // MARK: Lifecycle
 
     init(
         navigationViewModel: NavigationViewModel,
@@ -24,12 +37,7 @@ struct NavigationScreen: View {
         self.maneuverViewModel = maneuverViewModel
     }
 
-    @State var state: NavigationUIState?
-    @State var errorDialogShown: Bool = false
-
-    @Environment(\.scenePhase) var scenePhase
-    @Environment(\.verticalSizeClass) var verticalSizeClass
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    // MARK: Content
 
     var body: some View {
         ZStack {
@@ -43,18 +51,20 @@ struct NavigationScreen: View {
                     .layoutPriority(1)
             }
             VStack {
-                if (verticalSizeClass ?? .regular) == .regular && (horizontalSizeClass ?? .regular) == .compact {
-                    portraitLayout
+                if (self.verticalSizeClass ?? .regular) == .regular && (self.horizontalSizeClass ?? .regular) == .compact {
+                    self.portraitLayout
                 } else {
-                    landscapeLayout
+                    self.landscapeLayout
                 }
             }
             .alert(
                 L10n.routeProgressViewDialogEndNavigationTitle,
-                isPresented: $errorDialogShown,
+                isPresented: self.$errorDialogShown,
                 actions: {
                     Button(L10n.navigationScreenDialogActionClose, role: .none) {
-                        NunavSDK.navigationSdk.stopNavigation()
+                        DispatchQueue.global(qos: .background).async {
+                            NunavSDK.navigationSdk.stopNavigation()
+                        }
                     }
                 }, message: {
                     if let error = state?.navigationError {
@@ -69,53 +79,52 @@ struct NavigationScreen: View {
                             }
                         }
                     }
-
                 }
             )
             .onAppear(perform: {
-                startMonitoringInternetConnection()
-                state = navigationViewModel.state.value
+                self.startMonitoringInternetConnection()
+                self.state = self.navigationViewModel.state.value
                 Task {
-                    for await state in navigationViewModel.state {
+                    for await state in self.navigationViewModel.state {
                         self.state = state
                         self.errorDialogShown = state?.navigationError?.critical == true
                         NavigationUI.voiceInstructionComponent.enabled = state?.voiceInstructionsEnabled ?? false
                     }
                 }
             }).onDisappear(perform: {
-                navigationViewModel.onCleared()
+                self.navigationViewModel.onCleared()
             })
         }
     }
 
     var portraitLayout: some View {
         GeometryReader { geometryProxy in
-            VStack(spacing: Size.Padding.large) {
-                if isNetworkMissing {
+            VStack(spacing: .large) {
+                if self.isNetworkMissing {
                     MapOverlayInfoView()
                         .transition(.move(edge: .top))
                 } else {
                     Color.black.frame(height: .zero)
                 }
-                ManeuverProgressView(viewModel: maneuverViewModel)
-                    .padding([.horizontal], Size.Padding.large)
+                ManeuverProgressView(viewModel: self.maneuverViewModel)
+                    .padding([.horizontal], Spacing.large.rawValue)
                 if let state = state {
                     MapOverlayButtonView(
                         state: state,
-                        onVoiceInstructionButtonClicked: navigationViewModel.onVoiceInstructionButtonClicked
-                    ).padding([.horizontal], Size.Padding.large)
+                        onVoiceInstructionButtonClicked: self.navigationViewModel.onVoiceInstructionButtonClicked
+                    ).padding([.horizontal], Spacing.large.rawValue)
                 } else {
                     Spacer()
                 }
-                RouteProgressView(viewModel: routeProgressViewModel, geometryProxy: geometryProxy, landscapeMode: false)
+                RouteProgressView(viewModel: self.routeProgressViewModel, geometryProxy: geometryProxy, landscapeMode: false)
             }
         }
     }
 
     var landscapeLayout: some View {
         GeometryReader { geometryProxy in
-            VStack(spacing: Size.Padding.large) {
-                if isNetworkMissing {
+            VStack(spacing: .large) {
+                if self.isNetworkMissing {
                     MapOverlayInfoView()
                         .transition(.move(edge: .top))
                 } else {
@@ -123,17 +132,17 @@ struct NavigationScreen: View {
                 }
                 HStack {
                     VStack {
-                        ManeuverProgressView(viewModel: maneuverViewModel)
+                        ManeuverProgressView(viewModel: self.maneuverViewModel)
                         Spacer()
-                        RouteProgressView(viewModel: routeProgressViewModel, geometryProxy: geometryProxy, landscapeMode: true)
+                        RouteProgressView(viewModel: self.routeProgressViewModel, geometryProxy: geometryProxy, landscapeMode: true)
                     }.frame(minWidth: .zero, maxWidth: .infinity)
                         .layoutPriority(1)
                     VStack {
                         if let state = state {
                             MapOverlayButtonView(
                                 state: state,
-                                onVoiceInstructionButtonClicked: navigationViewModel.onVoiceInstructionButtonClicked
-                            ).padding(Size.Padding.default)
+                                onVoiceInstructionButtonClicked: self.navigationViewModel.onVoiceInstructionButtonClicked
+                            ).padding(.default)
                         } else {
                             Spacer()
                         }
@@ -144,14 +153,16 @@ struct NavigationScreen: View {
         }
     }
 
+    // MARK: Functions
+
     private func startMonitoringInternetConnection() {
         monitor.start(queue: DispatchQueue.global(qos: .background))
         monitor.pathUpdateHandler = { path in
             withAnimation {
                 if path.status == .satisfied {
-                    isNetworkMissing = false
+                    self.isNetworkMissing = false
                 } else {
-                    isNetworkMissing = true
+                    self.isNetworkMissing = true
                 }
             }
         }

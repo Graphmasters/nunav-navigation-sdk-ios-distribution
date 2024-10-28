@@ -2,8 +2,8 @@ import Foundation
 import NunavSDKMultiplatform
 import UIKit
 
-public extension CameraUpdate.Padding {
-    var edgeInsets: UIEdgeInsets {
+extension CameraUpdate.Padding {
+    public var edgeInsets: UIEdgeInsets {
         return UIEdgeInsets(
             top: CGFloat(top),
             left: CGFloat(left),

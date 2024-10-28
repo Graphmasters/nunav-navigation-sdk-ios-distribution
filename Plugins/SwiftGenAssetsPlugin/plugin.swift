@@ -14,8 +14,6 @@ struct SwiftGenPluginAssets: BuildToolPlugin {
     }
 }
 
-// MARK: -
-
 struct SwiftGenCommandConfig {
     var toolPath: Path
     var configPath: Path
@@ -25,14 +23,7 @@ struct SwiftGenCommandConfig {
 }
 
 extension SwiftGenCommandConfig {
-    static func make(for context: PluginContext, target: Target) throws -> Self {
-        try .init(
-            toolPath: context.tool(named: "swiftgen").path,
-            inputFilesPath: target.directory,
-            outputFilesPath: context.pluginWorkDirectory.appending("Generated").appending(target.name),
-            target: target
-        )
-    }
+    // MARK: Lifecycle
 
     init(toolPath: Path, inputFilesPath: Path, outputFilesPath: Path, target: Target) {
         self.init(
@@ -44,6 +35,17 @@ extension SwiftGenCommandConfig {
                 "INPUT_DIR": inputFilesPath,
                 "OUTPUT_DIR": outputFilesPath
             ]
+        )
+    }
+
+    // MARK: Static Functions
+
+    static func make(for context: PluginContext, target: Target) throws -> Self {
+        try .init(
+            toolPath: context.tool(named: "swiftgen").path,
+            inputFilesPath: target.directory,
+            outputFilesPath: context.pluginWorkDirectory.appending("Generated").appending(target.name),
+            target: target
         )
     }
 
@@ -62,8 +64,6 @@ extension SwiftGenCommandConfig {
         """
     }
 }
-
-// MARK: -
 
 extension Command {
     static func swiftgenCommand(for swiftgen: SwiftGenCommandConfig) -> Command {

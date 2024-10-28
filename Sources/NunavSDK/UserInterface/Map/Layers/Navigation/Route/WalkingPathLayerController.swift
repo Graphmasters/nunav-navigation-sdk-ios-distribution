@@ -4,27 +4,24 @@ import NunavDesignSystem
 import NunavSDKMultiplatform
 
 public final class WalkingPathLayerController: MGLStyleLayersHandler {
+    // MARK: Properties
+
     @objc private lazy var layerIdentifier: String = identifierPrefix + "WALKING_PATH_LAYER_IDENTIFIER"
 
     private let identifierPrefix: String
 
-    // MARK: - Life Cycle
+    private var straightLine: MGLShape?
+    private var bezierPolyLine: MGLShape?
 
-    public init(
-        mapLayerManager: MapboxMapLayerManager?,
-        identifierPrefix: String
-    ) {
-        self.identifierPrefix = identifierPrefix
+    private lazy var source = MGLShapeSource(identifier: layerIdentifier, shapes: [], options: nil)
 
-        super.init(mapLayerManager: mapLayerManager)
-    }
+    private lazy var layer: MGLStyleLayer = DashedLineLayer(
+        identifier: layerIdentifier,
+        source: source,
+        lineColor: .DesignSystem.onSurfaceSecondary
+    )
 
-    override public func setup() {
-        mapLayerManager?.add(shapeSource: source, useFeatureCache: true)
-        try? mapLayerManager?.addRouteLineLayer(layer: layer)
-    }
-
-    // MARK: - State
+    // MARK: Computed Properties
 
     public var route: Route? {
         didSet {
@@ -33,13 +30,24 @@ public final class WalkingPathLayerController: MGLStyleLayersHandler {
         }
     }
 
-    private var straightLine: MGLShape?
-    private var bezierPolyLine: MGLShape?
+    // MARK: Lifecycle
 
-    private func refresh() {
-        straightLine = route.map(straightPolyline) ?? nil
-        bezierPolyLine = route.map(bezierPolyline) ?? nil
+    public init(
+        mapLayerManager: MapboxMapLayerManager?,
+        mapTheme: MapTheme,
+        identifierPrefix: String
+    ) {
+        self.identifierPrefix = identifierPrefix
+
+        super.init(mapLayerManager: mapLayerManager, mapTheme: mapTheme)
     }
+
+    override public func setup() {
+        mapLayerManager?.add(shapeSource: source, useFeatureCache: true)
+        try? mapLayerManager?.addRouteLineLayer(layer: layer)
+    }
+
+    // MARK: Overridden Functions
 
     override public func updateVisibility(_ visible: Bool) {
         if visible {
@@ -49,6 +57,17 @@ public final class WalkingPathLayerController: MGLStyleLayersHandler {
         }
     }
 
+    override public func updateTilt(tilt: Float) {
+        try? mapLayerManager?.set(shape: tilt < 20 ? bezierPolyLine : straightLine, on: source)
+    }
+
+    // MARK: Functions
+
+    private func refresh() {
+        straightLine = route.map(straightPolyline) ?? nil
+        bezierPolyLine = route.map(bezierPolyline) ?? nil
+    }
+
     private func updateTiltFromMapViewCamera() {
         guard let mapView = mapLayerManager?.mapView else {
             return
@@ -56,13 +75,11 @@ public final class WalkingPathLayerController: MGLStyleLayersHandler {
         updateTilt(tilt: Float(mapView.camera.pitch))
     }
 
-    override public func updateTilt(tilt: Float) {
-        try? mapLayerManager?.set(shape: tilt < 20 ? bezierPolyLine : straightLine, on: source)
-    }
-
     private func straightPolyline(for route: Route) -> MGLShape? {
-        guard let lastPoint = route.waypoints.last else { return nil }
-        let destination = self.destination(from: route)
+        guard let lastPoint = route.waypoints.last else {
+            return nil
+        }
+        let destination = route.destinationInformation.latLng
         let coordinates = [lastPoint.latLng, destination].map {
             CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
         }
@@ -70,32 +87,10 @@ public final class WalkingPathLayerController: MGLStyleLayersHandler {
     }
 
     private func bezierPolyline(for route: Route) -> MGLShape? {
-        guard let lastPoint = route.waypoints.last?.latLng.clLocationCoordinate2D else { return nil }
-        let destination = self.destination(from: route).clLocationCoordinate2D
+        guard let lastPoint = route.waypoints.last?.latLng.clLocationCoordinate2D else {
+            return nil
+        }
+        let destination = route.destinationInformation.latLng.clLocationCoordinate2D
         return MGLPolylineFeature.geodesicPolyline(fromCoordinate: lastPoint, toCoordinate: destination)
     }
-
-    private func destination(from route: Route) -> LatLng {
-        if route.destinationInfo.count > 0 {
-            for destinationInfo in route.destinationInfo {
-                switch destinationInfo.type {
-                case "destination":
-                    return destinationInfo.location
-                default:
-                    break
-                }
-            }
-        }
-        return route.destination.latLng
-    }
-
-    // MARK: - Source and Layer
-
-    private lazy var source = MGLShapeSource(identifier: layerIdentifier, shapes: [], options: nil)
-
-    private lazy var layer: MGLStyleLayer = DashedLineLayer(
-        identifier: layerIdentifier,
-        source: source,
-        lineColor: .DesignSystem.onSurfaceSecondary
-    )
 }

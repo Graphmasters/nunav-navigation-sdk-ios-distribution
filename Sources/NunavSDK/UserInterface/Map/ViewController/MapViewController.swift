@@ -6,10 +6,19 @@ import NunavSDKMultiplatform
 import UIKit
 
 class NavigationMapViewController: UIViewController {
+    // MARK: Properties
+
+    public lazy var mapView: MGLMapView = {
+        let view = MGLMapView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.delegate = self.mapLayersLifecycleHandler
+        return view
+    }()
+
     private lazy var mapLayersLifecycleHandler = MGLMapViewLifeCycleHandler(
         mapThemeRepository: mapThemeRepository,
         mapStyleUrlProvider: mapStyleUrlProvider,
-        mapStyleLocalizer: mapStyleLcoalizer,
+        mapStyleLocalizer: mapStyleLocalizer,
         mapLayerHandlerBuilder: mapLayersControllerBuilder
     )
 
@@ -24,7 +33,7 @@ class NavigationMapViewController: UIViewController {
 
     private lazy var cameraController = MGLMapViewCameraController(mapView: mapView)
 
-    private lazy var mapStyleLcoalizer = NunavStyleLocalizer()
+    private lazy var mapStyleLocalizer = NunavStyleLocalizer()
 
     private lazy var mapLayersControllerBuilder = NunavSDKMapLayersControllerBuilder(
         mapLocationProvider: NavigationUI.mapLocationProvider,
@@ -32,17 +41,12 @@ class NavigationMapViewController: UIViewController {
         routeDetachStateProvider: NavigationUI.routeDetachStateProvider
     )
 
-    public lazy var mapView: MGLMapView = {
-        let view = MGLMapView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.delegate = mapLayersLifecycleHandler
-        return view
-    }()
-
     private lazy var cameraComponent = CameraComponent(
         navigationSdk: NunavSDK.navigationSdk,
         mapView: mapView
     )
+
+    // MARK: Lifecycle
 
     public init() {
         super.init(nibName: nil, bundle: nil)
@@ -52,6 +56,8 @@ class NavigationMapViewController: UIViewController {
     public required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: Overridden Functions
 
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -88,6 +94,8 @@ class NavigationMapViewController: UIViewController {
         mapThemeRepository.mapTheme = traitCollection.userInterfaceStyle == .dark ? .dark : .light
     }
 
+    // MARK: Functions
+
     open func add(_ mapView: MGLMapView) {
         view.insertSubview(mapView, at: 0)
         NSLayoutConstraint.activate(
@@ -107,10 +115,17 @@ class NavigationMapViewController: UIViewController {
 }
 
 final class SimpleMapThemeRepository: MapThemeRepository {
+    // MARK: Properties
+
     var delegate: MapThemeRepositoryDelegate?
+
+    // MARK: Computed Properties
 
     var mapTheme: MapTheme = .light {
         didSet {
+            guard oldValue != mapTheme else {
+                return
+            }
             delegate?.mapThemeRepository(self, didChangeMapTheme: mapTheme)
         }
     }

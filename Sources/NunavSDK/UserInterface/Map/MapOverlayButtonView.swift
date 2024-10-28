@@ -4,12 +4,18 @@ import NunavSDKMultiplatform
 import SwiftUI
 
 struct MapOverlayButtonView: View {
+    // MARK: Static Properties
+
     private static var watermarkIconSize: CGFloat = 28
+
+    // MARK: Properties
 
     private let state: NavigationUIState
     private let onVoiceInstructionButtonClicked: () -> Void
 
     @State private var contributionViewVisible: Bool = false
+
+    // MARK: Lifecycle
 
     init(
         state: NavigationUIState,
@@ -19,15 +25,17 @@ struct MapOverlayButtonView: View {
         self.onVoiceInstructionButtonClicked = onVoiceInstructionButtonClicked
     }
 
+    // MARK: Content
+
     var body: some View {
         VStack {
             HStack {
                 Spacer()
                 MapOverlayButton(
-                    image: state.voiceInstructionsEnabled == true
-                        ? Asset.Buttons.soundOn.image
-                        : Asset.Buttons.soundOff.image,
-                    action: onVoiceInstructionButtonClicked
+                    icon: self.state.voiceInstructionsEnabled == true
+                        ? .icSoundOn
+                        : .icSoundOff,
+                    action: self.onVoiceInstructionButtonClicked
                 )
             }
             Spacer()
@@ -37,22 +45,24 @@ struct MapOverlayButtonView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(height: MapOverlayButtonView.watermarkIconSize)
                     .onTapGesture {
-                        contributionViewVisible = true
+                        self.contributionViewVisible = true
                     }
                 Spacer()
-            }.confirmationDialog(L10n.contributionDialogTitle, isPresented: $contributionViewVisible, titleVisibility: .hidden) {
+            }.confirmationDialog(L10n.contributionDialogTitle, isPresented: self.$contributionViewVisible, titleVisibility: .hidden) {
                 Button(L10n.contributionDialogMaptilerActionTitle, role: .none) {
-                    mapTilerMapContributionDidPress()
+                    self.mapTilerMapContributionDidPress()
                 }
                 Button(L10n.contributionDialogOpenstreetmapActionTitle, role: .none) {
-                    openStreetMapContributionDidPress()
+                    self.openStreetMapContributionDidPress()
                 }
                 Button(L10n.contributionDialogNunavActionTitle, role: .none) {
-                    nunavMapContributionDidPress()
+                    self.nunavMapContributionDidPress()
                 }
             }
         }
     }
+
+    // MARK: Functions
 
     func nunavMapContributionDidPress() {
         UIApplication.shared.open(

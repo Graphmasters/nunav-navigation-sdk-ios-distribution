@@ -3,7 +3,11 @@ import GMCoreUtility
 import NunavSDKMultiplatform
 
 public final class TimerPositionAnimatorFactory: PositionAnimatorFactory {
+    // MARK: Lifecycle
+
     public init() {}
+
+    // MARK: Functions
 
     public func getPositionAnimator(start: Location, end: Location) -> PositionAnimator {
         TimerPositionAnimator(start: start, end: end)
@@ -11,6 +15,10 @@ public final class TimerPositionAnimatorFactory: PositionAnimatorFactory {
 }
 
 public class TimerPositionAnimator: PositionAnimator {
+    // MARK: Properties
+
+    public weak var delegate: PositionAnimatorDelegate?
+
     private let start: Location
     private let end: Location
     private var duration: TimeInterval = 0.5
@@ -18,12 +26,14 @@ public class TimerPositionAnimator: PositionAnimator {
     private var animationStartDate = Date()
     private var timer: Timer?
 
-    public weak var delegate: PositionAnimatorDelegate?
+    // MARK: Lifecycle
 
     public required init(start: Location, end: Location) {
         self.start = start
         self.end = end
     }
+
+    // MARK: Functions
 
     public func startAnimation(with duration: TimeInterval) {
         self.duration = duration
@@ -31,14 +41,14 @@ public class TimerPositionAnimator: PositionAnimator {
         timer = Timer.scheduledTimer(withTimeInterval: 0.03334, repeats: true, block: onProgress)
     }
 
-    private func finishAnimation() {
-        cancelAnimation()
-        delegate?.onUpdate(value: end)
-    }
-
     public func cancelAnimation() {
         timer?.invalidate()
         timer = nil
+    }
+
+    private func finishAnimation() {
+        cancelAnimation()
+        delegate?.onUpdate(value: end)
     }
 
     private func isAnimating() -> Bool {
@@ -70,7 +80,7 @@ public class TimerPositionAnimator: PositionAnimator {
 
         let currentValue = Location(
             provider: end.provider,
-            timestamp: Date().millisecondsSince1970,
+            timestamp: Int64(Date().timeIntervalSince1970 * 1000.0),
             latLng: LatLng(latitude: latitude, longitude: longitude),
             altitude: end.altitude,
             heading: KotlinDouble(double: heading),

@@ -3,7 +3,11 @@ import NunavSDKMultiplatform
 import UIKit
 
 public class DefaultManeuverImageProvider: ManeuverImageProvider {
+    // MARK: Lifecycle
+
     public init() {}
+
+    // MARK: Functions
 
     public func getImageByTurnInfo(turnInfo: TurnInfo?) -> UIImage {
         getImage(icon: ManeuverIconProvider.shared.getManeuverIcon(turnInfo: turnInfo))

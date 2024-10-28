@@ -8,6 +8,24 @@ enum NavigationUIError: Error {
 }
 
 public enum NavigationUI {
+    // MARK: Static Properties
+
+    static let mapLocationProvider: LocationProvider = PredictedLocationProvider(
+        executor: CoroutineExecutor(),
+        navigationSdk: NunavSDK.navigationSdk,
+        routeDetachStateProvider: NavigationUI.routeDetachStateProvider
+    )
+
+    static let routeDetachStateProvider: RouteDetachStateProvider
+        = OffRouteDetachStateProvider(navigationSdk: NunavSDK.navigationSdk)
+
+    static let voiceInstructionComponent = VoiceInstructionComponent(
+        navigationSdk: NunavSDK.navigationSdk,
+        routeDetachStateProvider: routeDetachStateProvider
+    )
+
+    // MARK: Static Functions
+
     public static func makeNavigationUI(
         destinationCoordinate: CLLocationCoordinate2D,
         destinationLabel: String? = nil
@@ -27,12 +45,6 @@ public enum NavigationUI {
             && NunavSDK.locationManager.accuracyAuthorization == .fullAccuracy
     }
 
-    static let mapLocationProvider: LocationProvider = PredictedLocationProvider(
-        executor: OperationQueueExecutor(),
-        navigationSdk: NunavSDK.navigationSdk,
-        routeDetachStateProvider: NavigationUI.routeDetachStateProvider
-    )
-
     private static func destination(
         destinationCoordinate: CLLocationCoordinate2D,
         destinationLabel: String?
@@ -47,12 +59,4 @@ public enum NavigationUI {
             RoutableFactory.shared.create(latLng: latLng)
         }
     }
-
-    static let routeDetachStateProvider: RouteDetachStateProvider
-        = OffRouteDetachStateProvider(navigationSdk: NunavSDK.navigationSdk)
-
-    static let voiceInstructionComponent = VoiceInstructionComponent(
-        navigationSdk: NunavSDK.navigationSdk,
-        routeDetachStateProvider: routeDetachStateProvider
-    )
 }

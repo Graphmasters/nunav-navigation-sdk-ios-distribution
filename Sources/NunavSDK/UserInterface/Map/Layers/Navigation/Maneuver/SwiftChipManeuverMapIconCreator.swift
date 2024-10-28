@@ -2,47 +2,11 @@ import NunavSDKMultiplatform
 import UIKit
 
 class SwiftChipManeuverMapIconCreator: ManeuverMapIconCreator {
-    private let maneuverImageProvider: ManeuverImageProvider
-    private let viewImageRenderer: ViewImageRenderer
-
-    init(
-        maneuverImageProvider: ManeuverImageProvider,
-        viewImageRenderer: ViewImageRenderer = PlainViewImageRenderer()
-    ) {
-        self.maneuverImageProvider = maneuverImageProvider
-        self.viewImageRenderer = viewImageRenderer
-    }
-
-    override func create(turnInfo: TurnInfo, showDirectionLabel: Bool) -> ManeuverMapIcon? {
-        if isDisplayable(turnInfo: turnInfo) {
-            return createManeuverMapIcon(turnInfo, showDirectionLabel, getIconAnchor(turnCommand: turnInfo.turnCommand))
-        }
-        return nil
-    }
-
-    private func createManeuverMapIcon(_ turnInfo: TurnInfo, _ showDirectionLabel: Bool, _ anchor: String) -> ManeuverMapIcon? {
-        return createImage(turnInfo, showDirectionLabel, anchor).map {
-            ManeuverMapIcon(image: $0, anchor: anchor)
-        }
-    }
-
-    private func createImage(_ turnInfo: TurnInfo, _ showDirectionLabel: Bool, _ anchor: String) -> UIImage? {
-        let view = createView(turnInfo, showDirectionLabel, anchor)
-        view.initialize()
-        return viewImageRenderer.render(view: view)
-    }
-
-    private func createView(_ turnInfo: TurnInfo, _ showDirectionLabel: Bool, _ anchor: String) -> ChipManeuverIconView {
-        let label: String? = showDirectionLabel ? TurnInfoUtils.shared.getTurnInfoLabel(turnInfo: turnInfo) : nil
-        return ChipManeuverIconView(
-            turnIcon: maneuverImageProvider.getImageByTurnInfo(turnInfo: turnInfo),
-            directionLabel: label,
-            anchor: anchor,
-            factor: 1.0
-        )
-    }
+    // MARK: Nested Types
 
     private class ChipManeuverIconView: UIView {
+        // MARK: Properties
+
         private let turnIcon: UIImage
         private let directionLabel: String?
         private let anchor: String
@@ -51,6 +15,8 @@ class SwiftChipManeuverMapIconCreator: ManeuverMapIconCreator {
         private var label: UILabel!
         private var imageView: UIImageView!
         private var contentStack: UIStackView!
+
+        // MARK: Lifecycle
 
         init(turnIcon: UIImage, directionLabel: String?, anchor: String, factor: CGFloat) {
             self.turnIcon = turnIcon
@@ -78,6 +44,8 @@ class SwiftChipManeuverMapIconCreator: ManeuverMapIconCreator {
 
             applyBorder()
         }
+
+        // MARK: Functions
 
         private func initBackground() {
             backgroundColor = .DesignSystem.surfacePrimary.resolvedColor(with: UITraitCollection(userInterfaceStyle: .dark))
@@ -173,5 +141,53 @@ class SwiftChipManeuverMapIconCreator: ManeuverMapIconCreator {
                 ? [.topLeft, .topRight, .bottomRight]
                 : [.topLeft, .topRight, .bottomLeft]
         }
+    }
+
+    // MARK: Properties
+
+    private let maneuverImageProvider: ManeuverImageProvider
+    private let viewImageRenderer: ViewImageRenderer
+
+    // MARK: Lifecycle
+
+    init(
+        maneuverImageProvider: ManeuverImageProvider,
+        viewImageRenderer: ViewImageRenderer = PlainViewImageRenderer()
+    ) {
+        self.maneuverImageProvider = maneuverImageProvider
+        self.viewImageRenderer = viewImageRenderer
+    }
+
+    // MARK: Overridden Functions
+
+    override func create(turnInfo: TurnInfo, showDirectionLabel: Bool) -> ManeuverMapIcon? {
+        if isDisplayable(turnInfo: turnInfo) {
+            return createManeuverMapIcon(turnInfo, showDirectionLabel, getIconAnchor(turnCommand: turnInfo.turnCommand))
+        }
+        return nil
+    }
+
+    // MARK: Functions
+
+    private func createManeuverMapIcon(_ turnInfo: TurnInfo, _ showDirectionLabel: Bool, _ anchor: String) -> ManeuverMapIcon? {
+        return createImage(turnInfo, showDirectionLabel, anchor).map {
+            ManeuverMapIcon(image: $0, anchor: anchor)
+        }
+    }
+
+    private func createImage(_ turnInfo: TurnInfo, _ showDirectionLabel: Bool, _ anchor: String) -> UIImage? {
+        let view = createView(turnInfo, showDirectionLabel, anchor)
+        view.initialize()
+        return viewImageRenderer.render(view: view)
+    }
+
+    private func createView(_ turnInfo: TurnInfo, _ showDirectionLabel: Bool, _ anchor: String) -> ChipManeuverIconView {
+        let label: String? = showDirectionLabel ? TurnInfoUtils.shared.getTurnInfoLabel(turnInfo: turnInfo) : nil
+        return ChipManeuverIconView(
+            turnIcon: maneuverImageProvider.getImageByTurnInfo(turnInfo: turnInfo),
+            directionLabel: label,
+            anchor: anchor,
+            factor: 1.0
+        )
     }
 }
