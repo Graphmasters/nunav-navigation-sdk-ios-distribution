@@ -8,7 +8,7 @@
 > Please visit [NUNAV Navigation SDK Example](https://github.com/Graphmasters/nunav-navigation-sdk-example) for integration examples and more Information on usage and features. Visit our [SDK-Website](https://www.nunav.net/lp/sdk) for more information.
 
 > [!CAUTION]
-> This repository only exists for the purpose of distribution of NunavSDK for iOS on the Swift Package Manager. It contains the code for the NUNAV SDK powering the navigation in third party apps.
+> This repository only exists for the purpose of distribution of NunavSDK for iOS on the Swift Package Manager. It contains the code for the NUNAV Navigation SDK powering the navigation in third party apps.
 > Please contact Grapmasters GmbH directly if you have any issues.
 
 ---
