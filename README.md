@@ -5,7 +5,7 @@
 [![SPM compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-FA7343.svg?style=flat&logo=Swift)](https://swift.org/package-manager/)
 
 > [!TIP]
-> Please visit [NUNAV Navigation SDK Example](https://github.com/Graphmasters/nunav-navigation-sdk-example) for integration examples and more Information on usage and features.
+> Please visit [NUNAV Navigation SDK Example](https://github.com/Graphmasters/nunav-navigation-sdk-example) for integration examples and more Information on usage and features. Visit our [SDK-Website](https://www.nunav.net/lp/sdk) for more information.
 
 > [!CAUTION]
 > This repository only exists for the purpose of distribution of NunavSDK for iOS on the Swift Package Manager. It contains the code for the NUNAV SDK powering the navigation in third party apps.
