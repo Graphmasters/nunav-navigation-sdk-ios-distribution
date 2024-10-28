@@ -1,4 +1,4 @@
-# NunavSDK
+# NUNAV Navigation SDK
 
 ![Requires iOS 15.0](https://img.shields.io/badge/iOS-15.0-1575F9?style=flat&logo=apple&label=iOS&link=https%3A%2F%2Fwww.apple.com%2Fde%2Fios)
 [![Requires Swift 5.9](https://img.shields.io/badge/Swift-5.9-FA7343.svg?style=flat&logo=Swift)](https://swift.org/)
