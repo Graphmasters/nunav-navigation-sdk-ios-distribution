@@ -46,7 +46,7 @@ extension Target {
 
     static let nunavSDKMultiplatform: Target = .binaryTarget(
         name: .nunavSDKMultiplatform,
-        url: "https://github.com/Graphmasters/nunav-navigation-sdk-ios-distribution/releases/download/1.0.2/NunavSDKMultiplatform.xcframework.zip",
+        url: "https://github.com/Graphmasters/nunav-navigation-sdk-ios-distribution/releases/download/1.0.3/NunavSDKMultiplatform.xcframework.zip",
         checksum: "a7cdaeab80bc70da475aa374f5cc549f9f256d5c174a9609e5c0f06e91053fc4"
     )
 

@@ -7,7 +7,7 @@ final class VoiceInstructionComponent {
     // MARK: Nested Types
 
     private final class Settings: NSObject, AudioSettings {
-        var isAudioEnabled: Bool = false
+        var isAudioEnabled: Bool = true
     }
 
     // MARK: Properties
@@ -15,6 +15,8 @@ final class VoiceInstructionComponent {
     private let navigationSdk: NavigationSdk
     private let routeDetachStateProvider: RouteDetachStateProvider
     private let locale: Locale
+
+    private lazy var settings: Settings = Settings()
 
     private lazy var voiceInstructionStringGenerator: VoiceInstructionStringGenerator = LocaleVoiceInstructionStringGenerator(
         localeProvider: FoundationLanguageProvider()
@@ -35,7 +37,7 @@ final class VoiceInstructionComponent {
     private lazy var voiceAudioJobProvider: VoiceAudioJobProvider = SynthesizingVoiceAudioJobProvider()
 
     private lazy var audioJobPlayer: AudioJobPlayer = QueuingAudioJobPlayer(
-        audioSettings: Settings(),
+        audioSettings: settings,
         audioController: audioController
     )
 
@@ -57,7 +59,9 @@ final class VoiceInstructionComponent {
             voiceInstructionHandler.enabled
         }
         set {
+            guard voiceInstructionHandler.enabled != newValue else { return }
             voiceInstructionHandler.enabled = newValue
+            settings.isAudioEnabled = newValue
         }
     }
 
