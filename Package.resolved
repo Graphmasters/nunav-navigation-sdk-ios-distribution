@@ -1,0 +1,41 @@
+{
+  "pins" : [
+    {
+      "identity" : "ios-core-utility-distribution",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Graphmasters/ios-core-utility-distribution",
+      "state" : {
+        "revision" : "8b90bf72c0dfbf8cb78961e50554c54b49a551ae",
+        "version" : "1.2.2"
+      }
+    },
+    {
+      "identity" : "ios-map-utility-distribution",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Graphmasters/ios-map-utility-distribution",
+      "state" : {
+        "revision" : "b93f3960d57ff4210ae3632d3466fb6948613644",
+        "version" : "1.1.4"
+      }
+    },
+    {
+      "identity" : "maplibre-gl-native-distribution",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/maplibre/maplibre-gl-native-distribution.git",
+      "state" : {
+        "revision" : "ffda61e298c1490d4860d5184e80d618aaadc089",
+        "version" : "5.13.0"
+      }
+    },
+    {
+      "identity" : "nunav-ios-design-system-distribution",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Graphmasters/nunav-ios-design-system-distribution",
+      "state" : {
+        "revision" : "a8db7c05fa5202c599d56db8afbb15c3f6f3abdb",
+        "version" : "1.0.30"
+      }
+    }
+  ],
+  "version" : 2
+}

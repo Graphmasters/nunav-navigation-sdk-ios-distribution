@@ -1,0 +1,38 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "navigation_error_missing_location_permission_summary" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du musst der App die Berechtigung erteilen, auf die präzise Position während der Nutzung der App zuzugreifen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have to grant the location permission for precise positioning while using the app."
+          }
+        }
+      }
+    },
+    "navigation_error_missing_location_permission_title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehlende Positionsberechtigung"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Missing Location Permission"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

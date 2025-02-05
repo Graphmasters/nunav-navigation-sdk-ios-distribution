@@ -1,0 +1,22 @@
+{
+  "images" : [
+    {
+      "filename" : "icShieldFederalHighwayGenericLight.svg",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icShieldFederalHighwayGenericDark.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
