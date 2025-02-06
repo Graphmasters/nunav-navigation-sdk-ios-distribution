@@ -1,26 +1,22 @@
-# NUNAV: Integrating the Navigation SDK into an App
+# Integrate the Navigation SDK into your App
 
 @Metadata {
+    @PageKind(sampleCode)
     @CallToAction(
         url: "https://github.com/Graphmasters/nunav-navigation-sdk-example/tree/main/iOS",
         label: "GitHub"
     )
-    
-    @PageKind(sampleCode)
-    @PageColor(blue)
     @PageImage(
         purpose: card, 
-        source: "slothy-card"
+        source: "nunav-navigation-sdk-sample-code-card"
     )
-    
-    Check out the example code to see how the simple integration works for your app.
 }
+
+Check out the example code to see how the simple integration works for your app.
 
 ## Overview
 
 This sample creates an app where you can choose between different destinations. For all destinations a navigation is opened using the NUNAV Navigation SDK
-
-@Video(poster: "slothy-hero-poster", source: "slothy-hero")
 
 @Row {
     @Column(size: 2) {
@@ -29,7 +25,7 @@ This sample creates an app where you can choose between different destinations. 
     }
     
     @Column {
-        ![A screenshot of the power picker user interface with four powers displayed – ice, fire, wind, and lightning](slothy-powerPicker)
+        ![A screenshot of the NUNAV Navigation SDK example app showing the different configuration options](screen-nunav-navigation-sdk-navigation-example-config)
     }
 }
 
@@ -37,26 +33,28 @@ This sample creates an app where you can choose between different destinations. 
 
 @Row {
     @Column {
-        ![A screenshot of the sloth status user interface that indicates the the amount of sleep, fun, and exercise a given sloth is in need of.](slothy-status)
+        ![A screenshot of the NUNAV Navigation SDK user experience](screen-nunav-navigation-sdk-navigation-landscape-light-2)
     }
     
-    @Column(size: 2) {
+    @Column {
         Once you have started the navigation to your destination, the app will show you a full
         navigation experience. This includes a map with the route, information about the next maneuver
         and information for your remaining route like the remaining time and distance.
     }
 }
 
-### Localization
+### Adaption
 
 The NUNAV Navigation SDK is currently localized in English and German. It automatically takes the device's current locale into account. If you need any more languages please [contact us](https://nunav.net/lp/sdk).
 
+Further the NUNAV Navigation SDK automatically adapts to the system appearance. If the system appearance is set to dark mode, the SDK will also be displayed in dark mode.
+
 @TabNavigator {
-    @Tab("English") {
-        ![Two screenshots showing the Slothy app rendering with English language content. The first screenshot shows a sloth map and the second screenshot shows a sloth power picker.](slothy-localization_eng)
+    @Tab("Light") {
+        ![Two screenshots showing the NUNAV Navigation sdk rendering with light system appearance.](nunav-navigation-sdk-sample-code-comparison-light)
     }
     
-    @Tab("German") {
-        ![Two screenshots showing the Slothy app rendering with Chinese language content. The first screenshot shows a sloth map and the second screenshot shows a sloth power picker.](slothy-localization_zh)
+    @Tab("Dark") {
+        ![Two screenshots showing the NUNAV Navigation sdk rendering with light system appearance.](nunav-navigation-sdk-sample-code-comparison-dark)
     }
 }

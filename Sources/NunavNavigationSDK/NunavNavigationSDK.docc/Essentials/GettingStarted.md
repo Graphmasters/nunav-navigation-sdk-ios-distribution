@@ -1,32 +1,28 @@
 # Getting Started
 
 @Metadata {
+    @PageKind(article)
     @CallToAction(
         purpose: link, 
         url: "https://nunav.net/lp/sdk",
         label: "Request API Key"
     )
-    
     @PageImage(
         purpose: card, 
-        source: "slothy-card"
-   )
+        source: "nunav-navigation-sdk-getting-started-card"
+    )
 }
 
 Get a full overview of the NUNAV Navigation SDK for iOS and guide your users to their destinations.
 
 To start navigations using the SDK you need an API key for accessing the NUNAV Technology provided by Graphmasters GmbH. For trial use this is free of charge. Further you have to add the SDK as a dependency to your project.
 
-## 1. Request an API Key
-
-To request an API key, visit the [official product page](https://nunav.net/lp/sdk/) of the NUNAV Navigation SDK.
-
-## 2. Add the Dependency
+## 1. Add the Dependency
 
 The NUNAV Navigation SDK for iOS is distributed using the Swift Package Manager. To add it to your project,
 follow the steps below.
 
-### 2.1 Add the following one to your dependencies.
+### 1.1 Add the following one to your dependencies.
 
 ```
 dependencies: [
@@ -34,7 +30,7 @@ dependencies: [
 ]
 ```
 
-### 2.2 Add the dependency to your target.
+### 1.2 Add the dependency to your target.
 
 ```
 .target(
@@ -45,6 +41,10 @@ dependencies: [
 )
 ```
 
+## 2. Request an API Key
+
+To request an API key, visit the [official product page](https://nunav.net/lp/sdk/) of the NUNAV Navigation SDK.
+
 ## 3. Configure the NUNAV Navigation SDK
 
 Configure the SDK with your API key. This is required for all further SDK interactions. Otherwise your app will finish with a fatal error.
@@ -53,7 +53,7 @@ Configure the SDK with your API key. This is required for all further SDK intera
 NunavNavigationSDK.configure(apiKey: "<API_KEY>")
 ```
 
-Optionally you can configure the NUNAV Navigation SDK with a custom service URL. This is only needed if you are using a custom NUNAV routing. To learn more about custom NUNAV routing please contact Graphmasters.
+Optionally you can configure the NUNAV Navigation SDK with a custom service URL. This is only needed if you are using a custom NUNAV routing. To learn more about custom NUNAV routing please contact [Graphmasters](https://nunav.net/lp/sdk).
 
 ```
 NunavNavigationSDK.configure(apiKey: "<API_KEY>", serviceURL: "<SERVICE_URL>")
@@ -124,4 +124,9 @@ Add background modes ([`UIBackgroundModes`](https://developer.apple.com/document
             }
         }
     }
+}
+
+@Links(visualStyle: detailedGrid) {
+    - <doc:SampleCode>
+    - <doc:ConfigurationGuide>
 }

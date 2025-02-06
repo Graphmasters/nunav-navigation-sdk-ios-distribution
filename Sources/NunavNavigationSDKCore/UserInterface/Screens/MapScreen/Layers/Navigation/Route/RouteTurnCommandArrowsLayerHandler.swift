@@ -3,7 +3,7 @@ import GMMapUtility
 import Mapbox
 import MultiplatformNavigation
 
-open class RouteTurnCommandArrowsLayerHandler: MGLStyleLayersHandler {
+class RouteTurnCommandArrowsLayerHandler: MGLStyleLayersHandler {
     // MARK: Nested Types
 
     private enum Constants {
@@ -23,25 +23,25 @@ open class RouteTurnCommandArrowsLayerHandler: MGLStyleLayersHandler {
 
     // MARK: Properties
 
-    public private(set) lazy var turnCommandArrowShaftPartOneLayer: MGLLineStyleLayer = RouteTurnCommandArrowLayer(
+    private(set) lazy var turnCommandArrowShaftPartOneLayer: MGLLineStyleLayer = RouteTurnCommandArrowLayer(
         identifier: Constants.arrowShaftPartOneLayerIdentifier, source: turnCommandArrowShaftPartOneSource
     )
 
-    public private(set) lazy var turnCommandArrowShaftPartTwoLayer: MGLLineStyleLayer = RouteTurnCommandArrowLayer(
+    private(set) lazy var turnCommandArrowShaftPartTwoLayer: MGLLineStyleLayer = RouteTurnCommandArrowLayer(
         identifier: Constants.arrowShaftPartTwoLayerIdentifier, source: turnCommandArrowShaftPartTwoSource
     )
 
-    public private(set) lazy var turnCommandArrowShaftPartOneOutlineLayer: MGLLineStyleLayer =
+    private(set) lazy var turnCommandArrowShaftPartOneOutlineLayer: MGLLineStyleLayer =
         RouteTurnCommandArrowOutlineLayer(
             identifier: Constants.arrowShaftOutlineLayerPartOneIdentifier, source: turnCommandArrowShaftPartOneSource
         )
 
-    public private(set) lazy var turnCommandArrowShaftPartTwoOutlineLayer: MGLLineStyleLayer =
+    private(set) lazy var turnCommandArrowShaftPartTwoOutlineLayer: MGLLineStyleLayer =
         RouteTurnCommandArrowOutlineLayer(
             identifier: Constants.arrowShaftOutlineLayerPartTwoIdentifier, source: turnCommandArrowShaftPartTwoSource
         )
 
-    public private(set) lazy var turnCommandArrowHeadLayer: MGLSymbolStyleLayer = {
+    private(set) lazy var turnCommandArrowHeadLayer: MGLSymbolStyleLayer = {
         let layer = self.createArrowHeadLayer(
             layerId: Constants.arrowHeadLayerIdentifier,
             source: self.turnCommandArrowHeadSource
@@ -81,7 +81,7 @@ open class RouteTurnCommandArrowsLayerHandler: MGLStyleLayersHandler {
 
     // MARK: Lifecycle
 
-    override open func setup() {
+    override func setup() {
         super.setup()
 
         mapLayerManager?.add(shapeSource: turnCommandArrowShaftPartOneSource)
@@ -114,17 +114,17 @@ open class RouteTurnCommandArrowsLayerHandler: MGLStyleLayersHandler {
         )
     }
 
-    override open func startLayerUpdates() {
+    override func startLayerUpdates() {
         super.startLayerUpdates()
         navigationSdk.addOnNavigationStateUpdatedListener(onNavigationStateUpdatedListener: self)
     }
 
-    override open func stopLayerUpdates() {
+    override func stopLayerUpdates() {
         super.stopLayerUpdates()
         navigationSdk.removeOnNavigationStateUpdatedListener(onNavigationStateUpdatedListener: self)
     }
 
-    public init(
+    init(
         mapTheme: MapTheme,
         mapLayerManager: MapboxMapLayerManager?,
         navigationSdk: NavigationSdk,
@@ -138,7 +138,7 @@ open class RouteTurnCommandArrowsLayerHandler: MGLStyleLayersHandler {
 
     // MARK: Overridden Functions
 
-    override open func refreshLayerVisibility(isVisible: Bool) {
+    override func refreshLayerVisibility(isVisible: Bool) {
         if isVisible {
             mapLayerManager?.showLayer(with: turnCommandArrowShaftPartOneLayer.identifier)
             mapLayerManager?.showLayer(with: turnCommandArrowShaftPartTwoLayer.identifier)
@@ -359,7 +359,7 @@ open class RouteTurnCommandArrowsLayerHandler: MGLStyleLayersHandler {
 }
 
 extension RouteTurnCommandArrowsLayerHandler: OnNavigationStateUpdatedListener {
-    public func onNavigationStateUpdated(navigationState _: NavigationState?) {
+    func onNavigationStateUpdated(navigationState _: NavigationState?) {
         DispatchQueue.main.async { self.onNavigationStateUpdate() }
     }
 }
