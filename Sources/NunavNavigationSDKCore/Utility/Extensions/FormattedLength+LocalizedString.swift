@@ -16,6 +16,8 @@ extension FormattedLength {
             L10n.routeProgressViewUnitMilesAbbreviation
         case .feet:
             L10n.routeProgressViewUnitFeetAbbreviation
+        default:
+            ""
         }
     }
 }

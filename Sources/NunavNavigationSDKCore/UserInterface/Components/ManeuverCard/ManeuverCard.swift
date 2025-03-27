@@ -9,18 +9,12 @@ struct ManeuverCard: View {
 
     @StateObject private var viewModel: ManeuverCard.ViewModel
 
-    // MARK: Properties
-
-    @SwiftUI.State private var state: ManeuverUIState?
+    @State private var state: ManeuverUIState?
 
     // MARK: Lifecycle
 
     init(navigationSdk: NavigationSdk) {
-        self._viewModel = StateObject(
-            wrappedValue: .init(
-                navigationSdk: navigationSdk,
-                detachStateProvider: OffRouteDetachStateProvider(navigationSdk: navigationSdk)
-            )
+        self._viewModel = StateObject(wrappedValue: .init(navigationSdk: navigationSdk)
         )
     }
 

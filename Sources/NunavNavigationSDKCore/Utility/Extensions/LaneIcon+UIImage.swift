@@ -21,6 +21,7 @@ extension LaneIcon {
         case .laneThroughRightUseThrough: return UIImage.Maneuver.Lane.laneThroughRightUseThrough
         case .laneThroughLeftUseThrough: return UIImage.Maneuver.Lane.laneThroughLeftUseThrough
         case .laneThroughUseThrough: return UIImage.Maneuver.Lane.laneThroughUseThrough
+        default: return UIImage.Maneuver.Lane.laneThroughUseThrough
         }
     }
 }

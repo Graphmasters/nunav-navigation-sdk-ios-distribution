@@ -20,7 +20,6 @@ final class LocationTrailMapLayerHandler: MGLStyleLayersHandler {
 
     private let mapLocationProvider: LocationProvider
     private let navigationSdk: NavigationSdk
-    private let routeDetachStateProvider: RouteDetachStateProvider
 
     private lazy var shapeSource = MGLShapeSource(identifier: Constants.sourceIdentifier, features: [], options: nil)
 
@@ -58,12 +57,10 @@ final class LocationTrailMapLayerHandler: MGLStyleLayersHandler {
         mapLayerManager: MapboxMapLayerManager?,
         mapTheme: MapTheme,
         mapLocationProvider: LocationProvider,
-        navigationSdk: NavigationSdk,
-        routeDetachStateProvider: RouteDetachStateProvider
+        navigationSdk: NavigationSdk
     ) {
         self.mapLocationProvider = mapLocationProvider
         self.navigationSdk = navigationSdk
-        self.routeDetachStateProvider = routeDetachStateProvider
 
         super.init(mapLayerManager: mapLayerManager, mapTheme: mapTheme)
     }
@@ -96,14 +93,14 @@ final class LocationTrailMapLayerHandler: MGLStyleLayersHandler {
     // MARK: Functions
 
     private func getCircleStrokeColor(for _: Speed) -> UIColor {
-        if routeDetachStateProvider.detached {
+        if navigationSdk.navigationState?.displayInformation.shouldShowUserOffRoute != false {
             return UIColor(hex: DetachConstants.shared.ROUTE_OUTLINE_COLOR) ?? .clear
         }
         return UIColor(hex: "#005f97") ?? .clear
     }
 
     private func getCircleColor(for _: Speed) -> UIColor {
-        if routeDetachStateProvider.detached {
+        if navigationSdk.navigationState?.displayInformation.shouldShowUserOffRoute != false {
             return UIColor(hex: DetachConstants.shared.ROUTE_FILL_COLOR) ?? .clear
         }
         return UIColor(hex: "#4b8cc8") ?? .clear

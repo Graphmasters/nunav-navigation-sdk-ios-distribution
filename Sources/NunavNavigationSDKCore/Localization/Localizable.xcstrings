@@ -18,7 +18,8 @@
             "value" : "© MapTiler"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "contribution_dialog_nunav_action_title" : {
       "localizations" : {
@@ -34,7 +35,8 @@
             "value" : "© NUNAV SDK"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "contribution_dialog_openstreetmap_action_title" : {
       "localizations" : {
@@ -50,7 +52,8 @@
             "value" : "© OpenStreetmap Contributers"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "contribution_dialog_title" : {
       "localizations" : {
@@ -66,7 +69,8 @@
             "value" : "MapLibre Maps SDK for iOS"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "maneuver_progress_view_following_maneuver_text" : {
       "localizations" : {
@@ -148,6 +152,38 @@
         }
       }
     },
+    "navigation_error_method_not_allowed_summary" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese route ist mit dem Test-Key nicht erlaubt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This Route is not allowed using your authentication."
+          }
+        }
+      }
+    },
+    "navigation_error_no_location_available_summary" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine aktuelle Position kann nicht ermittelt werden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No location available"
+          }
+        }
+      }
+    },
     "navigation_error_no_route_found_summary" : {
       "localizations" : {
         "de" : {
@@ -160,6 +196,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No route found."
+          }
+        }
+      }
+    },
+    "navigation_error_service_temporarily_unavailable_summary" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Navigieren ist vorübergehend aufgrund hoher Serverauslastung nicht verfügbar. Bitte versuche es erneut gleich erneut."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Routing is temporarily unavailable due to high load. Please try again."
+          }
+        }
+      }
+    },
+    "navigation_error_too_many_requests_summary" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es gibt zu viele aktuelle Anfragen, die gleichzeitig auf den Server zugreifen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There are too many current requests accessing the server."
           }
         }
       }

@@ -17,5 +17,7 @@ public enum TransportMode: String, CaseIterable, Identifiable {
     /// or height restrictions. Assumes speeds according to local laws for trucks.
     case truck = "Truck"
 
-    public var id: String { self.rawValue }
+    // MARK: Computed Properties
+
+    public var id: String { rawValue }
 }

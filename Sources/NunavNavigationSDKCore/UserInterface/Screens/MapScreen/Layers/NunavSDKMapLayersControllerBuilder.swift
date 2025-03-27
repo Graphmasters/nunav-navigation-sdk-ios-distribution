@@ -8,14 +8,12 @@ final class NunavSDKMapLayersControllerBuilder: MapLayerHandlerBuilder {
 
     private let mapLocationProvider: LocationProvider
     private let navigationSdk: NavigationSdk
-    private let routeDetachStateProvider: RouteDetachStateProvider
 
     // MARK: Lifecycle
 
-    init(mapLocationProvider: LocationProvider, navigationSdk: NavigationSdk, routeDetachStateProvider: RouteDetachStateProvider) {
+    init(mapLocationProvider: LocationProvider, navigationSdk: NavigationSdk) {
         self.mapLocationProvider = mapLocationProvider
         self.navigationSdk = navigationSdk
-        self.routeDetachStateProvider = routeDetachStateProvider
     }
 
     // MARK: Functions
@@ -32,22 +30,20 @@ final class NunavSDKMapLayersControllerBuilder: MapLayerHandlerBuilder {
                     mapTheme: mapTheme,
                     routeFeatureCreator: DetachAwareRouteFeatureCreator(
                         navigationSdk: navigationSdk,
-                        routeDetachStateProvider: routeDetachStateProvider,
+                        routeDetachStateProvider: OffRouteDetachStateProvider(navigationSdk: navigationSdk),
                         detachedRouteFeatureCreator: ColoringRouteFeatureCreator(
                             fillColor: DetachConstants.shared.ROUTE_FILL_COLOR,
                             outlineColor: DetachConstants.shared.ROUTE_OUTLINE_COLOR
                         ),
                         defaultSpeedFeatureCreator: RelativeSpeedRouteFeatureCreator()
                     ),
-                    mapLocationProvider: mapLocationProvider,
-                    routeDetachStateProvider: routeDetachStateProvider
+                    mapLocationProvider: mapLocationProvider
                 ),
                 UserLocationLayerHandler(
                     mapLayerManager: mapLayerManager,
                     mapTheme: mapTheme,
                     locationProvider: mapLocationProvider,
-                    navigationSdk: navigationSdk,
-                    routeDetachStateProvider: routeDetachStateProvider
+                    navigationSdk: navigationSdk
                 )
             ]
         )

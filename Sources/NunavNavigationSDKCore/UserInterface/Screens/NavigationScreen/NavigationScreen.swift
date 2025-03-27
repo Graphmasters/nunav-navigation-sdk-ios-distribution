@@ -26,7 +26,6 @@ public struct NavigationScreen: View {
 
     private let mapLocationProvider: LocationProvider
     private let navigationSdk: NavigationSdk
-    private let routeDetachStateProvider: RouteDetachStateProvider
 
     // MARK: Lifecycle
 
@@ -34,15 +33,13 @@ public struct NavigationScreen: View {
         navigationViewModel: NavigationScreen.ViewModel,
         routeProgressViewModel: RouteProgressViewModel,
         mapLocationProvider: LocationProvider,
-        navigationSdk: NavigationSdk,
-        routeDetachStateProvider: RouteDetachStateProvider
+        navigationSdk: NavigationSdk
     ) {
         self._navigationViewModel = StateObject(wrappedValue: navigationViewModel)
         self._routeProgressViewModel = StateObject(wrappedValue: routeProgressViewModel)
 
         self.mapLocationProvider = mapLocationProvider
         self.navigationSdk = navigationSdk
-        self.routeDetachStateProvider = routeDetachStateProvider
     }
 
     // MARK: Content Properties
@@ -53,7 +50,6 @@ public struct NavigationScreen: View {
                 onUserInteracted: navigationViewModel.onUserInteracted(interaction:),
                 mapLocationProvider: mapLocationProvider,
                 navigationSdk: navigationSdk,
-                routeDetachStateProvider: routeDetachStateProvider,
                 navigationState: $navigationViewModel.state
             )
             .edgesIgnoringSafeArea(.all)
@@ -77,7 +73,7 @@ public struct NavigationScreen: View {
                     message: Text(errorMessage(for: self.navigationViewModel.state.dialogState?.errorType)),
                     dismissButton: .destructive(
                         Text(NunavStrings.dialogActionClose),
-                        action: self.navigationViewModel.dismissNavigation
+                        action: self.navigationViewModel.persistentErrorDialogCloseButtonTapped
                     )
                 )
             }.alert(
@@ -213,6 +209,12 @@ public struct NavigationScreen: View {
             L10n.navigationErrorNoRouteFoundSummary
         case .unauthorized:
             L10n.navigationErrorUnauthorizedSummary
+        case .tooManyRequests:
+            L10n.navigationErrorTooManyRequestsSummary
+        case .serviceTemporarilyUnavailable:
+            L10n.navigationErrorServiceTemporarilyUnavailableSummary
+        case .noLocationAvailable:
+            L10n.navigationErrorNoLocationAvailableSummary
         case .none, .unknown:
             NunavStrings.errorUnknownTitle
         }

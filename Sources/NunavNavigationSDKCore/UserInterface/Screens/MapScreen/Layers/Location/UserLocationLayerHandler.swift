@@ -18,13 +18,19 @@ final class UserLocationLayerHandler: MGLStyleLayersHandler {
     private let locationProvider: LocationProvider
     private let navigationSdk: NavigationSdk
     private let positionAnimatorFactory: PositionAnimatorFactory
-    private let routeDetachStateProvider: RouteDetachStateProvider
 
-    private lazy var shapeSource = MGLShapeSource(identifier: Constants.sourceIdentifier,
-                                                  shapes: [], options: nil)
+    private lazy var shapeSource = MGLShapeSource(
+        identifier: Constants.sourceIdentifier,
+        shapes: [],
+        options: nil
+    )
 
     private lazy var layer: MGLStyleLayer = {
-        let layer = DefaultIconLayer(identifier: Constants.layerIdentifier, source: self.shapeSource, minimumZoomLevel: 0)
+        let layer = DefaultIconLayer(
+            identifier: Constants.layerIdentifier,
+            source: self.shapeSource,
+            minimumZoomLevel: 0
+        )
         layer.iconImageName = NSExpression(forConstantValue: Constants.imageKey)
         layer.iconAnchor = NSExpression(forConstantValue: MGLIconAnchor.center.rawValue)
         layer.iconScale = NSExpression(
@@ -86,13 +92,11 @@ final class UserLocationLayerHandler: MGLStyleLayersHandler {
         mapTheme: MapTheme,
         locationProvider: LocationProvider,
         navigationSdk: NavigationSdk,
-        positionAnimatorFactory: PositionAnimatorFactory = TimerPositionAnimatorFactory(),
-        routeDetachStateProvider: RouteDetachStateProvider
+        positionAnimatorFactory: PositionAnimatorFactory = TimerPositionAnimatorFactory()
     ) {
         self.locationProvider = locationProvider
         self.navigationSdk = navigationSdk
         self.positionAnimatorFactory = positionAnimatorFactory
-        self.routeDetachStateProvider = routeDetachStateProvider
 
         super.init(mapLayerManager: mapLayerManager, mapTheme: mapTheme)
     }
@@ -126,7 +130,7 @@ final class UserLocationLayerHandler: MGLStyleLayersHandler {
     // MARK: Functions
 
     private func refreshLocationIcon() {
-        if routeDetachStateProvider.detached {
+        if navigationSdk.navigationState?.displayInformation.shouldShowUserOffRoute == true {
             currentLocationIcon = UIImage.Map.locationIconGray
         } else {
             currentLocationIcon = UIImage.Map.locationIcon

@@ -9,18 +9,15 @@ extension ManeuverCard {
         @Published private(set) var state: ManeuverUIState = .Loading(detached: false)
 
         private let navigationSdk: NavigationSdk
-        private let detachStateProvider: RouteDetachStateProvider
         private let maneuverUIStateConverter: ManeuverUIStateConverter
 
         // MARK: Lifecycle
 
         init(
             navigationSdk: NavigationSdk,
-            detachStateProvider: RouteDetachStateProvider,
             maneuverUIStateConverter: ManeuverUIStateConverter = ManeuverUIStateConverter()
         ) {
             self.navigationSdk = navigationSdk
-            self.detachStateProvider = detachStateProvider
             self.maneuverUIStateConverter = maneuverUIStateConverter
         }
 
@@ -38,7 +35,7 @@ extension ManeuverCard {
             state = maneuverUIStateConverter.convert(
                 navigationState: navigationSdk.navigationState,
                 lastManeuverUIState: state,
-                detached: detachStateProvider.detached
+                detached: navigationSdk.navigationState?.displayInformation.shouldShowUserOffRoute == true
             )
         }
     }

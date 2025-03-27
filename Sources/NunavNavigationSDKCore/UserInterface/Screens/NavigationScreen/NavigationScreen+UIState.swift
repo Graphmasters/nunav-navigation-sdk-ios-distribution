@@ -42,6 +42,9 @@ extension NavigationScreen {
         case unauthorized
         case routeNotFound
         case unknown
+        case tooManyRequests
+        case serviceTemporarilyUnavailable
+        case noLocationAvailable
     }
 }
 

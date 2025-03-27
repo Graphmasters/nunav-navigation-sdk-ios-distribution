@@ -7,7 +7,6 @@ public final class VoiceInstructionComponent {
     // MARK: Properties
 
     private let navigationSdk: NavigationSdk
-    private let routeDetachStateProvider: RouteDetachStateProvider
     private let locale: Locale
 
     private lazy var voiceInstructionStringGenerator: VoiceInstructionStringGenerator = LocaleVoiceInstructionStringGenerator(
@@ -22,8 +21,7 @@ public final class VoiceInstructionComponent {
     private lazy var voiceInstructionHandler: VoiceInstructionHandler = NavigationVoiceInstructionHandler(
         navigationSdk: navigationSdk,
         voiceInstructionStringGenerator: voiceInstructionStringGenerator,
-        voiceInstructionDispatcher: voiceInstructionDispatcher,
-        detachStateProvider: routeDetachStateProvider
+        voiceInstructionDispatcher: voiceInstructionDispatcher
     )
 
     private lazy var voiceAudioJobProvider: VoiceAudioJobProvider = SynthesizingVoiceAudioJobProvider()
@@ -52,11 +50,9 @@ public final class VoiceInstructionComponent {
 
     public init(
         navigationSdk: NavigationSdk,
-        routeDetachStateProvider: RouteDetachStateProvider,
         locale: Locale = .autoupdatingCurrent
     ) {
         self.navigationSdk = navigationSdk
-        self.routeDetachStateProvider = routeDetachStateProvider
         self.locale = locale
     }
 }

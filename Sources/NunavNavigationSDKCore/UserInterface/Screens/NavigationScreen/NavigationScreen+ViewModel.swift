@@ -17,8 +17,6 @@ extension NavigationScreen {
         private let navigationSdk: NavigationSdk
         private let locationProvider: LocationProvider
 
-        private let routeDetachStateProvider: RouteDetachStateProvider
-
         // MARK: Computed Properties
 
         var dialogStateContributionBinding: Binding<Bool> {
@@ -67,12 +65,10 @@ extension NavigationScreen {
 
         init(
             navigationSdk: NavigationSdk,
-            locationProvider: LocationProvider,
-            routeDetachStateProvider: RouteDetachStateProvider
+            locationProvider: LocationProvider
         ) {
             self.navigationSdk = navigationSdk
             self.locationProvider = locationProvider
-            self.routeDetachStateProvider = routeDetachStateProvider
             self.state = NavigationScreen.UIState(
                 navigationState: navigationSdk.navigationState,
                 interactionMode: .following,
@@ -179,9 +175,28 @@ extension NavigationScreen {
                 return .unauthorized
             case is RouteProviderRouteNotFoundException:
                 return .routeNotFound
+            case is TooManyRequestsException:
+                return .tooManyRequests
+            case is NoLocationAvailableException:
+                return .noLocationAvailable
+            // This has to be added in the SDK and on the BFF.
+            // case is ServiceTemporarilyUnavailableException:
+            //     return .serviceTemporarilyUnavailable
             default:
                 return .unknown
             }
+        }
+
+        func persistentErrorDialogCloseButtonTapped() {
+            navigationSdk.stopNavigation()
+        }
+
+        func onStartNavigationFailed(with error: Error) {
+            state = state.doCopy(
+                dialogState: NavigationScreen.DialogState.error(
+                    type: .unknown
+                )
+            )
         }
     }
 }

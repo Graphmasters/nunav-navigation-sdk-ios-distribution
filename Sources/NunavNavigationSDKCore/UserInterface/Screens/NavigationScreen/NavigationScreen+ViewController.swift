@@ -30,7 +30,6 @@ extension NavigationScreen {
             vehicleConfig: VehicleConfig,
             routeOptions: RouteOptions,
             navigationSdk: NavigationSdk,
-            routeDetachStateProvider: RouteDetachStateProvider,
             mapLocationProvider: LocationProvider,
             locationProvider: LocationProvider,
             voiceInstructionComponent: VoiceInstructionComponent
@@ -44,19 +43,16 @@ extension NavigationScreen {
 
             let navigationViewModel = NavigationScreen.ViewModel(
                 navigationSdk: navigationSdk,
-                locationProvider: mapLocationProvider,
-                routeDetachStateProvider: routeDetachStateProvider
+                locationProvider: mapLocationProvider
             )
 
             let routeProgressViewModel = RouteProgressViewModel(
                 navigationSdk: navigationSdk,
-                detachStateProvider: routeDetachStateProvider,
                 routeProgressUIStateConverter: RouteProgressUIStateConverter()
             )
 
             let maneuverViewModel = ManeuverCard.ViewModel(
                 navigationSdk: navigationSdk,
-                detachStateProvider: routeDetachStateProvider,
                 maneuverUIStateConverter: ManeuverUIStateConverter()
             )
 
@@ -71,12 +67,12 @@ extension NavigationScreen {
                     navigationViewModel: navigationViewModel,
                     routeProgressViewModel: routeProgressViewModel,
                     mapLocationProvider: mapLocationProvider,
-                    navigationSdk: navigationSdk,
-                    routeDetachStateProvider: routeDetachStateProvider
+                    navigationSdk: navigationSdk
                 )
             )
 
             navigationViewModel.dismissNavigation = { [weak self] in
+                self?.startNavigationTask?.cancel()
                 self?.dismiss(animated: true)
             }
 
@@ -88,6 +84,10 @@ extension NavigationScreen {
         @MainActor dynamic required init?(coder _: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
+
+        private var startNavigationTask: Task<Void, Error>?
+
+        private var initiallyStarted = false
 
         // MARK: Overridden Functions
 
@@ -105,13 +105,25 @@ extension NavigationScreen {
 
             CLLocationManager().requestWhenInUseAuthorization()
 
-            // TODO:
+            startNavigationTask = Task {
+                try? await self.waitForFirstLocation()
 
-            try? navigationSdk.startNavigation(
-                routable: routable,
-                vehicleConfig: vehicleConfig,
-                routeOptions: routeOptions
-            )
+                guard !Task.isCancelled else {
+                    return
+                }
+
+                do {
+                    try navigationSdk.startNavigation(
+                        routable: routable,
+                        vehicleConfig: vehicleConfig,
+                        routeOptions: routeOptions
+                    )
+                } catch {
+                    navigationViewModel.onStartNavigationFailed(with: error)
+                }
+
+                initiallyStarted = true
+            }
 
             displayDimmingController.disableAutomaticDimmming()
         }
@@ -119,7 +131,7 @@ extension NavigationScreen {
         override public func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
 
-            guard !navigationSdk.navigationActive else {
+            guard !navigationSdk.navigationActive, initiallyStarted else {
                 return
             }
 
@@ -135,10 +147,20 @@ extension NavigationScreen {
                 return
             }
 
+            locationProvider.stopLocationUpdates()
             locationProvider.removeLocationUpdateListener(locationUpdateListener: self)
         }
 
         // MARK: Functions
+
+        private func waitForFirstLocation() async throws {
+            for _ in 0..<25 {
+                if navigationSdk.location != nil{
+                    return
+                }
+                try await Task.sleep(seconds: 0.1)
+            }
+        }
 
         func toggleVoiceInstructionComponent() {
             voiceInstructionComponent.enabled.toggle()

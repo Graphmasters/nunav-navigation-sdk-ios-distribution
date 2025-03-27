@@ -7,18 +7,15 @@ class RouteProgressViewModel: ObservableObject {
     @Published var state: RouteProgressUIState = .Loading()
 
     private let navigationSdk: NavigationSdk
-    private let detachStateProvider: RouteDetachStateProvider
     private let routeProgressUIStateConverter: RouteProgressUIStateConverter
 
     // MARK: Lifecycle
 
     init(
         navigationSdk: NavigationSdk,
-        detachStateProvider: RouteDetachStateProvider,
         routeProgressUIStateConverter: RouteProgressUIStateConverter = RouteProgressUIStateConverter()
     ) {
         self.navigationSdk = navigationSdk
-        self.detachStateProvider = detachStateProvider
         self.routeProgressUIStateConverter = routeProgressUIStateConverter
     }
 
@@ -35,7 +32,7 @@ class RouteProgressViewModel: ObservableObject {
     private func update() {
         state = routeProgressUIStateConverter.convert(
             navigationState: navigationSdk.navigationState,
-            detached: detachStateProvider.detached
+            detached: navigationSdk.navigationState?.displayInformation.shouldShowUserOffRoute ?? false
         )
     }
 }

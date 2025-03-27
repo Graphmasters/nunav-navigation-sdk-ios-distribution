@@ -14,10 +14,10 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/Graphmasters/ios-core-utility-distribution", from: "1.2.9"),
-        .package(url: "https://github.com/Graphmasters/ios-map-utility-distribution", from: "1.3.0"),
-        .package(url: "https://github.com/Graphmasters/nunav-ios-design-system-distribution", from: "1.0.34"),
-        .package(url: "https://github.com/Graphmasters/multiplatform-navigation-ios-distribution", from: "2.1.6")
+        .package(url: "https://github.com/Graphmasters/ios-core-utility-distribution", exact: "1.2.10"),
+        .package(url: "https://github.com/Graphmasters/ios-map-utility-distribution", exact: "1.3.0"),
+        .package(url: "https://github.com/Graphmasters/nunav-ios-design-system-distribution", exact: "1.0.34"),
+        .package(url: "https://github.com/Graphmasters/multiplatform-navigation-ios-distribution", exact: "2.1.18")
     ],
     targets: [
         .target(

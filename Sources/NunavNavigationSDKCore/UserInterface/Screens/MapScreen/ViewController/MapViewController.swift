@@ -21,8 +21,6 @@ class NavigationMapViewController: UIViewController {
 
     private let navigationSdk: NavigationSdk
 
-    private let routeDetachStateProvider: RouteDetachStateProvider
-
     private var isFirstCameraUpdate: Bool = true
 
     private lazy var mapLayersLifecycleHandler = MGLMapViewLifeCycleHandler(
@@ -44,13 +42,14 @@ class NavigationMapViewController: UIViewController {
 
     private lazy var mapLayersControllerBuilder = NunavSDKMapLayersControllerBuilder(
         mapLocationProvider: mapLocationProvider,
-        navigationSdk: navigationSdk,
-        routeDetachStateProvider: routeDetachStateProvider
+        navigationSdk: navigationSdk
     )
 
     private lazy var cameraComponent = CameraComponent(
         navigationSdk: navigationSdk,
-        mapView: mapView
+        mapView: mapView,
+        updateRate: BaseCameraComponent.companion.DEFAULT_UPDATE_RATE,
+        zoomSteps: GenericNavigationZoomProvider.companion.ZOOM_STEPS
     )
 
     // MARK: Computed Properties
@@ -69,13 +68,11 @@ class NavigationMapViewController: UIViewController {
         navigationUIState: NavigationScreen.UIState,
         mapLocationProvider: LocationProvider,
         navigationSdk: NavigationSdk,
-        routeDetachStateProvider: RouteDetachStateProvider,
         onUserInteracted: @escaping (NavigationScreen.Interactions) -> Void
     ) {
         self.navigationUIState = navigationUIState
         self.mapLocationProvider = mapLocationProvider
         self.navigationSdk = navigationSdk
-        self.routeDetachStateProvider = routeDetachStateProvider
         self.onUserInteracted = onUserInteracted
         super.init(nibName: nil, bundle: nil)
     }

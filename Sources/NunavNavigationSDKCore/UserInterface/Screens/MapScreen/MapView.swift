@@ -10,7 +10,6 @@ struct MapView: UIViewControllerRepresentable {
     let onUserInteracted: (NavigationScreen.Interactions) -> Void
     let mapLocationProvider: LocationProvider
     let navigationSdk: NavigationSdk
-    let routeDetachStateProvider: RouteDetachStateProvider
 
     @Binding var navigationState: NavigationScreen.UIState
 
@@ -19,7 +18,6 @@ struct MapView: UIViewControllerRepresentable {
             navigationUIState: navigationState,
             mapLocationProvider: mapLocationProvider,
             navigationSdk: navigationSdk,
-            routeDetachStateProvider: routeDetachStateProvider,
             onUserInteracted: onUserInteracted
         )
     }

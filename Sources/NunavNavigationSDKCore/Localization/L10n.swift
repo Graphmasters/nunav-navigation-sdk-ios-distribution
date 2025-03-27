@@ -116,6 +116,26 @@ enum L10n {
         bundle: .module
     )
 
+    static let navigationErrorTooManyRequestsSummary = String(
+        localized: "navigation_error_too_many_requests_summary",
+        bundle: .module
+    )
+
+    static let navigationErrorServiceTemporarilyUnavailableSummary = String(
+        localized: "navigation_error_service_temporarily_unavailable_summary",
+        bundle: .module
+    )
+
+    static let navigationErrorMethodNotAllowedSummary = String(
+        localized: "navigation_error_method_not_allowed_summary",
+        bundle: .module
+    )
+
+    static let navigationErrorNoLocationAvailableSummary = String(
+        localized: "navigation_error_no_location_available_summary",
+        bundle: .module
+    )
+
     static let mapOverlayBackToRouteButtonTitle = String(
         localized: "map_overlay_back_to_route_button_title",
         bundle: .module

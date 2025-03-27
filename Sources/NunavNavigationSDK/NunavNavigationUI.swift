@@ -9,17 +9,11 @@ public enum NunavNavigationUI {
     // MARK: Static Properties
 
     static let mapLocationProvider: LocationProvider = PredictedLocationProvider(
-        executor: CoroutineExecutor(),
-        navigationSdk: NunavNavigationSDK.navigationSdk,
-        routeDetachStateProvider: NunavNavigationUI.routeDetachStateProvider
+        navigationSdk: NunavNavigationSDK.navigationSdk
     )
 
-    static let routeDetachStateProvider: RouteDetachStateProvider
-        = OffRouteDetachStateProvider(navigationSdk: NunavNavigationSDK.navigationSdk)
-
     static let voiceInstructionComponent = VoiceInstructionComponent(
-        navigationSdk: NunavNavigationSDK.navigationSdk,
-        routeDetachStateProvider: routeDetachStateProvider
+        navigationSdk: NunavNavigationSDK.navigationSdk
     )
 
     // MARK: Static Functions
@@ -47,7 +41,6 @@ public enum NunavNavigationUI {
             vehicleConfig: getVehicleConfiguration(routingConfiguration: routingConfiguration),
             routeOptions: getRouteOptions(routingConfiguration: routingConfiguration),
             navigationSdk: NunavNavigationSDK.navigationSdk,
-            routeDetachStateProvider: routeDetachStateProvider,
             mapLocationProvider: mapLocationProvider,
             locationProvider: NunavNavigationSDK.locationProvider,
             voiceInstructionComponent: voiceInstructionComponent

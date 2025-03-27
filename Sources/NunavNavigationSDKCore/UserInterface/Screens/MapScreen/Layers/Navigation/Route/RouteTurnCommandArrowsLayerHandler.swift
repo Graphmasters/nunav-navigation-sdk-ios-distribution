@@ -50,7 +50,6 @@ class RouteTurnCommandArrowsLayerHandler: MGLStyleLayersHandler {
     }()
 
     private let navigationSdk: NavigationSdk
-    private let routeDetachStateProvider: RouteDetachStateProvider
 
     private lazy var turnCommandArrowShaftPartOneSource = MGLShapeSource(
         identifier: Constants.arrowShaftSourcePartOneIdentifier,
@@ -127,11 +126,9 @@ class RouteTurnCommandArrowsLayerHandler: MGLStyleLayersHandler {
     init(
         mapTheme: MapTheme,
         mapLayerManager: MapboxMapLayerManager?,
-        navigationSdk: NavigationSdk,
-        routeDetachStateProvider: RouteDetachStateProvider
+        navigationSdk: NavigationSdk
     ) {
         self.navigationSdk = navigationSdk
-        self.routeDetachStateProvider = routeDetachStateProvider
         self.coordinates = []
         super.init(mapLayerManager: mapLayerManager, mapTheme: mapTheme)
     }
@@ -166,7 +163,7 @@ class RouteTurnCommandArrowsLayerHandler: MGLStyleLayersHandler {
         guard navigationSdk.navigationActive,
               let routeProgress = navigationSdk.navigationState?.routeProgress,
               routeProgress.nextManeuver.turnInfo.turnCommand != .destination,
-              !routeDetachStateProvider.detached
+              navigationSdk.navigationState?.displayInformation.shouldShowUserOffRoute != true
         else {
             clearSources()
             return

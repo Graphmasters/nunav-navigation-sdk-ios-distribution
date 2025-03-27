@@ -16,7 +16,6 @@ class NavigationLayerHandler: AggregatingMGLStyleLayersHandler {
     private let navigationSdk: NavigationSdk
     private let routeFeatureCreator: RouteFeatureCreator
     private let mapLocationProvider: LocationProvider
-    private let routeDetachStateProvider: RouteDetachStateProvider
 
     private var observation: NSKeyValueObservation?
 
@@ -24,8 +23,7 @@ class NavigationLayerHandler: AggregatingMGLStyleLayersHandler {
         mapLayerManager: mapLayerManager,
         mapTheme: mapTheme,
         mapLocationProvider: mapLocationProvider,
-        navigationSdk: navigationSdk,
-        routeDetachStateProvider: routeDetachStateProvider
+        navigationSdk: navigationSdk
     )
 
     private lazy var walkingPathLayerController = WalkingPathLayerController(
@@ -50,8 +48,7 @@ class NavigationLayerHandler: AggregatingMGLStyleLayersHandler {
     private lazy var maneuverArrowLayerHandler = RouteTurnCommandArrowsLayerHandler(
         mapTheme: mapTheme,
         mapLayerManager: mapLayerManager,
-        navigationSdk: navigationSdk,
-        routeDetachStateProvider: routeDetachStateProvider
+        navigationSdk: navigationSdk
     )
 
     private lazy var tripSymbolsLayerController = NavigationTripSymbolsLayerHandler(
@@ -67,13 +64,11 @@ class NavigationLayerHandler: AggregatingMGLStyleLayersHandler {
         navigationSdk: NavigationSdk,
         mapTheme: MapTheme,
         routeFeatureCreator: RouteFeatureCreator,
-        mapLocationProvider: LocationProvider,
-        routeDetachStateProvider: RouteDetachStateProvider
+        mapLocationProvider: LocationProvider
     ) {
         self.navigationSdk = navigationSdk
         self.routeFeatureCreator = routeFeatureCreator
         self.mapLocationProvider = mapLocationProvider
-        self.routeDetachStateProvider = routeDetachStateProvider
 
         super.init(
             mapLayerManager: mapLayerManager,

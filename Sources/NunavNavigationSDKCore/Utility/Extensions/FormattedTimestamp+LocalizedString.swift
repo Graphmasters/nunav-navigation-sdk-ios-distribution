@@ -14,6 +14,8 @@ extension FormattedTimestamp {
             L10n.routeProgressViewDayPeriodAMAbbreviation
         case .pm:
             L10n.routeProgressViewDayPeriodPMAbbreviation
+        default:
+            ""
         }
     }
 }
