@@ -5,16 +5,6 @@ import MultiplatformNavigation
 final class DirectionArrowLayerHandler: MGLStyleLayersHandler {
     // MARK: Properties
 
-    @objc private var layerIdentifier: String = "DIRECTION_ARROW_LAYER_IDENTIFIER"
-
-    private let routeLayer: MGLStyleLayer
-
-    private lazy var source = MGLShapeSource(identifier: layerIdentifier, shapes: [], options: nil)
-
-    private lazy var layer = RouteDirectionArrowsLayer(identifier: layerIdentifier, source: source)
-
-    // MARK: Computed Properties
-
     var waypoints: [Route.Waypoint] = [] {
         didSet {
             DispatchQueue.main.async {
@@ -34,6 +24,14 @@ final class DirectionArrowLayerHandler: MGLStyleLayersHandler {
             }
         }
     }
+
+    @objc private var layerIdentifier: String = "DIRECTION_ARROW_LAYER_IDENTIFIER"
+
+    private let routeLayer: MGLStyleLayer
+
+    private lazy var source = MGLShapeSource(identifier: layerIdentifier, shapes: [], options: nil)
+
+    private lazy var layer = RouteDirectionArrowsLayer(identifier: layerIdentifier, source: source)
 
     // MARK: Lifecycle
 

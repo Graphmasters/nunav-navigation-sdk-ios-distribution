@@ -150,7 +150,8 @@ extension ManeuverCard {
                     Color.DesignSystem.surfaceCard.frame(
                         width: ManeuverCard.ContentView.topViewImageHeight,
                         height: ManeuverCard.ContentView.topViewImageHeight
-                    ).opacity(.zero)
+                    )
+                    .opacity(.zero)
                     ProgressView()
                 }
                 Text(self.title)
@@ -231,8 +232,13 @@ extension ManeuverCard {
                             Image(uiImage: self.getImage(for: label))
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
-                            BodyText(label.shield, style: .small(textColor: Color(uiColor: self.getFontColor(for: label))))
-                                .padding(self.roadShieldTextPadding)
+                            BodyText(
+                                label.shield,
+                                style: .small(
+                                    textColor: Color(uiColor: self.getFontColor(for: label))
+                                )
+                            )
+                            .padding(self.roadShieldTextPadding)
                         }.fixedSize()
                         if let destinationName = label.destinationName {
                             Text(destinationName)
@@ -282,7 +288,13 @@ extension ManeuverCard {
 
         // MARK: Lifecycle
 
-        init(loading: Bool = false, image: UIImage? = nil, title: String, titleAddition: String? = nil, cue: Maneuver.Cue? = nil) {
+        init(
+            loading: Bool = false,
+            image: UIImage? = nil,
+            title: String,
+            titleAddition: String? = nil,
+            cue: Maneuver.Cue? = nil
+        ) {
             self.loading = loading
             self.image = image
             self.title = title
@@ -298,7 +310,8 @@ extension ManeuverCard {
                     Color.DesignSystem.surfaceCard.frame(
                         width: ManeuverCard.ContentView.topViewImageHeight,
                         height: ManeuverCard.ContentView.topViewImageHeight
-                    ).opacity(.zero)
+                    )
+                    .opacity(.zero)
                     self.image.map {
                         Image(
                             uiImage: $0.withRenderingMode(.alwaysTemplate)
@@ -328,9 +341,11 @@ extension ManeuverCard {
                     }
                 }
                 Spacer()
-            }.transaction { transaction in
+            }
+            .transaction { transaction in
                 transaction.animation = nil
-            }.frame(
+            }
+            .frame(
                 minWidth: .zero,
                 maxWidth: .infinity,
                 maxHeight: ManeuverCard.ContentView.topViewImageHeight

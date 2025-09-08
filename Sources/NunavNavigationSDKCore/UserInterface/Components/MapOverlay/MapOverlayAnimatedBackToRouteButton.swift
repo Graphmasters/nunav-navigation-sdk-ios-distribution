@@ -2,9 +2,21 @@ import NunavDesignSystem
 import SwiftUI
 
 struct MapOverlayAnimatedBackToRouteButton: View {
+    // MARK: Nested Types
+
+    private enum Constants {
+        static let timerStepTime: TimeInterval = 0.01
+    }
+
     // MARK: SwiftUI Properties
 
-    @State private var timer = Timer.publish(every: 0.01, on: .current, in: .common).autoconnect()
+    @State private var timer = Timer.publish(
+        every: Constants.timerStepTime,
+        on: .current,
+        in: .common
+    )
+    .autoconnect()
+
     @State private var timerCount: CGFloat = 0
     @State private var progress: CGFloat = 0
 
@@ -51,14 +63,19 @@ struct MapOverlayAnimatedBackToRouteButton: View {
                             }.padding(.default)
                                 .foregroundColor(.DesignSystem.onPrimary)
                                 .background(Color.DesignSystem.primary)
-                                .clipShape(Rectangle().size(width: geometry.size.width * self.progress, height: geometry.size.height))
+                                .clipShape(
+                                    Rectangle().size(
+                                        width: geometry.size.width * self.progress,
+                                        height: geometry.size.height
+                                    )
+                                )
                         }
                     }
             }
             .cornerRadius(.default)
-            .onReceive(self.timer, perform: { _ in
+            .onReceive(self.timer) { _ in
                 self.progressStep()
-            })
+            }
         }.frame(height: Size.Button.height)
     }
 
@@ -69,7 +86,7 @@ struct MapOverlayAnimatedBackToRouteButton: View {
             return
         }
         if progress != 1, let duration = duration {
-            timerCount += 0.01
+            timerCount += Constants.timerStepTime
             progress = easeInOutCubic(timerCount / duration)
         } else {
             progress = 0
@@ -86,12 +103,4 @@ struct MapOverlayAnimatedBackToRouteButton: View {
     private func cancelTimer() {
         timer.upstream.connect().cancel()
     }
-}
-
-#Preview {
-    MapOverlayAnimatedBackToRouteButton(
-        action: {},
-        duration: 5,
-        animate: true
-    )
 }

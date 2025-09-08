@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import HTTPStatusCodes
 import MultiplatformNavigation
 import Network
 import SwiftUI
@@ -135,6 +136,18 @@ extension NavigationScreen {
             state = state.doCopy(interactionMode: .following)
         }
 
+        func persistentErrorDialogCloseButtonTapped() {
+            navigationSdk.stopNavigation()
+        }
+
+        func onStartNavigationFailed(with _: Error) {
+            state = state.doCopy(
+                dialogState: NavigationScreen.DialogState.error(
+                    type: .unknown
+                )
+            )
+        }
+
         private func onEndNavigationDialogCloseTapped() {
             navigationSdk.stopNavigation()
         }
@@ -170,33 +183,29 @@ extension NavigationScreen {
         }
 
         private func getNavigationError(_ error: KotlinException) -> NavigationScreen.ErrorType {
+            if let ioException = error as? IOException,
+               let statusCode = HTTPStatusCode(rawValue: Int(ioException.statusCode)) {
+                return .couldNotGetRoute(
+                    statusCode: statusCode,
+                    isPersistent: isPersistentError(httpStatusCode: statusCode)
+                )
+            }
+
             switch error {
-            case is UnauthorizedException:
-                return .unauthorized
-            case is RouteProviderRouteNotFoundException:
-                return .routeNotFound
-            case is TooManyRequestsException:
-                return .tooManyRequests
             case is NoLocationAvailableException:
                 return .noLocationAvailable
-            // This has to be added in the SDK and on the BFF.
-            // case is ServiceTemporarilyUnavailableException:
-            //     return .serviceTemporarilyUnavailable
             default:
                 return .unknown
             }
         }
 
-        func persistentErrorDialogCloseButtonTapped() {
-            navigationSdk.stopNavigation()
-        }
-
-        func onStartNavigationFailed(with error: Error) {
-            state = state.doCopy(
-                dialogState: NavigationScreen.DialogState.error(
-                    type: .unknown
-                )
-            )
+        private func isPersistentError(httpStatusCode: HTTPStatusCode) -> Bool {
+            switch httpStatusCode {
+            case .methodNotAllowed, .notFound, .tooManyRequests, .unauthorized:
+                return true
+            default:
+                return false
+            }
         }
     }
 }

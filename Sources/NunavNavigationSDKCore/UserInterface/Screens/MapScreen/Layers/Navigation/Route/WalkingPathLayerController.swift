@@ -6,6 +6,13 @@ import NunavDesignSystem
 final class WalkingPathLayerController: MGLStyleLayersHandler {
     // MARK: Properties
 
+    var route: Route? {
+        didSet {
+            refresh()
+            updateTiltFromMapViewCamera()
+        }
+    }
+
     @objc private lazy var layerIdentifier: String = identifierPrefix + "WALKING_PATH_LAYER_IDENTIFIER"
 
     private let identifierPrefix: String
@@ -20,15 +27,6 @@ final class WalkingPathLayerController: MGLStyleLayersHandler {
         source: source,
         lineColor: .DesignSystem.onSurfaceSecondary
     )
-
-    // MARK: Computed Properties
-
-    var route: Route? {
-        didSet {
-            refresh()
-            updateTiltFromMapViewCamera()
-        }
-    }
 
     // MARK: Lifecycle
 

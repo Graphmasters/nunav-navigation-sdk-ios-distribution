@@ -9,6 +9,14 @@ import UIKit
 class NavigationMapViewController: UIViewController {
     // MARK: Properties
 
+    public var navigationUIState: NavigationScreen.UIState {
+        didSet {
+            if oldValue.interactionMode != navigationUIState.interactionMode {
+                onInteractionModeChanged()
+            }
+        }
+    }
+
     lazy var mapView: MGLMapView = {
         let view = MGLMapView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -51,16 +59,6 @@ class NavigationMapViewController: UIViewController {
         updateRate: BaseCameraComponent.companion.DEFAULT_UPDATE_RATE,
         zoomSteps: GenericNavigationZoomProvider.companion.ZOOM_STEPS
     )
-
-    // MARK: Computed Properties
-
-    public var navigationUIState: NavigationScreen.UIState {
-        didSet {
-            if oldValue.interactionMode != navigationUIState.interactionMode {
-                onInteractionModeChanged()
-            }
-        }
-    }
 
     // MARK: Lifecycle
 
@@ -193,7 +191,10 @@ class NavigationMapViewController: UIViewController {
         guard navigationUIState.interactionMode == .following else {
             return
         }
-        cameraController.move(cameraUpdate: cameraUpdate, cameraConfiguration: cameraConfigurationProvider.cameraConfiguration)
+        cameraController.move(
+            cameraUpdate: cameraUpdate,
+            cameraConfiguration: cameraConfigurationProvider.cameraConfiguration
+        )
     }
 
     private func updateInsets() {
@@ -249,11 +250,7 @@ extension NavigationMapViewController: MGLMapViewLifeCycleHandlerDelegate {
 }
 
 final class SimpleMapThemeRepository: MapThemeRepository {
-    // MARK: Properties
-
     var delegate: MapThemeRepositoryDelegate?
-
-    // MARK: Computed Properties
 
     var mapTheme: MapTheme = .light {
         didSet {

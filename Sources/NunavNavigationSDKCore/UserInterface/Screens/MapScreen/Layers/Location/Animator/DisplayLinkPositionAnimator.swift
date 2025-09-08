@@ -58,7 +58,8 @@ class DisplayLinkPositionAnimator: PositionAnimator {
         return displayLink != nil && displayLink?.isPaused == false
     }
 
-    @objc private func onProgress() {
+    @objc
+    private func onProgress() {
         if Date().timeIntervalSince1970 - animationStartDate.timeIntervalSince1970 < duration,
            isAnimating() {
             let interval = (Date().timeIntervalSince1970 - animationStartDate.timeIntervalSince1970) / duration

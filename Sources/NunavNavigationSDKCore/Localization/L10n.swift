@@ -143,10 +143,10 @@ enum L10n {
 
     // MARK: Static Functions
 
-    static func maneuverProgressViewFollowingManeuverText(_ p1: String) -> String {
+    static func maneuverProgressViewFollowingManeuverText(_ text: String) -> String {
         String(
             format: String(localized: "maneuver_progress_view_following_maneuver_text", bundle: .module),
-            p1
+            text
         )
     }
 }

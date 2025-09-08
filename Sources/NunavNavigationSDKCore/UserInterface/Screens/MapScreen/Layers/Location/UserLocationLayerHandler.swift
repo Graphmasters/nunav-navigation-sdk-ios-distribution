@@ -55,8 +55,6 @@ final class UserLocationLayerHandler: MGLStyleLayersHandler {
 
     private weak var positionAnimator: PositionAnimator?
 
-    // MARK: Computed Properties
-
     private var currentLocationIcon: UIImage = .Map.locationIconGray {
         didSet {
             guard oldValue != currentLocationIcon else {

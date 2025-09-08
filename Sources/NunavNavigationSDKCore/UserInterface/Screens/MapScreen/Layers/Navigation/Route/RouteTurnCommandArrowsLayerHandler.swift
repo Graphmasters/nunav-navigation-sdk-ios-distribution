@@ -3,6 +3,7 @@ import GMMapUtility
 import Mapbox
 import MultiplatformNavigation
 
+// swiftlint:disable:next type_body_length
 class RouteTurnCommandArrowsLayerHandler: MGLStyleLayersHandler {
     // MARK: Nested Types
 
@@ -11,12 +12,16 @@ class RouteTurnCommandArrowsLayerHandler: MGLStyleLayersHandler {
         static let arrowShaftPartTwoLayerIdentifier: String = "turncommand-arrows-layer-shaft-two-identifier"
         static let arrowShaftSourcePartOneIdentifier: String = "turncommand-arrows-source-shaft-one-identifier"
         static let arrowShaftSourcePartTwoIdentifier: String = "turncommand-arrows-source-shaft-two-identifier"
-        static let arrowShaftOutlineLayerPartOneIdentifier: String = "turncommand-arrows-outline-layer-shaft-one-identifier"
-        static let arrowShaftOutlineLayerPartTwoIdentifier: String = "turncommand-arrows-outline-layer-shaft-two-identifier"
+        static let arrowShaftOutlineLayerPartOneIdentifier: String =
+            "turncommand-arrows-outline-layer-shaft-one-identifier"
+        static let arrowShaftOutlineLayerPartTwoIdentifier: String =
+            "turncommand-arrows-outline-layer-shaft-two-identifier"
         static let arrowHeadLayerIdentifier: String = "turncommand-arrows-head-layer-identifier"
         static let arrowHeadSourceIdentifier: String = "turncommand-arrows-head-source-identifier"
         static let arrowHeadIconIdentifier: String = "arrowHead"
-        static let defaultHalfArrowLength: Length = Length.companion.fromMeters(meters: 40.0)
+        static let defaultHalfArrowLength: Length = Length.companion.fromMeters(
+            meters: 40.0
+        )
         static let arrowHeadRotationKey: String = "arrowhead-rotation-key"
         static let arrowHeadSizeReductionFactor: Double = 1.5
     }
@@ -65,8 +70,6 @@ class RouteTurnCommandArrowsLayerHandler: MGLStyleLayersHandler {
         identifier: Constants.arrowHeadSourceIdentifier,
         shapes: []
     )
-
-    // MARK: Computed Properties
 
     private var coordinates: [LatLng] {
         didSet {

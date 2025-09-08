@@ -43,8 +43,6 @@ final class LocationTrailMapLayerHandler: MGLStyleLayersHandler {
         return circleLayer
     }()
 
-    // MARK: Computed Properties
-
     private var trail = [MultiplatformNavigation.Location]() {
         didSet {
             updateSource(from: trail)

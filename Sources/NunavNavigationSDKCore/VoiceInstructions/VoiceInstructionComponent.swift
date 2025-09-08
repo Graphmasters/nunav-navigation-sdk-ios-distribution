@@ -9,9 +9,10 @@ public final class VoiceInstructionComponent {
     private let navigationSdk: NavigationSdk
     private let locale: Locale
 
-    private lazy var voiceInstructionStringGenerator: VoiceInstructionStringGenerator = LocaleVoiceInstructionStringGenerator(
-        localeProvider: FoundationLanguageProvider()
-    )
+    private lazy var voiceInstructionStringGenerator: VoiceInstructionStringGenerator
+        = LocaleVoiceInstructionStringGenerator(
+            localeProvider: FoundationLanguageProvider()
+        )
 
     private lazy var voiceInstructionDispatcher: VoiceInstructionDispatcher = AudioPlayerVoiceInstructionDispatcher(
         audioJobPlayer: audioJobPlayer,

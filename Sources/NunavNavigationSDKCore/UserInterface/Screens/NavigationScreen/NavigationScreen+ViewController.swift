@@ -23,6 +23,10 @@ extension NavigationScreen {
 
         private let displayDimmingController = DisplayDimmingController()
 
+        private var startNavigationTask: Task<Void, Error>?
+
+        private var initiallyStarted = false
+
         // MARK: Lifecycle
 
         public init(
@@ -84,10 +88,6 @@ extension NavigationScreen {
         @MainActor dynamic required init?(coder _: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
-
-        private var startNavigationTask: Task<Void, Error>?
-
-        private var initiallyStarted = false
 
         // MARK: Overridden Functions
 
@@ -153,17 +153,17 @@ extension NavigationScreen {
 
         // MARK: Functions
 
+        func toggleVoiceInstructionComponent() {
+            voiceInstructionComponent.enabled.toggle()
+        }
+
         private func waitForFirstLocation() async throws {
-            for _ in 0..<25 {
-                if navigationSdk.location != nil{
+            for _ in 0 ..< 25 {
+                if navigationSdk.location != nil {
                     return
                 }
                 try await Task.sleep(seconds: 0.1)
             }
-        }
-
-        func toggleVoiceInstructionComponent() {
-            voiceInstructionComponent.enabled.toggle()
         }
     }
 }

@@ -36,6 +36,15 @@ class RouteLineLayerHandler: MGLStyleLayersHandler {
         source: secondPartRouteSource
     )
 
+    var waypoints: [Route.Waypoint] = [] {
+        didSet {
+            guard waypoints.count > 1 else {
+                return clearLayer()
+            }
+            refreshLayer(with: waypoints)
+        }
+    }
+
     private let identifierPrefix: String
 
     private let featureCreator: RouteFeatureCreator
@@ -72,17 +81,6 @@ class RouteLineLayerHandler: MGLStyleLayersHandler {
             MGLShapeSourceOption.simplificationTolerance: MGLShapeSourceOption.routeSimplificationToleranceValue
         ]
     )
-
-    // MARK: Computed Properties
-
-    var waypoints: [Route.Waypoint] = [] {
-        didSet {
-            guard waypoints.count > 1 else {
-                return clearLayer()
-            }
-            refreshLayer(with: waypoints)
-        }
-    }
 
     // MARK: Lifecycle
 

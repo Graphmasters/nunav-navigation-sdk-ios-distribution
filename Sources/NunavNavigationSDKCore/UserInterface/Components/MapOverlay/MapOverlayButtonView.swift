@@ -4,9 +4,12 @@ import NunavDesignSystem
 import SwiftUI
 
 struct MapOverlayButtonView: View {
-    // MARK: Static Properties
+    // MARK: Nested Types
 
-    private static var watermarkIconSize: CGFloat = 28
+    private enum Constants {
+        static let watermarkIconSize: CGFloat = 28
+        static let overviewButtonAnimationDuration: TimeInterval = 10
+    }
 
     // MARK: Properties
 
@@ -52,18 +55,18 @@ struct MapOverlayButtonView: View {
                     Image(uiImage: UIImage.Map.watermark)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(height: MapOverlayButtonView.watermarkIconSize)
+                        .frame(height: Constants.watermarkIconSize)
                         .onTapGesture(perform: onContributionButtonClicked)
                 case .overview:
                     MapOverlayAnimatedBackToRouteButton(
                         action: self.backToRouteButtonClicked,
-                        duration: 10,
+                        duration: Constants.overviewButtonAnimationDuration,
                         animate: true
                     )
                 case .interacting:
                     MapOverlayAnimatedBackToRouteButton(
                         action: self.backToRouteButtonClicked,
-                        duration: 10,
+                        duration: Constants.overviewButtonAnimationDuration,
                         animate: false
                     )
                 case .loading:

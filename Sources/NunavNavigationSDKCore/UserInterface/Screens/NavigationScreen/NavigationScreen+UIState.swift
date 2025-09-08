@@ -1,3 +1,4 @@
+import HTTPStatusCodes
 import MultiplatformNavigation
 
 extension NavigationScreen {
@@ -38,12 +39,9 @@ extension NavigationScreen {
         }
     }
 
-    enum ErrorType {
-        case unauthorized
-        case routeNotFound
+    enum ErrorType: Equatable {
+        case couldNotGetRoute(statusCode: HTTPStatusCode, isPersistent: Bool)
         case unknown
-        case tooManyRequests
-        case serviceTemporarilyUnavailable
         case noLocationAvailable
     }
 }

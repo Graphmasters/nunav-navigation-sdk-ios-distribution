@@ -21,11 +21,13 @@ class RouteProgressViewModel: ObservableObject {
 
     // MARK: Functions
 
-    @MainActor func onAppear() {
+    @MainActor
+    func onAppear() {
         navigationSdk.addOnNavigationStateUpdatedListener(onNavigationStateUpdatedListener: self)
     }
 
-    @MainActor func onDisappear() {
+    @MainActor
+    func onDisappear() {
         navigationSdk.removeOnNavigationStateUpdatedListener(onNavigationStateUpdatedListener: self)
     }
 

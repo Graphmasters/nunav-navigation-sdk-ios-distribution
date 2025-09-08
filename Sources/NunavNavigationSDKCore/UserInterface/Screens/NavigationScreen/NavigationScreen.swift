@@ -61,7 +61,9 @@ public struct NavigationScreen: View {
                     .layoutPriority(1)
             }
             VStack {
-                if (self.verticalSizeClass ?? .regular) == .regular && (self.horizontalSizeClass ?? .regular) == .compact {
+                if (
+                    self.verticalSizeClass ?? .regular
+                ) == .regular && (self.horizontalSizeClass ?? .regular) == .compact {
                     self.portraitLayout
                 } else {
                     self.landscapeLayout
@@ -205,18 +207,25 @@ public struct NavigationScreen: View {
 
     private func errorMessage(for errorType: ErrorType?) -> String {
         switch errorType {
-        case .routeNotFound:
-            L10n.navigationErrorNoRouteFoundSummary
-        case .unauthorized:
-            L10n.navigationErrorUnauthorizedSummary
-        case .tooManyRequests:
-            L10n.navigationErrorTooManyRequestsSummary
-        case .serviceTemporarilyUnavailable:
-            L10n.navigationErrorServiceTemporarilyUnavailableSummary
+        case let .couldNotGetRoute(statusCode, _):
+            switch statusCode {
+            case .unauthorized:
+                return L10n.navigationErrorUnauthorizedSummary
+            case .serviceUnavailable:
+                return L10n.navigationErrorServiceTemporarilyUnavailableSummary
+            case .notFound:
+                return L10n.navigationErrorNoRouteFoundSummary
+            case .tooManyRequests:
+                return L10n.navigationErrorTooManyRequestsSummary
+            case .methodNotAllowed:
+                return L10n.navigationErrorMethodNotAllowedSummary
+            default:
+                return NunavStrings.errorUnknownTitle
+            }
         case .noLocationAvailable:
-            L10n.navigationErrorNoLocationAvailableSummary
+            return L10n.navigationErrorNoLocationAvailableSummary
         case .none, .unknown:
-            NunavStrings.errorUnknownTitle
+            return NunavStrings.errorUnknownTitle
         }
     }
 
